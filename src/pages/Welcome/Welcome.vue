@@ -7,7 +7,7 @@
     <p class="welcoming">您好，欢迎光临！</p>
     <router-link to="Shop" class="btn">开始点餐<i class="iconfont icon-jiantouyou"></i></router-link>
     <img :src="userInfo.avatarUrl" alt="" class="avatar">
-    <p class="copyright">郑州红狐科技信息有限公司版权所有</p>
+    <p class="copyright">郑州xx科技信息有限公司版权所有</p>
   </div>
 </template>
 <script>

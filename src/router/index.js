@@ -11,6 +11,7 @@ const Evaluate = () => import ('@/pages/Evaluate/Evaluate');
 Vue.use(Router);
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
