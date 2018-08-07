@@ -30,6 +30,14 @@ const REQUESTS = {
   getMyShop(data) {
     return HTTPS.fetchGet(HOST + '/api/5b6553a099d78', data)
   },
+  //获取商品分类
+  getGoodsCate(data) {
+    return HTTPS.fetchGet(HOST + '/api/5afe9c48af79e', data)
+  },
+  //获取商品列表
+  getGoodsLists(data) {
+    return HTTPS.fetchGet(HOST + '/api/5afea7da66ff3', data)
+  },
 
   searchShop(data) {
     return HTTPS.fetchGet(HOST + '/api/5b49ae292625a', data)
@@ -59,3 +67,5 @@ export const getIndexBanner = REQUESTS.getIndexBanner;
 export const getNearStore = REQUESTS.getNearStore;
 export const searchShop = REQUESTS.searchShop;
 export const getMyShop = REQUESTS.getMyShop;
+export const getGoodsCate = REQUESTS.getGoodsCate;
+export const getGoodsLists = REQUESTS.getGoodsLists;

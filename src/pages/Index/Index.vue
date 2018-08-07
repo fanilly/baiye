@@ -13,8 +13,7 @@
     <h1 class="title">附近的店</h1>
     <section class="shop-list">
 
-      <router-link class="list-item"
-        to="/" v-if="myShop">
+      <router-link class="list-item" :to="{name:'Shop',params:{shopid:myShop.id}}" v-if="myShop">
         <div class="top"
           :style="'background-image:url('+myShop.shop_avatar+')'">
           <img v-if="userType == 1"
@@ -37,9 +36,8 @@
         </div>
       </router-link>
 
-
       <router-link class="list-item"
-        to="/"
+        :to="{name:'Shop',params:{shopid:item.id}}"
         v-for="(item,index) in lists"
         :key="index">
         <div class="top"

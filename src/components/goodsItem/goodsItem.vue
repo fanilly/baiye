@@ -1,13 +1,13 @@
 <template>
   <section class="goods-item">
     <section class="goods-item-lside">
-      <img v-lazy="baseurl+item.goodsthums">
+      <img v-lazy="item.img_url">
     </section>
     <section class="goods-item-rside">
-      <h3 class="goods-item-rside-title">{{ item.goodsname }}</h3>
-      <p class="goods-item-rside-info">{{ item.goodsspec }}</p>
+      <h3 class="goods-item-rside-title">{{ item.title }}</h3>
+      <p class="goods-item-rside-info">月销：{{ item.sales }}份</p>
       <div class="goods-item-rside-control-box">
-        <h4><span>￥</span>{{item.shopprice}}</h4>
+        <h4><span>￥</span>{{item.shop_price}}</h4>
         <template v-if="item.count>=1">
           <span class="icon-box reduce" @click.stop="reduce"><i class="iconfont icon-iconjian"></i></span>
           <span class="count-box">{{item.count}}</span>

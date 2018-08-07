@@ -3,7 +3,7 @@
     <section class="mask" @click="maskHandle"></section>
     <section class="content">
       <section class="content-wapper">
-        <img class="goods-poster" v-lazy="baseurl+goodsData.goodsimg" alt="">
+        <img class="goods-poster" v-lazy="goodsData.goodsimg" alt="">
         <h1>{{goodsData.goodsname}}</h1>
         <div class="title-box">
           <h2><span>￥</span>{{goodsData.shopprice}}</h2>
@@ -29,9 +29,6 @@ export default {
   props: {
     goodsData: {
       type: Object
-    },
-    baseurl: {
-      type: String
     },
     detailCurrentIndex:{
       type:Number

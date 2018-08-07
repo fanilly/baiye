@@ -9,40 +9,20 @@
         <section class="mall-info">
           <section class="mall-info-header">
             <section class="mall-info-header-lside">
-              <img v-lazy="BASE_URL+configs.goodsImg" class="logo" alt="店铺头像">
+              <img v-lazy="configs.goodsImg" class="logo" alt="店铺头像">
             </section>
             <section class="mall-info-header-rside">
               <h2 class="mall-name">{{configs.mallName}}</h2>
               <p class="mall-desc">{{configs.mallDesc}}</p>
             </section>
           </section>
-          <section class="mall-info-notice-wapper" @click="toggleCouponsShow">
+          <section class="mall-info-notice-wapper">
             <span class="notice-icon"><i class="iconfont icon-laba"></i></span>
             <h3>{{configs.couponsDesc}}</h3>
-            <span :class="showCoupons ? 'more-icon opened' : 'more-icon'"><i class="iconfont icon-jiantouyou"></i></span>
+            <span class="'more-icon opened'"><i class="iconfont icon-jiantouyou"></i></span>
           </section>
         </section>
       </section>
-      <!-- 优惠信息 -->
-      <transition name="benefit">
-        <section v-if="showCoupons">
-          <section class="benefit">
-            <coupon
-              v-for="(item,index) of coupons"
-              :key="index"
-              class="coupon"
-              :settings="item"
-              @handleReceiveCoupon="handleReceiveCoupon"
-            ></coupon>
-          </section>
-          <section class="benefit-info">
-            <div v-for="(item,index) in benefits" :key="index">
-              <span :style="'color:'+item.color"><i :class="'iconfont '+item.icon"></i></span>
-              <p>{{item.content}}</p>
-            </div>
-          </section>
-        </section>
-      </transition>
     </header>
 
     <!-- 商品详情 -->
@@ -51,7 +31,6 @@
         <goods-detail
           v-if="showDetail"
           :goodsData="goodsDetailData"
-          :baseurl="BASE_URL"
           :detailParentIndex="detailParentIndex"
           :detailCurrentIndex="detailCurrentIndex"
           @plus="plus"
@@ -67,16 +46,15 @@
         <!-- 商品 -->
         <tab-panel label="商品" tabkey="goods">
           <main class="main">
-            <scrolltab ref="scrollTabBox">
-              <scrolltab-panel :label="item.catname" :icon="item.icon || ''" v-for="item,index in classList" :key="index">
+            <scrolltab ref="scrollTabBox" v-if="goodsLists && goodsCate">
+              <scrolltab-panel :label="item.name" :icon="item.icon || ''" v-for="item,index in goodsCate" :key="index">
                 <section class="class-container">
                   <section
-                    v-for="(sub, key) in item.goodsList"
+                    v-for="(sub, key) in goodsLists[index]"
                     :key="key"
                     @click="handleShowGoodsDetail(index,key)">
                       <goods-item
                         :item="sub"
-                        :baseurl="BASE_URL"
                         :parentIndex="index"
                         :currentIndex="key"
                         @plus="plus"
@@ -137,30 +115,33 @@ import goodsDetail from '@/components/goodsDetail/goodsDetail.vue';
 import rate from '@/components/rate/rate.vue';
 
 import goodsItem from '@/components/goodsItem/goodsItem.vue';
-import coupon from '@/components/coupon/coupon.vue';
 import footerTrolley from '@/components/footerTrolley/footerTrolley.vue';
 
 import storageUtils from '@/utils/Storage.js';
 import parabola from '@/utils/parabola.js';
 import ScrollTo from '@/utils/scrollTo.js';
-const BASE_URL = 'xx';
 const getGoosList = ()=>{};
 const getCoupons = ()=>{};
 const receiveCoupon = ()=>{};
-// import {
-//   getGoosList,
-//   getCoupons,
-//   receiveCoupon
-// } from '@/api/index.js';
+import {
+  getGoodsCate,
+  getGoodsLists,
+} from '@/api/index.js';
 
 let pageHeight = document.body.offsetHeight, //页面实际高度
   trolleysIconHeight = 0; //购物车图片实际高度
 
 export default {
   name: 'Shop',
+  props: {
+    shopid: {
+      require: true
+    }
+  },
   data() {
     return {
-      BASE_URL: BASE_URL, //图片根路径
+      goodsLists:null,
+      goodsCate:null,
       classList: [], //商品列表
       configs: {}, //商城配置
       trolleys: [], //购物车数据
@@ -326,14 +307,6 @@ export default {
       this.totalMoney = this.trolleys.length >= 1 ? this.trolleys.map(item => item.shopprice * item.count).reduce((total, num) => total + num) : 0;
     },
 
-    //显示与隐藏优惠券模块
-    toggleCouponsShow() { this.showCoupons = !this.showCoupons; },
-
-    //领取优惠券
-    handleReceiveCoupon(){
-      console.log(1);
-    },
-
     //点击选好了
     handleGoSettlement() {
       if (this.trolleysTotal >= 1) {
@@ -345,50 +318,76 @@ export default {
           msg:'请至少选择一件商品'
         });
       }
+    },
+
+    //获取分类列表
+    getGoodsCate(){
+      getGoodsCate({
+      is_waimai:1,
+        shop_id:this.shopid,
+        user_id:this.$store.state.user.userid
+      }).then(res=>{
+        if(res.data.code == 1){
+          this.goodsCate = res.data.data;
+          console.log(this.goodsCate);
+        }
+      });
+    },
+
+    //获取商品列表
+    getGoodsLists(){
+      getGoodsLists({
+        is_waimai:1,
+        shop_id:this.shopid,
+        user_id:this.$store.state.user.userid
+      }).then(res=>{
+        if(res.data.code == 1){
+          this.goodsLists = res.data.data;
+          console.log(this.goodsLists)
+        }
+      });
     }
   },
   mounted() {
-    this.initTrolley();
-    getGoosList().then(res => {
-      console.log(res);
-      //记录商品数据
-      this.classList = res.data.goods.map(item => {
-        let tempItem = item;
-        tempItem.goodsList.map(goods => {
-          let tempGoods = goods,
-            index = this.trolleys.findIndex(sub => sub.goodsid == tempGoods.goodsid);
-          tempGoods.count = index != -1 ? this.trolleys[index].count : 0;
-          return tempGoods;
-        });
-        return tempItem;
-      });
+    this.getGoodsCate();
+    this.getGoodsLists();
 
-      // 如果购入车中的商品与本次获取的商品信息不符
-      // 更新存储的购物车数据
-      this.trolleys = this.trolleys.map(item => {
-        for (let i = 0; i < this.classList.length; i++) {
-          let currentGoods = this.classList[i].goodsList,
-            tempIndex = currentGoods.findIndex(sub => sub.goodsid == item.goodsid);
-          if (tempIndex != -1) {
-            if (JSON.stringify(currentGoods[tempIndex]) != JSON.stringify(item)) item = currentGoods[tempIndex];
-            break;
-          }
-        }
-        return item;
-      });
-      storageUtils.setStorage('trolleys', this.trolleys);
 
-      //记录配置数据
-      this.configs = res.data.configs;
-    }).catch(err => {
-      console.log(err);
-    });
+    // this.initTrolley();
+    // getGoosList().then(res => {
+    //   console.log(res);
+    //   //记录商品数据
+    //   this.classList = res.data.goods.map(item => {
+    //     let tempItem = item;
+    //     tempItem.goodsList.map(goods => {
+    //       let tempGoods = goods,
+    //         index = this.trolleys.findIndex(sub => sub.goodsid == tempGoods.goodsid);
+    //       tempGoods.count = index != -1 ? this.trolleys[index].count : 0;
+    //       return tempGoods;
+    //     });
+    //     return tempItem;
+    //   });
 
-    // 获取优惠券信息
-    getCoupons({ userId: 1 }).then(res => {
-      console.log(res);
-      this.coupons = res.data;
-    });
+    //   // 如果购入车中的商品与本次获取的商品信息不符
+    //   // 更新存储的购物车数据
+    //   this.trolleys = this.trolleys.map(item => {
+    //     for (let i = 0; i < this.classList.length; i++) {
+    //       let currentGoods = this.classList[i].goodsList,
+    //         tempIndex = currentGoods.findIndex(sub => sub.goodsid == item.goodsid);
+    //       if (tempIndex != -1) {
+    //         if (JSON.stringify(currentGoods[tempIndex]) != JSON.stringify(item)) item = currentGoods[tempIndex];
+    //         break;
+    //       }
+    //     }
+    //     return item;
+    //   });
+    //   storageUtils.setStorage('trolleys', this.trolleys);
+
+    //   //记录配置数据
+    //   this.configs = res.data.configs;
+    // }).catch(err => {
+    //   console.log(err);
+    // });
   },
   components: {
     scrolltabPanel,
@@ -398,7 +397,6 @@ export default {
     rate,
     goodsItem,
     goodsDetail,
-    coupon,
     footerTrolley
   }
 };

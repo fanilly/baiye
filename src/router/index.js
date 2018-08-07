@@ -49,8 +49,9 @@ const router = new Router({
       }
     },
     {
-      path: '/shop',
+      path: '/shop/:shopid',
       name: 'Shop',
+      props: true,
       component: Shop,
       meta: {
         keepAlive: true
