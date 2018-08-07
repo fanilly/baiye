@@ -13,9 +13,6 @@
 
       };
     },
-    beforeCreate() {
-      document.title = '个人中心';
-    },
     mounted() {
 
     },

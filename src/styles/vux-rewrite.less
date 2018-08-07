@@ -1,0 +1,18 @@
+@import './variable.less';
+
+.mj-vux-box .vux-slider>.vux-indicator>a>.vux-icon-dot,
+.mj-vux-box .vux-slider .vux-indicator-right>a>.vux-icon-dot {
+  display: inline-block;
+  vertical-align: middle;
+  width: .12rem;
+  height: .12rem;
+  border-radius: .06rem;
+  background-color: #fff;
+  transition: all ease .3s;
+}
+
+.mj-vux-box .vux-slider>.vux-indicator>a>.vux-icon-dot.active,
+.mj-vux-box .vux-slider .vux-indicator-right>a>.vux-icon-dot.active {
+  background-color: @main-color;
+  width: .32rem;
+}

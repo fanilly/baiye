@@ -26,7 +26,8 @@ const router = new Router({
       name: 'Index',
       component: Index,
       meta: {
-        keepAlive: false
+        keepAlive: false,
+        title: '首页'
       }
     },
     {
@@ -34,7 +35,8 @@ const router = new Router({
       name: 'Order',
       component: Order,
       meta: {
-        keepAlive: false
+        keepAlive: false,
+        title: '订单'
       }
     },
     {
@@ -42,7 +44,8 @@ const router = new Router({
       name: 'Center',
       component: Center,
       meta: {
-        keepAlive: false
+        keepAlive: false,
+        title: '个人中心'
       }
     },
     {
@@ -86,6 +89,8 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
+  if(to.meta.title) document.title = to.meta.title;
+
   if (!localStorage.getItem('USER_INFO')) {
     login().then(res => {
       store.commit(SET_USER_INFO, res);

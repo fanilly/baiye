@@ -6,16 +6,34 @@
  */
 
 import HTTPS from './public.js';
-console.log(process.env.NODE_ENV);
-const HOST = 'http://mall-seo.hohu.cc';
+const isDev = process.env.NODE_ENV === 'development';
+const HOST = isDev ? '' : 'https://food.zzebz.com';
 
 const REQUESTS = {
+  //获取微信JS-SDK配置信息
+  getWxSettings() {
+    return HTTPS.fetchPost(HOST + '/api/5b69400bc5674', {
+      jump_url: location.href
+    })
+  },
   //获取首页banner数据
   getIndexBanner() {
     return HTTPS.fetchGet(HOST + '/api/5b46c0219c671', {
       type_id: 2
     })
   },
+  //获取附近的店
+  getNearStore(data) {
+    return HTTPS.fetchGet(HOST + '/api/5b499bc0501bd', data)
+  },
+  //获取我的店铺
+  getMyShop(data) {
+    return HTTPS.fetchGet(HOST + '/api/5b6553a099d78', data)
+  },
+
+  searchShop(data) {
+    return HTTPS.fetchGet(HOST + '/api/5b49ae292625a', data)
+  }
 
 
   // //获取商品列表
@@ -36,4 +54,8 @@ const REQUESTS = {
   // }
 };
 
+export const getWxSettings = REQUESTS.getWxSettings;
 export const getIndexBanner = REQUESTS.getIndexBanner;
+export const getNearStore = REQUESTS.getNearStore;
+export const searchShop = REQUESTS.searchShop;
+export const getMyShop = REQUESTS.getMyShop;

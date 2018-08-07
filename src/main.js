@@ -9,6 +9,8 @@ import store from './store/index.js';
 
 import './styles/common.less';
 import './styles/animate.less';
+import './styles/variable.less';
+import './styles/vux-rewrite.less';
 import './iconfont/iconfont.css';
 
 Vue.use(FeedBack);

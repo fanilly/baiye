@@ -1,3 +1,88 @@
+@import '../../styles/variable.less';
 .container {
+  width: 100%;
+}
 
+.swiper {
+  width: 100%;
+}
+
+.title {
+  font-size: .42rem;
+  color: #2d2f44;
+  padding: .3rem;
+  background-color: #fff;
+  font-weight: bold;
+  text-align: left;
+}
+
+.swiper .vux-slider>.vux-indicator.dots>a>.vux-icon-dot {
+  width: .12rem !important;
+  height: .12rem;
+  border-radius: .06rem;
+}
+
+
+.shop-list {
+  padding: 0 .3rem;
+  background-color: #fff;
+  .list-item .top {
+    height: 3.7rem;
+    position: relative;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    img {
+      width: 2.07rem;
+      height: .62rem;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  }
+  .list-item .info {
+    .title {
+      display: flex;
+      align-items: center;
+      padding: .3rem 0 .1rem;
+      div:first-child {
+        flex: 1;
+        color: #2d2f44;
+        font-weight: bold;
+      }
+      div:last-child {
+        padding-left: .4rem;
+        font-size: .26rem;
+        color: #999;
+      }
+    }
+    .address {
+      display: flex;
+      align-items: center;
+      padding-bottom: .3rem;
+      div:first-child {
+        position: relative;
+        height: .21rem;
+        width: .21rem;
+      }
+      img {
+        width: .21rem;
+        height: .21rem;
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+      .distance {
+        font-size: .26rem;
+        color: #888888;
+        padding-right: .3rem;
+        padding-left: .1rem;
+      }
+      .name {
+        font-size: .26rem;
+        color: #888;
+        .text-overflow-ellipsis;
+      }
+    }
+  }
 }

@@ -13,9 +13,6 @@
 
       };
     },
-    beforeCreate(){
-      document.title = '订单';
-    },
     mounted() {
 
     },
