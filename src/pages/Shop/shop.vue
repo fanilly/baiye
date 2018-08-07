@@ -140,16 +140,18 @@ import goodsItem from '@/components/goodsItem/goodsItem.vue';
 import coupon from '@/components/coupon/coupon.vue';
 import footerTrolley from '@/components/footerTrolley/footerTrolley.vue';
 
-import { BASE_URL } from '@/api/urls.js';
 import storageUtils from '@/utils/Storage.js';
 import parabola from '@/utils/parabola.js';
 import ScrollTo from '@/utils/scrollTo.js';
-
-import {
-  getGoosList,
-  getCoupons,
-  receiveCoupon
-} from '@/api/index.js';
+const BASE_URL = 'xx';
+const getGoosList = ()=>{};
+const getCoupons = ()=>{};
+const receiveCoupon = ()=>{};
+// import {
+//   getGoosList,
+//   getCoupons,
+//   receiveCoupon
+// } from '@/api/index.js';
 
 let pageHeight = document.body.offsetHeight, //页面实际高度
   trolleysIconHeight = 0; //购物车图片实际高度

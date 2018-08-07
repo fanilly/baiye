@@ -1,22 +1,46 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Welcome from '@/pages/Welcome/Welcome';
+import Index from '@/pages/Index/Index';
+import login from '../api/login.js';
+import store from '../store/index.js';
+import { SET_USER_INFO } from '../store/mutation-type.js';
 
 const Shop = () => import ('@/pages/Shop/Shop');
 const Settlement = () => import ('@/pages/Settlement/Settlement');
 const Payment = () => import ('@/pages/Payment/Payment');
 const Trolley = () => import ('@/pages/Trolley/Trolley');
 const Evaluate = () => import ('@/pages/Evaluate/Evaluate');
+const Order = () => import ('@/pages/Order/Order');
+const Center = () => import ('@/pages/Center/Center');
 
 Vue.use(Router);
 
-export default new Router({
+
+
+const router = new Router({
   mode: 'history',
+  // base: '/mallweb/dist',
   routes: [
     {
       path: '/',
-      name: 'Welcome',
-      component: Welcome,
+      name: 'Index',
+      component: Index,
+      meta: {
+        keepAlive: false
+      }
+    },
+    {
+      path: '/order',
+      name: 'Order',
+      component: Order,
+      meta: {
+        keepAlive: false
+      }
+    },
+    {
+      path: '/center',
+      name: 'Center',
+      component: Center,
       meta: {
         keepAlive: false
       }
@@ -60,3 +84,18 @@ export default new Router({
     }
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  if (!localStorage.getItem('USER_INFO')) {
+    login().then(res => {
+      store.commit(SET_USER_INFO, res);
+      next();
+    });
+  } else {
+    let userInfo = JSON.parse(localStorage.getItem('USER_INFO'));
+    store.commit(SET_USER_INFO, userInfo);
+    next();
+  }
+});
+
+export default router;

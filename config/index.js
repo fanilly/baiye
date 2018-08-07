@@ -8,9 +8,19 @@ module.exports = {
   dev: {
 
     // Paths
-    assetsSubDirectory: 'static',
+    assetsSubDirectory: 'staticassets',
     assetsPublicPath: '/',
-    proxyTable: {},
+
+    //npm install http-proxy-middleware
+    proxyTable: {
+      '/api': {
+        target: 'https://food.zzebz.com',
+        changeOrigin: true,
+        pathRewrite:{
+          '^/api': '/api'
+        }
+      }
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
@@ -42,7 +52,7 @@ module.exports = {
 
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
-    assetsSubDirectory: 'static',
+    assetsSubDirectory: 'staticassets',
     assetsPublicPath: './',
 
     /**
