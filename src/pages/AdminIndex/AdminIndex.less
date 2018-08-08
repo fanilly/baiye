@@ -1,0 +1,45 @@
+.btns {
+	display: flex;
+	flex-wrap: wrap;
+	background-color: #fff;
+	border-top: 0.2rem solid #f7f7f7;
+	padding: 0.2rem 0;
+	.item {
+		width: 33.33%;
+		text-align: center;
+		padding: 0.3rem 0;
+		img{
+			width: 0.48rem;
+			height: 0.48rem;
+		}
+		.name{
+			font-size: 0.26rem;
+			color: #2d2f44;
+			padding-top:0.05rem;
+		}
+	}
+}
+
+.header { 
+	position: relative; background-color: #1c1c20; display: flex; height: 2.04rem; padding: 0.4rem 0.32rem; 
+	.lside { 
+		flex: 1; text-align: left;
+		.btn img { width: 0.62rem; height: 0.84rem; position: absolute; bottom: 0; }
+	}
+	.title { font-size: 0.4rem; font-weight: 600; color: #fff; }
+	.rside img { width: 1.28rem; height: 1.28rem; border-radius: 50%; border: 0.06rem solid rgba(255,255,255,.2); }
+}
+
+
+
+.statistics .top { border-bottom: 1px solid #f7f7f7; height: 2rem; background-color: #fff; display: flex; }
+.statistics .top>div { flex: 1; display: flex; padding: 0.4rem; flex-direction: column; justify-content: space-between; }
+.statistics .top>div div:first-child {font-size: 0.24rem; color: #95a0b5;}
+.statistics .top>div div:last-child {font-size: 0.48rem; font-weight: 600; color: rgb(255,168,0)}
+.statistics .bottom { display: flex; padding: 0 0.4rem; }
+.statistics .bottom>div { flex: 1; padding: 0.2rem 0; }
+.statistics .bottom .lside { border-right: 1px solid #f7f7f7; padding-right: 0.3rem; }
+.statistics .bottom .rside { padding-left: 0.3rem; }
+.statistics .item { display: flex; }
+.statistics .item div { height: 0.8rem; line-height: 0.8rem; font-size: 0.28rem; color: #2d2f44; }
+.statistics .item div:last-child { flex: 1; text-align: right; color: rgb(255,168,0); font-weight: 600 }

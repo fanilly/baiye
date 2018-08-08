@@ -4,7 +4,6 @@
     &-box {
       overflow: auto;
       -webkit-overflow-scrolling: touch;
-      background-color: #fff;
     }
     &-nav-nomal {
       .yd-tab-nav {
@@ -28,7 +27,6 @@
       position: relative;
       z-index: 0;
       display: flex;
-      border-bottom: 2px solid #ededed;
       &:after {
         .bottom-line(@tab-bottom-border-color, 3);
       }
@@ -39,7 +37,7 @@
         color: @tab-color;
         font-size: @tab-fontsize;
         line-height: @tab-height;
-        .tap-color(@tab-bg, .97);
+        // .tap-color(@tab-bg, .97);
         >a {
           display: inherit;
           color: inherit;
@@ -56,25 +54,26 @@
         }
       }
       .@{css-prefix}-tab-active {
-        color: currentColor;
-        .tap-color(@tab-bg, 1);
+        font-size: .32rem;
+        color: #1b1b1f;
+        // .tap-color(@tab-bg, 1);
         &:before {
           content: '';
-          width: 70%;
+          width: 20%;
           height: 2px;
           position: absolute;
           left: 50%;
-          bottom: -2px;
-          margin-left: -35%;
+          bottom: 0;
+          margin-left: -10%;
           z-index: 4;
-          background-color: currentColor;
+          background-color: @main-color;
         }
       }
     }
     &-panel {
       position: relative;
       overflow: hidden;
-      background-color: #FFF;
+      flex:1;
       &-item {
         width: 100%;
         position: absolute;

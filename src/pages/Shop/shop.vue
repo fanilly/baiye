@@ -1,29 +1,33 @@
 <template>
   <section class="container">
-    <header class="header">
+    <header class="header" v-if="shopDetail">
       <!-- 店铺信息 -->
+      <img class="header-bg" :src="shopDetail.banner" alt="">
       <section class="header-wapper">
-        <section class="search-box">
-          <input class="search-box-content" ref="searchBox" @blur="handleSearch" @keyup.enter="handleSearch" type="search" placeholder="请输入关键词搜索商品" name="">
-        </section>
         <section class="mall-info">
           <section class="mall-info-header">
             <section class="mall-info-header-lside">
-              <img v-lazy="configs.goodsImg" class="logo" alt="店铺头像">
+              <img v-lazy="shopDetail.avatar" class="logo" alt="店铺头像">
             </section>
-            <section class="mall-info-header-rside">
-              <h2 class="mall-name">{{configs.mallName}}</h2>
-              <p class="mall-desc">{{configs.mallDesc}}</p>
+            <section class="mall-info-header-rside" @click="showShopDetailPop = true">
+              <h2 class="mall-name">{{shopDetail.name}}</h2>
+              <h3 class="mall-flags">{{shopDetail.is_dada ? '达达配送' : '商家自配'}} 月销{{shopDetail.sales_num}}</h3>
+              <p class="mall-desc">{{shopDetail.description}}</p>
             </section>
-          </section>
-          <section class="mall-info-notice-wapper">
-            <span class="notice-icon"><i class="iconfont icon-laba"></i></span>
-            <h3>{{configs.couponsDesc}}</h3>
-            <span class="'more-icon opened'"><i class="iconfont icon-jiantouyou"></i></span>
+            <section class="mall-info-header-star" @click="handleToggleCollectionStatus">
+              <img :src="shopDetail.is_fav ? starIcons.stared : starIcons.nostar">
+              <p>{{shopDetail.is_fav ? '已关注' : '关注'}}</p>
+            </section>
           </section>
         </section>
       </section>
     </header>
+
+    <!-- 搜索 -->
+    <section class="search-box">
+      <input class="search-box-content" ref="searchBox" @blur="handleSearch" @keyup.enter="handleSearch" type="search" placeholder="请输入关键词搜索商品" name="">
+      <img class="search-box-coupon" :src="couponIcons" alt="">
+    </section>
 
     <!-- 商品详情 -->
     <section class="goods-detail">
@@ -40,59 +44,121 @@
       </transition>
     </section>
 
-
-    <section class="page-main">
-      <tab :callback="handleToggleTab">
-        <!-- 商品 -->
-        <tab-panel label="商品" tabkey="goods">
-          <main class="main">
-            <scrolltab ref="scrollTabBox" v-if="goodsLists && goodsCate">
-              <scrolltab-panel :label="item.name" :icon="item.icon || ''" v-for="item,index in goodsCate" :key="index">
-                <section class="class-container">
-                  <section
-                    v-for="(sub, key) in goodsLists[index]"
-                    :key="key"
-                    @click="handleShowGoodsDetail(index,key)">
-                      <goods-item
-                        :item="sub"
-                        :parentIndex="index"
-                        :currentIndex="key"
-                        @plus="plus"
-                        @reduce="reduce"
-                      ></goods-item>
-                    </section>
-                </section>
-              </scrolltab-panel>
-            </scrolltab>
-          </main>
-        </tab-panel>
-        <!-- 评价 -->
-        <tab-panel label="评价" tabkey="evaluate">
-          <section class="evaluate">
-            <section class="evaluate-header">
-              <section class="evaluate-header-lside">
-                <h3><span>4.3</span>综合评分</h3>
+    <!-- 商品列表 -->
+    <main class="main">
+      <scrolltab ref="scrollTabBox" v-if="goodsLists && goodsCate">
+        <scrolltab-panel :label="item.name" :icon="item.icon || ''" v-for="item,index in goodsCate" :key="index">
+          <section class="class-container">
+            <section
+              v-for="(sub, key) in goodsLists[index]"
+              :key="key"
+              @click="handleShowGoodsDetail(index,key)">
+                <goods-item
+                  :item="sub"
+                  :parentIndex="index"
+                  :currentIndex="key"
+                  @plus="plus"
+                  @reduce="reduce"
+                ></goods-item>
               </section>
-              <section class="evaluate-header-rside">
-                <div class="item">
-                  <span class="lable">口味:</span>
-                  <rate slot="left" v-model="rateVal" :readonly="true"></rate>
-                  <span class="score">{{rateVal}}分</span>
-                </div>
-                <div class="item">
-                  <span class="lable">商家:</span>
-                  <rate slot="left" v-model="rateVal" :readonly="true"></rate>
-                  <span class="score">{{rateVal}}分</span>
-                </div>
-              </section>
-            </section>
-            <main class="evaluate-content">
-              <h1>评论列表</h1>
-            </main>
           </section>
-        </tab-panel>
-      </tab>
-    </section>
+        </scrolltab-panel>
+      </scrolltab>
+    </main>
+
+    <!-- 店铺详情弹出层 -->
+    <transition name="fade">
+      <section class="shop-pop" v-if="showShopDetailPop">
+        <section class="shop-pop-placeholder-box" @click="showShopDetailPop = false"></section>
+        <section class="shop-pop-main">
+          <tab :callback="handleToggleTab" class="pop-tab-wapper">
+            <!-- 店铺信息 -->
+            <tab-panel label="店铺信息" tabkey="goods" class="detial-list-wapper">
+              <main class="detial-main">
+                <section class="mall-info">
+                  <section class="mall-info-header">
+                    <section class="mall-info-header-lside">
+                      <img v-lazy="shopDetail.avatar" class="logo" alt="店铺头像">
+                    </section>
+                    <section class="mall-info-header-rside" @click="showShopDetailPop = true">
+                      <h2 class="mall-name">{{shopDetail.name}}</h2>
+                      <h3 class="mall-flags">{{shopDetail.is_dada ? '达达配送' : '商家自配'}} 月销{{shopDetail.sales_num}}</h3>
+                      <p class="mall-desc">{{shopDetail.description}}</p>
+                    </section>
+                    <section class="mall-info-header-star" @click="handleToggleCollectionStatus">
+                      <img :src="shopDetail.is_fav ? starIcons.stared : starIcons.nostar">
+                      <p>{{shopDetail.is_fav ? '已关注' : '关注'}}</p>
+                    </section>
+                  </section>
+                </section>
+                <section class="shop-info-wapper">
+                  <div class="detail-title">商家信息</div>
+                  <div class="info-list" @click="handleCallPhone(shopDetail.mobile)">门店电话：
+                      <span class="info-list-content">{{shopDetail.mobile}}</span>
+                      <span class="info-list-btn">联系TA</span>
+                  </div>
+                  <div class="info-list">商品数量：
+                      <span class="info-list-content">{{shopDetail.goods_count}}</span>
+                  </div>
+                  <div class="info-list">月销单量：
+                      <span class="info-list-content">{{shopDetail.sales_num}}</span>
+                  </div>
+                  <div class="info-list">营业时间：
+                      <span class="info-list-content">{{shopDetail.business_hours}}</span>
+                  </div>
+                  <div class="info-list" @click="handleGoMapCoordinate(shopDetail.coordinate)">门店地址：
+                      <span class="info-list-content">{{shopDetail.coordinate_address}}</span>
+                  </div>
+                  <div class="info-list">商家环境照片</div>
+                  <section class="previewer-box">
+                    <div class="previewer-img-wapper">
+                      <div class="previewer-img-content">
+                        <img class="previewer-img-item" v-for="(item, index) in surroundings" :src="item.src" width="100" @click="$refs.previewer.show(index)">
+                        <div v-transfer-dom>
+                          <previewer :list="surroundings" ref="previewer" :options="options"></previewer>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                </section>
+              </main>
+            </tab-panel>
+            <!-- 评价信息 -->
+            <tab-panel label="评价信息" tabkey="evaluate" class="evaluate-list-wapper">
+              <scroller @getData="getCommentsListsData">
+                <div>
+                  <section class="evaluate-header">
+                    <section class="evaluate-header-item">
+                      <h3><span>{{shopDetail.grade}}</span>综合评分</h3>
+                    </section>
+                    <section class="evaluate-header-item">
+                      <h3><span>{{shopDetail.grade_num}}</span>评论数</h3>
+                    </section>
+                  </section>
+                  <main class="evaluate-content">
+                    <div class="comment-list">
+                      <div class="list-item scroll-item" v-for="(item,index) in commentLists" :key="index">
+                        <div class="item-header">
+                          <div class="photo">
+                              <img :src="item.headimgurl" />
+                          </div>
+                          <div class="nickname">{{item.nickname}}</div>
+                        </div>
+                        <div class="comment-body">
+                          <div class="item-title">{{item.eval}}</div>
+                          <div class="item-info">{{item.add_time}}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </main>
+                  <load-more :show-loading="!commentLoadedAll && !noCommentLists" :tip="!commentLoadedAll && !noCommentLists ? '加载中' : '已加载全部数据'" background-color="#fbf9fe"></load-more>
+                </div>
+              </scroller>
+            </tab-panel>
+          </tab>
+        </section>
+      </section>
+    </transition>
 
     <!-- 抛物线使用的圆点 -->
     <section class="parabola-point" ref="parabolaPoint"></section>
@@ -109,8 +175,10 @@
 </template>
 
 <script>
+import { Previewer, TransferDom, LoadMore } from 'vux';
 import { scrolltabPanel, scrolltab } from '@/components/scrolltab/scrolltab.js';
 import { tab, tabPanel } from '@/components/tab/tab.js';
+import scroller from '@/components/scroller/scroller.vue';
 import goodsDetail from '@/components/goodsDetail/goodsDetail.vue';
 import rate from '@/components/rate/rate.vue';
 
@@ -126,6 +194,9 @@ const receiveCoupon = ()=>{};
 import {
   getGoodsCate,
   getGoodsLists,
+  getPhysicalShopDetail,
+  getCommentsListsData,
+  toggleCollectionStatus,
 } from '@/api/index.js';
 
 let pageHeight = document.body.offsetHeight, //页面实际高度
@@ -140,8 +211,31 @@ export default {
   },
   data() {
     return {
-      goodsLists:null,
-      goodsCate:null,
+      starIcons:{
+        stared:require('../../assets/baiye/icon07@2x.png'),
+        nostar:require('../../assets/baiye/icon06@2x.png'),
+      },
+      couponIcons: require('../../assets/coupon.png'),
+      showShopDetailPop:false, //显示弹出层
+      shopDetail:null, //店铺详情
+      goodsLists:null, //商品列表
+      goodsCate:null, //商品分类
+      surroundings: [], //商家环境图片
+      options: { //商家环境图片预览
+        getThumbBoundsFn (index) {
+          let thumbnail = document.querySelectorAll('.previewer-img-item')[index]
+          let pageYScroll = window.pageYOffset || document.documentElement.scrollTop
+          let rect = thumbnail.getBoundingClientRect()
+          return {x: rect.left, y: rect.top + pageYScroll, w: rect.width }
+        }
+      },
+
+      commentPage:1,
+      commentLoadedAll:false,
+      noCommentLists:false,
+      commentLists:[],
+      allowLoadMore: true,
+
       classList: [], //商品列表
       configs: {}, //商城配置
       trolleys: [], //购物车数据
@@ -152,26 +246,15 @@ export default {
       goodsDetailData: null,
       totalMoney: 0,
       rateVal: 3.7,
-      benefits: [{
-        icon: 'icon-man',
-        color: '#fb574e',
-        content: '满25减12；满49减25；满99减50'
-      }, {
-        icon: 'icon-zhe1',
-        color: '#bf82e1',
-        content: '折扣商品五折起'
-      }, {
-        icon: 'icon-zeng',
-        color: '#118eea',
-        content: '购买指定商品有赠品'
-      }, {
-        icon: 'icon-ling',
-        color: '#f08118',
-        content: '有机会领取商家代金券'
-      }],
       showCoupons: false, //是否显示优惠模块
       coupons: [] //优惠券
     };
+  },
+
+  watch:{
+    showShopDetailPop(val){
+      this.hanldeControlScroll(val ? 'stop' : '')
+    }
   },
   methods: {
 
@@ -244,6 +327,10 @@ export default {
     //选项卡切换
     handleToggleTab(lable, tabkey) {
       if (tabkey !== 'evaluate') return;
+      console.log(this.commentLists.length,this.allowLoadMore);
+      if(this.commentLists.length == 0 && this.allowLoadMore){
+        this.getCommentsListsData();
+      }
     },
 
     //初始化购物车
@@ -320,6 +407,17 @@ export default {
       }
     },
 
+    hanldeControlScroll(flag){
+      const mo = function(e){ e.preventDefault() };
+      if(flag == 'stop'){
+        document.body.style.overflow='hidden';
+        document.addEventListener("touchmove",mo,false);
+      }else{
+        document.body.style.overflow='';
+        document.removeEventListener("touchmove",mo,false);
+      }
+    },
+
     //获取分类列表
     getGoodsCate(){
       getGoodsCate({
@@ -346,11 +444,71 @@ export default {
           console.log(this.goodsLists)
         }
       });
-    }
+    },
+
+    //获取店铺详情
+    getPhysicalShopDetail(){
+      getPhysicalShopDetail({
+        user_id: this.$store.state.user.userid,
+        id:this.shopid
+      }).then(res=>{
+        if(res.data.code == 1){
+          this.shopDetail = res.data.data;
+          this.surroundings = res.data.data.surroundings.map(item=>({
+            msrc:item,
+            src:item
+          }))
+          console.log(this.shopDetail);
+        }
+      });
+    },
+
+    //获取评价列表
+    getCommentsListsData() {
+      console.log(this.allowLoadMore,this.commentLoadedAll,this.noCommentLists);
+      if(!this.allowLoadMore || this.commentLoadedAll || this.noCommentLists) return;
+      this.allowLoadMore = false;
+      getCommentsListsData({
+        shop_id:this.shopid,
+        page:this.commentPage
+      }).then(res=>{
+        console.log(res);
+        if (res.data.data.length < 20) this.commentLoadedAll = true;
+        if (res.data.data.length == 0 && this.commentLists.length == 0) this.noCommentLists = true;
+        this.commentLists.push(...res.data.data);
+        console.log(this.commentLists);
+        this.allowLoadMore = true;
+        this.commentPage++;
+      });
+    },
+
+    //切换收藏状态
+    handleToggleCollectionStatus() {
+      this.feedback.Loading.open('操作中');
+      toggleCollectionStatus({
+        shop_id:this.shopid,
+        user_id:this.$store.state.user.userid
+      }).then(res=>{
+        this.feedback.Loading.close();
+        this.feedback.Toast({
+          msg:res.data.info,
+          timeout:1500
+        });
+        if(res.data.code == 1){
+          this.shopDetail.is_fav = !this.shopDetail.is_fav;
+        }
+      });
+    },
   },
   mounted() {
+
+    setTimeout(() => {
+      ScrollTo(window,0,1);
+    }, 300);
+
     this.getGoodsCate();
     this.getGoodsLists();
+    this.getPhysicalShopDetail();
 
 
     // this.initTrolley();
@@ -397,12 +555,17 @@ export default {
     rate,
     goodsItem,
     goodsDetail,
-    footerTrolley
+    footerTrolley,
+    Previewer,
+    scroller,
+    LoadMore,
+  },
+  directives: {
+    TransferDom
   }
 };
 
 </script>
 <style lang="less" scoped>
 @import './Shop.less';
-
 </style>

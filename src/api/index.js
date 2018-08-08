@@ -38,6 +38,18 @@ const REQUESTS = {
   getGoodsLists(data) {
     return HTTPS.fetchGet(HOST + '/api/5afea7da66ff3', data)
   },
+  //获取实体店店铺详情
+  getPhysicalShopDetail(data) {
+    return HTTPS.fetchGet(HOST + '/api/5a68cfe513df8', data)
+  },
+  //获取店铺评价列表
+  getCommentsListsData(data) {
+    return HTTPS.fetchGet(HOST + '/api/5b4d4c317270e', data)
+  },
+  //获取店铺评价列表
+  toggleCollectionStatus(data) {
+    return HTTPS.fetchGet(HOST + '/api/5b34830dca2dd', data)
+  },
 
   searchShop(data) {
     return HTTPS.fetchGet(HOST + '/api/5b49ae292625a', data)
@@ -69,3 +81,6 @@ export const searchShop = REQUESTS.searchShop;
 export const getMyShop = REQUESTS.getMyShop;
 export const getGoodsCate = REQUESTS.getGoodsCate;
 export const getGoodsLists = REQUESTS.getGoodsLists;
+export const getPhysicalShopDetail = REQUESTS.getPhysicalShopDetail;
+export const getCommentsListsData = REQUESTS.getCommentsListsData;
+export const toggleCollectionStatus = REQUESTS.toggleCollectionStatus;

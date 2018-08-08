@@ -12,6 +12,7 @@ const Trolley = () => import ('@/pages/Trolley/Trolley');
 const Evaluate = () => import ('@/pages/Evaluate/Evaluate');
 const Order = () => import ('@/pages/Order/Order');
 const Center = () => import ('@/pages/Center/Center');
+const AdminIndex = () => import ('@/pages/AdminIndex/AdminIndex');
 
 Vue.use(Router);
 
@@ -26,7 +27,7 @@ const router = new Router({
       name: 'Index',
       component: Index,
       meta: {
-        keepAlive: false,
+        keepAlive: true,
         title: '首页'
       }
     },
@@ -54,7 +55,8 @@ const router = new Router({
       props: true,
       component: Shop,
       meta: {
-        keepAlive: true
+        keepAlive: false,
+        title:'店铺首页'
       }
     },
     {
@@ -82,6 +84,13 @@ const router = new Router({
       path: '/evaluate',
       name: 'Evaluate',
       component: Evaluate,
+      mate: {
+        keepAlive: false
+      }
+    }, {
+      path: '/adminIndex',
+      name: 'AdminIndex',
+      component: AdminIndex,
       mate: {
         keepAlive: false
       }
