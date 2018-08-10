@@ -393,8 +393,7 @@
 .comment-list .item-header .photo { padding-right: .2rem; }
 .comment-list .item-header .photo img { width: .64rem; height: .64rem; border-radius: 50%; }
 .comment-list .item-header .nickname { max-width: 2.4rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .28rem; color: #000; }
-.comment-list .item-header .rate { display: flex; }
-.comment-list .item-header .rate img { width: .25rem; height: .25rem; margin-right: 2px; }
+.comment-list .item-header .rate { display: flex; padding-left: .3rem; }
 .comment-list .comment-body { padding-left: .84rem; }
 .comment-list .item-title { margin-top: .1rem; font-size: .28rem; line-height: .38rem; color: #000000; }
 .comment-list .item-info { margin-top: .1rem; font-size: .26rem; line-height: .38rem; color: #999999; }
@@ -405,3 +404,26 @@
 .comment-list .reply-header .photo img { width: .64rem; height: .64rem; border-radius: 50%; }
 .comment-list .reply-header .nickname { width: 2.4rem; font-size: .26rem; color: #777777; }
 .comment-list .reply-content { font-size: .28rem; line-height: .38rem; color: #000000; margin-top: .2rem; }
+
+
+//选择属性
+.popboxmask { position: fixed; left: 0; top: 0; z-index: 9999; width: 100%; height: 100%; background-color: rgba(0,0,0,.5); text-align: left; }
+.popbox-wapper { position: fixed; left: 0; top: 0; z-index: 9999; width: 100%; height: 100%; }
+.popbox { position:fixed; width:86%; left:7%; top:50%; margin-top:-3.6rem; z-index:10000; }
+.popbox .tit1{ font-size: .34rem; color: #1c1c20; text-align: center; line-height:.7rem; height: .7rem; padding: 0 .3rem;  }
+.popbox .turns{ padding: .2rem .3rem .3rem .3rem;}
+.popbox .chose .tit2{ font-size: .28rem; line-height: .54rem; margin-bottom: .16rem; color: #1c1c20; }
+.popbox .chose .lie{ display:block; overflow: hidden;}
+.popbox .chose .lie span{ display: block; font-size: .28rem; color: #666; line-height: .54rem; border: 1px solid #ececec; padding: 0 .32rem; float: left; border-radius: .54rem; margin: 0 .16rem .12rem 0;}
+.popbox .chose .lie span.on{ border: 1px solid @main-color; color:@main-color;}
+.add{ display: block; overflow: hidden; height: .54rem; margin-left: .3rem;}
+.popbox .chose .add{ float: left; overflow: hidden;}
+.popbox .chose .add img{ display: block; width: .54rem; height: .54rem; float: left;}
+.popbox .chose .add span{ display: block; min-width: .6rem; margin: 0 .06rem; text-align: center; line-height: .54rem; height: .54rem; font-size: .3rem; float: left;}
+.popbox .chose.one{ overflow: hidden; margin-top: .2rem;}
+.popbox .chose.one .tit2{ float: left; margin: 0; margin-right: .3rem;}
+.popbox .btnbox{ overflow: hidden; height: 1.06rem; padding: .2rem .3rem; background-color: #f7f7f7;}
+.popbox .btnbox .bleft{ float: left; font-size: .34rem; line-height: .64rem; color: @main-color; }
+.popbox .btnbox .btna{ display: block; width:1.9rem; border-radius: .64rem; color: #fff; line-height: .64rem; text-align: center; float: right; font-size: .26rem; .main-linear-gradient; }
+.popbox .box{ background-color: #fff; border-radius: .1rem; overflow: hidden; padding-top: .2rem; text-align: left; }
+.popbox .close { margin: .6rem auto 0; display: block; width: .72rem; }

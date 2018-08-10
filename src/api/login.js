@@ -13,8 +13,8 @@ export default function() {
     // });
     console.log(123);
     let userInfo = {
-      userid:1,
-      nickName:'卮言',
+      userid:45,
+      nickName:'发光的闪闪闪',
       userType:1,
       avatar:'http://d.hiphotos.baidu.com/image/pic/item/b17eca8065380cd79a75c52cad44ad3458828183.jpg'
     }

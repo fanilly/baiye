@@ -1,4 +1,5 @@
 // trolley
+@import '../base.less';
 .trolley {
   position: fixed;
   left: 0;
@@ -6,19 +7,22 @@
   width: 100%;
   height: 1.1rem;
   z-index: 100;
-  background-color: #fff;
+  background-color: #1b1b1f;
   border-top: 1px solid #cbcaca;
   display: flex;
   align-items: center;
   .trolley-icon {
     margin: .1rem;
-    width: .9rem;
-    height: .9rem;
+    width: .98rem;
+    height: .98rem;
     border-radius: 50%;
-    background-color: #ff6634;
+    background-color: @main-color;
     text-align: center;
     line-height: .9rem;
     position: relative;
+    transform: translateY(-.3rem);
+    box-shadow: 0 2px 1px #1b1b1f;
+    border: .04rem solid #1b1b1f;
     span {
       color: #fff;
       i {
@@ -32,7 +36,7 @@
       width: .36rem;
       height: .36rem;
       border-radius: 50%;
-      background-color: #f69a1b;
+      background-color: #f32e45;
       line-height: .38rem;
       color: #fff;
       font-size: 12px;
@@ -40,20 +44,24 @@
   }
   .count {
     flex: 1;
+    color:#fff;
     padding: 0 .2rem;
     text-align: left;
     font-size: .24rem;
     span {
       font-size: .32rem;
-      color: #ff9057;
+      color: @main-color;
+      i {
+        font-size: .24rem;
+      }
     }
   }
   .btn {
     height: 1.1rem;
-    padding: 0 .4rem;
+    padding: 0 .6rem;
     line-height: 1.1rem;
     font-size: .3rem;
     color: #fff;
-    background-color: #ff9057;
+    background-color: @main-color;
   }
 }

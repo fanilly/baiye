@@ -4,7 +4,7 @@
       <span><i class="iconfont icon-iconfontgouwuche"></i></span>
       <div v-if="total>=1" class="corner">{{total}}</div>
     </section>
-    <div class="count">总计 <span>￥{{totalMoney}}</span> 元</div>
+    <div class="count">总计 <span><i>￥</i>{{totalPrice}}</span> 元</div>
     <div class="btn" @click="handleClickBtn">{{lable}}</div>
   </footer>
 </template>
@@ -24,6 +24,11 @@ export default {
   },
   data() {
     return {};
+  },
+  computed:{
+    totalPrice(){
+      return this.totalMoney.toFixed(2);
+    }
   },
   methods: {
     handleClickBtn() {

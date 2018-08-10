@@ -3,20 +3,20 @@
     <section class="mask" @click="maskHandle"></section>
     <section class="content">
       <section class="content-wapper">
-        <img class="goods-poster" v-lazy="goodsData.goodsimg" alt="">
-        <h1>{{goodsData.goodsname}}</h1>
+        <img class="goods-poster" v-lazy="goodsData.attachment_path" alt="">
+        <h1>{{goodsData.title}}</h1>
         <div class="title-box">
-          <h2><span>￥</span>{{goodsData.shopprice}}</h2>
+          <h2><span>￥</span>{{goodsData.shop_price}}</h2>
           <div class="control-box">
-            <template v-if="goodsData.count>=1">
+            <template v-if="goodsData.num>=1">
               <span class="icon-box reduce" @click.stop="reduce"><i class="iconfont icon-iconjian"></i></span>
-              <span class="count-box">{{goodsData.count}}</span>
+              <span class="count-box">{{goodsData.num}}</span>
             </template>
             <span class="icon-box plus" @click.stop="plus"><i class="iconfont icon-iconjia"></i></span>
           </div>
         </div>
-        <div class="content-box">
-          <p>{{goodsData.goodsspec}}</p>
+        <div class="content-box" v-html="goodsData.body">
+
         </div>
         <div class="desc"></div>
       </section>
@@ -45,14 +45,15 @@ export default {
       this.$emit('plus',{
         parentIndex:this.detailParentIndex,
         currentIndex:this.detailCurrentIndex,
-        goodsId:this.goodsData.goodsid
+        goodsId:this.goodsData.id,
+        isNoAttr:true
       },e);
     },
     reduce(e) {
       this.$emit('reduce',{
         parentIndex:this.detailParentIndex,
         currentIndex:this.detailCurrentIndex,
-        goodsId:this.goodsData.goodsid
+        goodsId:this.goodsData.id,
       },e);
     },
     maskHandle() {

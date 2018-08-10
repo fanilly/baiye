@@ -54,24 +54,29 @@
 
     <!-- buttons -->
     <div class="btns">
-        <div class="item" v-for="item in navLink" >
+        <!-- :to="{name:AdminShop}"  -->
+        <router-link class="item" v-for="item in navLink" :key="item.name" :to='item.src' >
             <img :src="item.icon" />
             <div class="name">{{item.name}}</div>
-        </div>
+        </router-link>
     </div>
 </div>
 </template>
 
 <script>
+
+import { getAdminIndexInfo } from '@/api/index.js';
+const wx = require('weixin-js-sdk');
+
 export default {
     name: 'AdminIndex',
     data() {
         return {
             navLink:[
-                { name: '我的店铺', icon: require('../../assets/baiye/c1@2x.png'), src: '../adminShop/adminShop' },
-                { name: '选品上架', icon: require('../../assets/baiye/c2@2x.png'), src: '../adminShelf/adminShelf' },
-                { name: '订单管理', icon: require('../../assets/baiye/c3@2x.png'), src: '../shopOrder/shopOrder' },
-                { name: '我的财富', icon: require('../../assets/baiye/c4@2x.png'), src: '../wealth/wealth' },
+                { name: '我的店铺', icon: require('../../assets/baiye/c1@2x.png'), src: 'AdminShop' },
+                { name: '选品上架', icon: require('../../assets/baiye/c2@2x.png'), src: 'AdminShelf' },
+                { name: '订单管理', icon: require('../../assets/baiye/c3@2x.png'), src: 'ShopOrder' },
+                { name: '我的财富', icon: require('../../assets/baiye/c4@2x.png'), src: 'Wealth' },
                 { name: '我的客户', icon: require('../../assets/baiye/c5@2x.png'), src: '../adminCustomer/adminCustomer' },
                 { name: '我的名片', icon: require('../../assets/baiye/c7@2x.png'), src: '../../assets/businessCard/businessCard' },
                 { name: '店铺设置', icon: require('../../assets/baiye/c9@2x.png'), src: '../adminSettings/adminSettings' },
@@ -83,10 +88,21 @@ export default {
         };
     },
     beforeCreate() {
-        document.title = '我的店铺';
     },
     mounted() {
-
+        this.getAdminIndexInfo();
+    },
+    methods:{
+        getAdminIndexInfo() {
+            getAdminIndexInfo({
+                user_id: this.$store.state.user.userid,
+            }).then(res => {
+                console.log('虚拟店信息',this.$store.state.user,res)
+                if (res.data.code == 1) {
+                    this.detail = res.data.data;
+                }
+            });
+        }
     },
     components: {
       

@@ -52,13 +52,14 @@
             <section
               v-for="(sub, key) in goodsLists[index]"
               :key="key"
-              @click="handleShowGoodsDetail(index,key)">
+              @click="handleShowGoodsDetail(index,key,sub.id)">
                 <goods-item
                   :item="sub"
                   :parentIndex="index"
                   :currentIndex="key"
                   @plus="plus"
                   @reduce="reduce"
+                  @choose="choose"
                 ></goods-item>
               </section>
           </section>
@@ -140,9 +141,12 @@
                       <div class="list-item scroll-item" v-for="(item,index) in commentLists" :key="index">
                         <div class="item-header">
                           <div class="photo">
-                              <img :src="item.headimgurl" />
+                            <img :src="item.headimgurl" />
                           </div>
                           <div class="nickname">{{item.nickname}}</div>
+                          <div class="rate">
+                            <rate slot="left" v-model="item.score" size="14px" :readonly="true"></rate>
+                          </div>
                         </div>
                         <div class="comment-body">
                           <div class="item-title">{{item.eval}}</div>
@@ -160,13 +164,38 @@
       </section>
     </transition>
 
+    <transition name="fade">
+      <div class="popbox-wapper" v-if="showChooseAttrPop">
+        <div class="popboxmask"></div>
+        <div class="popbox">
+          <div class="box">
+            <div class="tit1">{{chooseAttrPopData.title}}</div>
+            <div class="turns">
+              <div class="chose" v-for="(item,index) in chooseAttrPopData.attr" :key="index">
+                <div class="tit2">{{item.name}}</div>
+                <div class="lie">
+                  <span v-for="(sub,subkey) in item.specs" :key="subkey" :class="chooseAttrPopData.choosedAttr[index] == subkey ? 'on' : ''" @click="handleChooseAttr(index,subkey)">{{sub.name}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="btnbox">
+              <div class="bleft">
+                <span class="small">¥</span>{{chooseAttrPopData.showPrice}}</div>
+              <div class="btna JB" @click.stop="handleAddCart">加入购物车</div>
+            </div>
+          </div>
+          <img class="close" :src="closeIcon" @click="handleCloseChooseAttrPop" />
+        </div>
+      </div>
+    </transition>
+
     <!-- 抛物线使用的圆点 -->
     <section class="parabola-point" ref="parabolaPoint"></section>
 
     <!-- 底部 -->
     <footer-trolley
-      :totalMoney="totalMoney"
-      :total="trolleysTotal"
+      :totalMoney="choosedTotalPrice"
+      :total="choosedTotalNum"
       @initTrolleyPos="initTrolleyPos"
       @handleClickBtn="handleGoSettlement"
       @handleClickTrolley="handleClickTrolley"
@@ -197,6 +226,10 @@ import {
   getPhysicalShopDetail,
   getCommentsListsData,
   toggleCollectionStatus,
+  changeCartGoodsNum,
+  addCart,
+  getCartLists,
+  getPhysicalGoodsDetail,
 } from '@/api/index.js';
 
 let pageHeight = document.body.offsetHeight, //页面实际高度
@@ -215,6 +248,7 @@ export default {
         stared:require('../../assets/baiye/icon07@2x.png'),
         nostar:require('../../assets/baiye/icon06@2x.png'),
       },
+      closeIcon: require('../../assets/xxx.png'),
       couponIcons: require('../../assets/coupon.png'),
       showShopDetailPop:false, //显示弹出层
       shopDetail:null, //店铺详情
@@ -235,24 +269,34 @@ export default {
       noCommentLists:false,
       commentLists:[],
       allowLoadMore: true,
+      showChooseAttrPop:false, //显示选择属性弹窗
+      chooseAttrPopData: null, //将要选择属性的商品数据
+      choosedTotalPrice:0,
+      choosedTotalNum:0,
+      timer:null,
+      reduceTimer:null,
 
-      classList: [], //商品列表
-      configs: {}, //商城配置
-      trolleys: [], //购物车数据
-      trolleysTotal: 0, //购物车总数
       showDetail: false, //显示商品详情
       detailParentIndex: 0, //展示详情的商品分类索引
       detailCurrentIndex: 0, //展示详情的商品自身索引
       goodsDetailData: null,
-      totalMoney: 0,
-      rateVal: 3.7,
-      showCoupons: false, //是否显示优惠模块
-      coupons: [] //优惠券
     };
+  },
+
+  computed: {
+
   },
 
   watch:{
     showShopDetailPop(val){
+      this.hanldeControlScroll(val ? 'stop' : '')
+    },
+
+    showDetail(val){
+      this.hanldeControlScroll(val ? 'stop' : '')
+    },
+
+    showChooseAttrPop(val){
       this.hanldeControlScroll(val ? 'stop' : '')
     }
   },
@@ -295,29 +339,65 @@ export default {
 
     //点击底部购物车图标
     handleClickTrolley(){
-      if(this.trolleysTotal<=0) {
+      if(this.choosedTotalNum<=0) {
         this.feedback.Toast({
           msg:'您的购物车中还没有添加商品'
         });
         return;
       }
       this.$router.push({
-        name:'Trolley'
+        name:'Trolley',
+        params: {
+          shopid:this.shopid
+        }
       });
     },
 
+    //点击选好了
+    handleGoSettlement() {
+      if (this.choosedTotalNum >= 1) {
+        this.$router.push({
+          name: 'Settlement',
+          params: {
+            shopid: this.shopid
+          }
+        });
+      } else {
+        this.feedback.Toast({
+          msg:'请至少选择一件商品'
+        });
+      }
+    },
+
     //展示商品详情
-    handleShowGoodsDetail(parentIndex, index) {
-      document.body.style.overflow = 'hidden';
-      this.goodsDetailData = this.classList[parentIndex].goodsList[index];
-      this.detailParentIndex = parentIndex;
-      this.detailCurrentIndex = index;
-      this.showDetail = true;
+    handleShowGoodsDetail(parentIndex, index, goodsId) {
+      this.feedback.Loading.open('加载中');
+      getPhysicalGoodsDetail({
+        shop_id:this.shopid,
+        goods_id: goodsId,
+        type:1
+      }).then(res=>{
+        console.log(res);
+        this.feedback.Loading.close();
+        if(res.data.code == 1){
+          let goodsDetailData = res.data.data;
+          goodsDetailData.num = this.goodsLists[parentIndex][index].num;
+          goodsDetailData.id = goodsId;
+          this.goodsDetailData = res.data.data;
+          this.detailCurrentIndex = index;
+          this.detailParentIndex = parentIndex;
+          this.showDetail = true;
+        }else{
+          this.feedback.Toast({
+            msg:res.data.info,
+            timeout: 1200
+          })
+        }
+      });
     },
 
     //点击商品详情遮罩 隐藏商品详情
     maskHandle() {
-      document.body.style.overflow = 'auto';
       this.showDetail = false;
       this.goodsDetailData = null;
       this.detailParentIndex = 0;
@@ -327,22 +407,8 @@ export default {
     //选项卡切换
     handleToggleTab(lable, tabkey) {
       if (tabkey !== 'evaluate') return;
-      console.log(this.commentLists.length,this.allowLoadMore);
       if(this.commentLists.length == 0 && this.allowLoadMore){
         this.getCommentsListsData();
-      }
-    },
-
-    //初始化购物车
-    initTrolley() {
-      let trolleys = storageUtils.getStorage('trolleys');
-      this.trolleys = trolleys ? JSON.parse(trolleys) : [];
-      if (this.trolleys.length >= 1) {
-        this.trolleysTotal = this.trolleys.map(item => item.count).reduce((total, num) => total + num);
-        this.totalMoney = this.trolleys.map(item => item.shopprice * item.count).reduce((total, num) => total + num);
-      } else {
-        this.trolleysTotal = 0;
-        this.totalMoney = 0;
       }
     },
 
@@ -351,16 +417,17 @@ export default {
 
     //购物车添加
     plus(options, e) {
-      let currentGoods = this.classList[options.parentIndex].goodsList[options.currentIndex];
-      this.trolleysTotal++;
-      currentGoods.count++;
-      //如果购物车中已经存在当前商品 count +1
-      //否则把当前商品存入购物车
-      let index = this.trolleys.findIndex(item => currentGoods.goodsid == item.goodsid);
-      (index != -1 ? this.trolleys[index].count++ : this.trolleys.push(currentGoods));
-      storageUtils.setStorage('trolleys', this.trolleys);
-      this.totalMoney = this.trolleys.length >= 1 ? this.trolleys.map(item => item.shopprice * item.count).reduce((total, num) => total + num) : 0;
-
+      this.goodsLists[options.parentIndex][options.currentIndex].num ++;
+      this.choosedTotalNum ++;
+      if(this.goodsDetailData) this.goodsDetailData.num ++;
+      let attr = '';
+      if(options.isNoAttr){
+        this.choosedTotalPrice = this.choosedTotalPrice*1 + this.goodsLists[options.parentIndex][options.currentIndex].shop_price*1;
+      }else{
+        this.choosedTotalPrice = this.choosedTotalPrice*1 + this.chooseAttrPopData.showPrice *1;
+        let choosedAttr = this.chooseAttrPopData.choosedAttr;
+        attr = this.chooseAttrPopData.attr.map((item,index)=>item.specs[choosedAttr[index]]['id']).join(',');
+      }
       //抛物线动画
       let circleRadius = this.$refs.parabolaPoint.offsetWidth / 2,
         x = e.clientX,
@@ -379,42 +446,114 @@ export default {
           this.$refs.parabolaPoint.style.opacity = 0;
         }
       });
+
+      clearTimeout(this.timer);
+      this.timer = setTimeout(()=>{
+        addCart({
+          attr,
+          shop_id:this.shopid,
+          id:options.goodsId,
+          num:this.goodsLists[options.parentIndex][options.currentIndex].num,
+          user_id:this.$store.state.user.userid,
+          is_waimai:1
+        }).then(res=>{
+          this.feedback.Toast({
+            msg: res.data.info,
+            timeout: 800
+          });
+          if(res.data.code == 1){
+            if(!options.isNoAttr){
+              this.handleCloseChooseAttrPop();
+            }
+          }else {
+            this.getGoodsLists();
+            this.getCartLists();
+          }
+          console.log(res);
+        });
+      },300);
     },
 
     //购物车减少
     reduce(options) {
-      let currentGoods = this.classList[options.parentIndex].goodsList[options.currentIndex];
-      currentGoods.count--;
-      this.trolleysTotal--;
-      //如果购物车中当前商品数量大于1 count-1
-      //否则把当前商品从购物车中移除
-      let index = this.trolleys.findIndex(item => currentGoods.goodsid == item.goodsid);
-      (this.trolleys[index].count > 1 ? this.trolleys[index].count-- : this.trolleys.splice(index, 1));
-      storageUtils.setStorage('trolleys', this.trolleys);
-      this.totalMoney = this.trolleys.length >= 1 ? this.trolleys.map(item => item.shopprice * item.count).reduce((total, num) => total + num) : 0;
+      if(this.goodsDetailData) this.goodsDetailData.num --;
+      this.goodsLists[options.parentIndex][options.currentIndex].num --;
+      this.choosedTotalNum --;
+      this.choosedTotalPrice = this.choosedTotalPrice*1 - this.goodsLists[options.parentIndex][options.currentIndex].shop_price*1;
+      clearTimeout(this.reduceTimer);
+      this.reduceTimer = setTimeout(()=>{
+        addCart({
+          attr:'',
+          shop_id:this.shopid,
+          id:options.goodsId,
+          num:this.goodsLists[options.parentIndex][options.currentIndex].num,
+          user_id:this.$store.state.user.userid,
+          is_waimai:1
+        }).then(res=>{
+          this.feedback.Toast({
+            msg: res.data.info,
+            timeout: 1500
+          });
+          if(res.data.code != 1){
+            this.getGoodsLists();
+            this.getCartLists();
+          }
+          console.log(res);
+        });
+      },300);
     },
 
-    //点击选好了
-    handleGoSettlement() {
-      if (this.trolleysTotal >= 1) {
-        this.$router.push({
-          name: 'Settlement'
-        });
-      } else {
-        this.feedback.Toast({
-          msg:'请至少选择一件商品'
-        });
-      }
+    //有属性商品添加购物车
+    handleAddCart(e){
+      this.plus({
+        parentIndex:this.chooseAttrPopData.parentIndex,
+        currentIndex:this.chooseAttrPopData.currentIndex,
+        goodsId:this.chooseAttrPopData.goodsId,
+        isNoAttr: false
+      },e);
     },
 
+    //弹出选择属性窗口
+    choose(options){
+      let currentGoods = this.goodsLists[options.parentIndex][options.currentIndex];
+      this.chooseAttrPopData = {
+        title: currentGoods.title,
+        attr: currentGoods.attr,
+        choosedAttr: currentGoods.choosedAttr,
+        sku: currentGoods.sku,
+        parentIndex: options.parentIndex,
+        currentIndex: options.currentIndex,
+        goodsId: currentGoods.id,
+        showPrice: currentGoods.check_price
+      };
+      this.showChooseAttrPop = true;
+    },
+
+    //点击属性 修改价格及焦点
+    handleChooseAttr(index,val){
+      this.chooseAttrPopData.choosedAttr.splice(index, 1, val);
+      let choosedAttr = this.chooseAttrPopData.choosedAttr,
+       currentSkuId = this.chooseAttrPopData.attr.map((item,index)=>item.specs[choosedAttr[index]]['id']).join(',');
+      this.chooseAttrPopData.showPrice = this.chooseAttrPopData.sku.filter(item=>item.sku_id == currentSkuId)[0]['price'];
+    },
+
+    //关闭属性选择弹窗
+    handleCloseChooseAttrPop(){
+      this.showChooseAttrPop = false;
+      this.chooseAttrPopData = null;
+    },
+
+    //控制body是否允许滚动
     hanldeControlScroll(flag){
       const mo = function(e){ e.preventDefault() };
       if(flag == 'stop'){
-        document.body.style.overflow='hidden';
-        document.addEventListener("touchmove",mo,false);
+        document.body.style.overflow = 'hidden';
+        // document.body.style.overflow='hidden';
+        // document.addEventListener("touchmove",mo,false);
       }else{
-        document.body.style.overflow='';
-        document.removeEventListener("touchmove",mo,false);
+        document.body.style.overflow = 'auto';
+        // document.body.style.overflow='';
+        // document.removeEventListener("touchmove",mo,false);
       }
     },
 
@@ -440,8 +579,17 @@ export default {
         user_id:this.$store.state.user.userid
       }).then(res=>{
         if(res.data.code == 1){
-          this.goodsLists = res.data.data;
-          console.log(this.goodsLists)
+          this.goodsLists = res.data.data.map((item,index)=>{
+            return item.map((sub,subkey)=>{
+              if(sub.attr.length > 0){
+                let checkSku = sub.check_sku.split(',');
+                console.log(sub)
+                sub.choosedAttr = checkSku.map((i,iindex) => sub.attr[iindex].specs.findIndex(j=>j.id == i) );
+              }
+              return sub;
+            })
+          });
+          console.log(this.goodsLists);
         }
       });
     },
@@ -499,6 +647,21 @@ export default {
         }
       });
     },
+
+    //获取购物车数据
+    getCartLists(){
+      getCartLists({
+        is_waimai: 1,
+        shop_id: this.shopid,
+        user_id: this.$store.state.user.userid
+      }).then(res=>{
+        console.log(res);
+        if(res.data.code == 1){
+          this.choosedTotalNum = res.data.data.total_num;
+          this.choosedTotalPrice = res.data.data.total_price;
+        }
+      })
+    },
   },
   mounted() {
 
@@ -509,43 +672,8 @@ export default {
     this.getGoodsCate();
     this.getGoodsLists();
     this.getPhysicalShopDetail();
+    this.getCartLists();
 
-
-    // this.initTrolley();
-    // getGoosList().then(res => {
-    //   console.log(res);
-    //   //记录商品数据
-    //   this.classList = res.data.goods.map(item => {
-    //     let tempItem = item;
-    //     tempItem.goodsList.map(goods => {
-    //       let tempGoods = goods,
-    //         index = this.trolleys.findIndex(sub => sub.goodsid == tempGoods.goodsid);
-    //       tempGoods.count = index != -1 ? this.trolleys[index].count : 0;
-    //       return tempGoods;
-    //     });
-    //     return tempItem;
-    //   });
-
-    //   // 如果购入车中的商品与本次获取的商品信息不符
-    //   // 更新存储的购物车数据
-    //   this.trolleys = this.trolleys.map(item => {
-    //     for (let i = 0; i < this.classList.length; i++) {
-    //       let currentGoods = this.classList[i].goodsList,
-    //         tempIndex = currentGoods.findIndex(sub => sub.goodsid == item.goodsid);
-    //       if (tempIndex != -1) {
-    //         if (JSON.stringify(currentGoods[tempIndex]) != JSON.stringify(item)) item = currentGoods[tempIndex];
-    //         break;
-    //       }
-    //     }
-    //     return item;
-    //   });
-    //   storageUtils.setStorage('trolleys', this.trolleys);
-
-    //   //记录配置数据
-    //   this.configs = res.data.configs;
-    // }).catch(err => {
-    //   console.log(err);
-    // });
   },
   components: {
     scrolltabPanel,

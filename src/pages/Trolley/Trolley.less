@@ -1,3 +1,4 @@
+@import '../../styles/variable.less';
 .container {
   width: 100%;
 }
@@ -5,7 +6,7 @@
 .header {
   display: flex;
   line-height: 1rem;
-  background-color: #efefef;
+  background-color: #1b1b1f;
   align-items: center;
   padding: 0 .2rem;
   &>span {
@@ -14,9 +15,9 @@
     line-height: .46rem;
     display: block;
     border-radius: 50%;
-    border: 1px solid #b5b5b5;
+    border: 1px solid @main-color;
     i {
-      color: #b5b5b5;
+      color: @main-color;
       font-size: .28rem;
       position: relative;
       top: -2px;
@@ -24,8 +25,8 @@
   }
   .text {
     padding: 0 .2rem;
-    font-size: .32rem;
-    color: #b5b5b5;
+    font-size: .28rem;
+    color: #fff;
     flex: 1;
     text-align: left;
   }
@@ -35,27 +36,48 @@
     }
     span i {
       font-size: .24rem;
-      color: #999;
+      color: #ccc;
     }
-    color: #999;
+    color: #ccc;
     font-size: .28rem;
   }
 }
 
 .page-main {
-  padding: .1rem .2rem 1.2rem;
+  padding: 0 0 1.2rem;
+  .cate-name {
+    line-height: .8rem;
+    background-color: #f7f7f7;
+    color:#999;
+    font-size: .24rem;
+    text-align: left;
+    padding: 0 .2rem;
+  }
   .item {
     display: flex;
     align-items: center;
-    padding: .12rem 0;
+    padding: .24rem .2rem;
+    &-pic {
+      width: .86rem;
+      height: .86rem;
+      border-radius: 50%;
+    }
     &-lside {
       flex: 1;
+      padding:0 .2rem;
       text-align: left;
-      font-size: .32rem;
-      color: #666;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      h3 {
+        font-size: .3rem;
+        color: #1b1b1f;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: normal;
+      }
+      p {
+        font-size: .26rem;
+        color: #999;
+      }
     }
     &-center {
       padding: 0 .2rem;
@@ -75,7 +97,7 @@
         height: .5rem;
         text-align: center;
         border-radius: 50%;
-        background-color: #ff8657;
+        background-color: @main-color;
         line-height: .5rem;
       }
       .count-box {
@@ -85,9 +107,9 @@
       }
       .reduce {
         background-color: transparent;
-        border: 2px solid #ff8657;
+        border: 2px solid @main-color;
         i {
-          color: #ff8657;
+          color: @main-color;
         }
       }
       i {

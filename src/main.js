@@ -12,12 +12,15 @@ import './styles/animate.less';
 import './styles/variable.less';
 import './styles/vux-rewrite.less';
 import './iconfont/iconfont.css';
+global.host = 'https://food.zzebz.com';
+global.isDev = process.env.NODE_ENV === 'development';
 
 Vue.use(FeedBack);
 Vue.use(lazyLoad, {
   error: require('./assets/loading-error.png')
 });
 
+Vue.prototype.wx = require('weixin-js-sdk');
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */

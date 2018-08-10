@@ -13,6 +13,18 @@ const Evaluate = () => import ('@/pages/Evaluate/Evaluate');
 const Order = () => import ('@/pages/Order/Order');
 const Center = () => import ('@/pages/Center/Center');
 const AdminIndex = () => import ('@/pages/AdminIndex/AdminIndex');
+const AdminShop = () => import ('@/pages/AdminShop/AdminShop');
+const AdminShelf = () => import ('@/pages/AdminShelf/AdminShelf');
+const ShopOrder = () => import ('@/pages/ShopOrder/ShopOrder');
+const Wealth = () => import ('@/pages/Wealth/Wealth');
+const CodeMine = () => import ('@/pages/CodeMine/CodeMine');
+const CodeExtend = () => import ('@/pages/CodeExtend/CodeExtend');
+const MoneyRest = () => import ('@/pages/MoneyRest/MoneyRest');
+const MoneyWithdraw = () => import ('@/pages/MoneyWithdraw/MoneyWithdraw');
+const MoneyStream = () => import ('@/pages/MoneyStream/MoneyStream');
+const UserInfo = () => import ('@/pages/UserInfo/UserInfo');
+
+
 
 Vue.use(Router);
 
@@ -60,25 +72,30 @@ const router = new Router({
       }
     },
     {
-      path: '/settlement',
+      path: '/settlement/:shopid',
       name: 'Settlement',
+      props: true,
       component: Settlement,
       meta: {
-        keepAlive: false
+        keepAlive: false,
+        title: '确认订单'
       }
     }, {
       path: '/payment',
       name: 'Payment',
       component: Payment,
       meta: {
-        keepAlive: false
+        keepAlive: false,
+        title:'支付'
       }
     }, {
-      path: '/trolley',
+      path: '/trolley/:shopid',
       name: 'Trolley',
+      props: true,
       component: Trolley,
       mate: {
-        keepAlive: false
+        keepAlive: false,
+        title: '购物车'
       }
     }, {
       path: '/evaluate',
@@ -92,7 +109,88 @@ const router = new Router({
       name: 'AdminIndex',
       component: AdminIndex,
       mate: {
-        keepAlive: false
+        keepAlive: false,
+        title: '我的店铺'
+      }
+    }, {
+      path: '/adminShop',
+      name: 'AdminShop',
+      component: AdminShop,
+      mate: {
+        keepAlive: false,
+        title: '我的店铺'
+      }
+    }, {
+      path: '/adminShelf',
+      name: 'AdminShelf',
+      component: AdminShelf,
+      mate: {
+        keepAlive: false,
+        title: '选品上架'
+      }
+    }, {
+      path: '/shopOrder',
+      name: 'ShopOrder',
+      component: ShopOrder,
+      mate: {
+        keepAlive: false,
+        title: '订单管理'
+      }
+    }, {
+      path: '/wealth',
+      name: 'Wealth',
+      component: Wealth,
+      mate: {
+        keepAlive: false,
+        title: '我的财富'
+      }
+    }, {
+      path: '/codeMine',
+      name: 'CodeMine',
+      component: CodeMine,
+      mate: {
+        keepAlive: false,
+        title: '我的二维码'
+      }
+    }, {
+      path: '/codeExtend',
+      name: 'CodeExtend',
+      component: CodeExtend,
+      mate: {
+        keepAlive: false,
+        title: '我的拓客码'
+      }
+    }, {
+      path: '/moneyRest/:waitid',
+      name: 'MoneyRest',
+      component: MoneyRest,
+      mate: {
+        keepAlive: false,
+        title: '我的收益'
+      }
+    }, {
+      path: '/moneyWithdraw/:money',
+      name: 'MoneyWithdraw',
+      component: MoneyWithdraw,
+      mate: {
+        keepAlive: false,
+        title: '提现'
+      }
+    }, {
+      path: '/moneyStream',
+      name: 'MoneyStream',
+      component: MoneyStream,
+      mate: {
+        keepAlive: false,
+        title: '交易明细'
+      }
+    }, {
+      path: '/userInfo',
+      name: 'UserInfo',
+      component: UserInfo,
+      mate: {
+        keepAlive: false,
+        title: '个人资料'
       }
     }
   ]

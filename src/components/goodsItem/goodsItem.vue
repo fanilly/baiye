@@ -8,11 +8,14 @@
       <p class="goods-item-rside-info">月销：{{ item.sales }}份</p>
       <div class="goods-item-rside-control-box">
         <h4><span>￥</span>{{item.shop_price}}</h4>
-        <template v-if="item.count>=1">
-          <span class="icon-box reduce" @click.stop="reduce"><i class="iconfont icon-iconjian"></i></span>
-          <span class="count-box">{{item.count}}</span>
+        <template v-if="item.attr.length == 0">
+          <template v-if="item.num>=1">
+            <span class="icon-box reduce" @click.stop="reduce"><i class="iconfont icon-iconjian"></i></span>
+            <span class="count-box">{{item.num}}</span>
+          </template>
+          <span class="icon-box plus" @click.stop="plus"><i class="iconfont icon-iconjia"></i></span>
         </template>
-        <span class="icon-box plus" @click.stop="plus"><i class="iconfont icon-iconjia"></i></span>
+        <span class="choose" @click.stop="choose" v-if="item.attr.length > 0">选规格</span>
       </div>
     </section>
   </section>
@@ -45,15 +48,24 @@ export default {
       this.$emit('plus',{
         parentIndex:this.parentIndex,
         currentIndex:this.currentIndex,
-        goodsId:this.item.goodsid
+        goodsId:this.item.id,
+        isNoAttr: true,
       },e);
     },
     reduce(e) {
       this.$emit('reduce',{
         parentIndex:this.parentIndex,
         currentIndex:this.currentIndex,
-        goodsId:this.item.goodsid
+        goodsId:this.item.id,
       },e);
+    },
+    choose(e){
+      console.log('xxx');
+      this.$emit('choose',{
+        parentIndex:this.parentIndex,
+        currentIndex:this.currentIndex,
+        goodsId:this.item.id
+      })
     }
   },
   mounted() {

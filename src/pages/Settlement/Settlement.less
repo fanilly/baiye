@@ -1,65 +1,53 @@
+@import '../../styles/variable.less';
 .container {
   width: 100%;
+  box-sizing: border-box;
+  padding: .3rem;
+  background-color: #f7f7f7;
+  min-height: 100vh;
 }
 
-.header {
+.address {
   display: flex;
   align-items: center;
   padding: .2rem .2rem;
   border-bottom: 1px solid #ccc;
-  .avatar {
-    width: .5rem;
-    img {
-      width: .5rem;
-      height: .5rem;
-      border-radius: 50%;
-    }
+  min-height: 1rem;
+  background: #fff url(../../assets/takeout07.png) no-repeat left bottom;
+  border-radius: .1rem;
+  overflow: hidden;
+  .coordinate {
+    width: .32rem;
   }
-  .nick-name {
+  .content {
     flex: 1;
     text-align: left;
-    font-size: .32rem;
-    color: #333;
-    padding: 0 .2rem;
+    padding: .16rem .3rem;
+    h2 {
+      font-size: .32rem;
+      padding-bottom: .1rem;
+      font-weight: normal;
+      span {
+        padding-left: .2rem;
+      }
+    }
+    p {
+      font-size: .28rem;
+      color: #676767;
+    }
   }
-  .del-btn {
-    span {
-      padding: 0 .1rem;
-    }
-    span i {
-      font-size: .24rem;
-      color: #999;
-    }
-    color: #999;
-    font-size: .24rem;
+  .arrow {
+    width: .18rem;
   }
 }
 
-.goods-list {
-  padding: .2rem;
-  color: #aaa;
-  li {
-    display: flex;
-    font-size: .28rem;
-    padding: .1rem 0;
-    div {
-      flex: 1;
-    }
-    div:first-child {
-      text-align: left;
-      color: #666;
-    }
-    div:last-child {
-      text-align: right;
-    }
-  }
-}
+
 
 .textarea {
   width: 100%;
-  height: 2.4rem;
-  padding: .12rem .2rem;
-  background-color: #f0f0f0;
+  height: 1.4rem;
+  padding: .12rem .3rem;
+  background-color: #fcfcfc;
   border: 0;
   color: #666;
   font-size: .24rem;
@@ -96,4 +84,259 @@
     color: #fff;
     background-color: #ff9057;
   }
+}
+
+
+.main {
+  background-color: #fff;
+  border-radius: .1rem;
+  margin-top: .3rem;
+  text-align: left;
+  .tit1 {
+    line-height: 1.1rem;
+    position: relative;
+    border-bottom: .02rem solid #eee;
+    font-size: .3rem;
+    text-align: center;
+    color: #1b1b1f;
+    padding: 0 .36rem;
+    img {
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: .3rem;
+      height: .3rem;
+    }
+  }
+  .order {
+    padding: .55rem .3rem .1rem .3rem;
+    position: relative;
+    border-bottom: .02rem solid #f2f2f2;
+
+    .dwt {
+      position: absolute;
+      left: -.15rem;
+      top: .18rem;
+      min-width: .62rem;
+      height: .36rem;
+      border-radius: .2rem;
+      border-bottom-right-radius: 0;
+      font-size: .26rem;
+      color: #fff;
+      text-align: center;
+      padding: 0 6px;
+    }
+
+    .item {
+      overflow: hidden;
+      padding: .18rem 0;
+      .pic {
+        display: block;
+        width: .7rem;
+        height: .7rem;
+        float: left;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+      .name {
+        display: block;
+        float: left;
+        margin: 0 .1rem;
+        line-height: .7rem;
+        font-size: .3rem;
+        width: 3rem;
+      }
+      .nameb {
+        display: block;
+        float: left;
+        margin: 0 .1rem;
+        width: 3rem;
+      }
+      .nameb .tone {
+        display: block;
+        font-size: .3rem;
+        line-height: .32rem;
+        overflow: hidden;
+        color: #1b1b1f;
+        margin-bottom: .08rem;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .nameb .two {
+        display: block;
+        font-size: .22rem;
+        color: #999;
+        line-height: .3rem;
+        overflow: hidden;
+      }
+      .num {
+        display: block;
+        font-size: .24rem;
+        float: left;
+        color: #999;
+        line-height: .7rem;
+        width: 1rem;
+        text-align: center;
+      }
+      .price {
+        display: block;
+        float: right;
+        color: #1c1c20;
+        line-height: .7rem;
+        width: 1.4rem;
+        overflow: hidden;
+        font-size: .2rem;
+        height: .7rem;
+        text-align: right;
+      }
+      .price span {
+        font-size: .3rem;
+      }
+    }
+  }
+  .order.bn {
+    border-bottom: none;
+  }
+  .order:last-child {
+    border-bottom: none;
+  }
+
+  .tip {
+    overflow: hidden;
+    position: relative;
+    height: .5rem;
+    .lhalf {
+      display: block;
+      width: .5rem;
+      height: .5rem;
+      border-radius: 50%;
+      overflow: hidden;
+      background-color: #f7f7f7;
+      position: absolute;
+      left: -.25rem;
+      top: 0;
+    }
+    .rhalf {
+      display: block;
+      width: .5rem;
+      height: .5rem;
+      border-radius: 50%;
+      overflow: hidden;
+      background-color: #f7f7f7;
+      position: absolute;
+      right: -.25rem;
+      top: 0;
+    }
+    .heng {
+      display: block;
+      border-top: .02rem dashed #eee;
+      height: 0;
+      margin: .24rem 0;
+    }
+  }
+
+
+  .select-box {
+    display: flex;
+    align-items: center;
+    height: .88rem;
+    padding: 0 .3rem;
+    .lside {
+      font-size: .26rem;
+    }
+    .center {
+      flex: 1;
+      text-align: right;
+      padding: 0 .2rem;
+      font-size: .26rem;
+      color: #555;
+      border: 0;
+    }
+    .center.red-color {
+      color: @main-color;
+    }
+    img {
+      width: .15rem;
+    }
+  }
+
+
+  .sum {
+    overflow: hidden;
+    background-color: #fcfcfc;
+    line-height: .88rem;
+    height: .88rem;
+    padding: 0 .3rem;
+    .sl {
+      display: block;
+      float: left;
+      width: 3.8rem;
+      margin-right: .1rem;
+      font-size: .26rem;
+      color: #1b1c1f;
+    }
+    .sm {
+      display: block;
+      float: left;
+      width: 1rem;
+      font-size: .24rem;
+      color: #999;
+    }
+    .sr {
+      display: block;
+      float: right;
+      width: 1.4rem;
+      line-height: .88rem;
+      font-size: .2rem;
+      color: #1b1c1f;
+      text-align: right;
+    }
+    .sr span {
+      font-size: .3rem;
+    }
+  }
+}
+
+.picker-wapper {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  .mask {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .5);
+    z-index: 999;
+  }
+  .picker-box {
+    z-index: 1000;
+    height: 5.8rem;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff;
+  }
+  .picker-header {
+    text-align: right;
+    height: .8rem;
+    span {
+      line-height: .8rem;
+      display: inline-block;
+      font-size: .32rem;
+      color: #42b983;
+      padding: 0 .3rem;
+    }
+  }
+}
+
+
+
+.JB {
+  background-image: linear-gradient(150deg, #ffbf00 0%, #ffa800 100%), linear-gradient( #23252a, #23252a);
 }

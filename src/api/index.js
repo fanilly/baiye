@@ -8,6 +8,7 @@
 import HTTPS from './public.js';
 const isDev = process.env.NODE_ENV === 'development';
 const HOST = isDev ? '' : 'https://food.zzebz.com';
+console.log(typeof HOST);
 
 const REQUESTS = {
   //获取微信JS-SDK配置信息
@@ -42,27 +43,104 @@ const REQUESTS = {
   getPhysicalShopDetail(data) {
     return HTTPS.fetchGet(HOST + '/api/5a68cfe513df8', data)
   },
+  //获取实体店店铺详情
+  getPhysicalGoodsDetail(data) {
+    return HTTPS.fetchGet(HOST + '/api/5b4dde8fcdfe6', data)
+  },
   //获取店铺评价列表
   getCommentsListsData(data) {
     return HTTPS.fetchGet(HOST + '/api/5b4d4c317270e', data)
   },
-  //获取店铺评价列表
+  //切换店铺收藏状态
   toggleCollectionStatus(data) {
     return HTTPS.fetchGet(HOST + '/api/5b34830dca2dd', data)
+  },
+  //添加购物车
+  addCart(data) {
+    return HTTPS.fetchPost(HOST + '/api/5affdc171ab3f', data)
+  },
+  //改变购物车商品数量
+  changeCartGoodsNum(data) {
+    return HTTPS.fetchPost(HOST + '/api/5affe18b2dc6c', data)
+  },
+  //获取购物车数据列表
+  getCartLists(data) {
+    return HTTPS.fetchPost(HOST + '/api/5affe7226acfc', data)
+  },
+  //清空购物车
+  clearCartLists(data) {
+    return HTTPS.fetchPost(HOST + '/api/5b08c6b37270e', data)
+  },
+  //获取用户地址
+  getAddress(data){
+    return HTTPS.fetchGet(HOST + '/api/5b1e2516f0e01', data)
+  },
+  //获取运费
+  getShippingFee(data){
+    return HTTPS.fetchPost(HOST + '/api/5b1bb5181e848', data)
+  },
+  //获取优惠券
+  getCoupons(data){
+    return HTTPS.fetchGet(HOST + '/api/5b0fa3285cf4e', data)
+  },
+  //获取赠品券
+  getGife(data){
+    return HTTPS.fetchGet(HOST + '/api/5b5a740529f63', data)
+  },
+  //改变收货地址
+  changeAddress(data){
+    return HTTPS.fetchPost(HOST + '/api/5b6cef0396c13', data)
+  },
+  //提交订单
+  submitOrder(data){
+    return HTTPS.fetchPost(HOST + '/api/5b022d3de59d4', data)
   },
 
   searchShop(data) {
     return HTTPS.fetchGet(HOST + '/api/5b49ae292625a', data)
-  }
+  },
+
+  //获取虚拟店店主信息
+  getAdminIndexInfo(data) {
+    return HTTPS.fetchPost(HOST + '/api/5b4dbbe85f5e1', data)
+  },
+  //获取我的二维码
+  getCodeMIne(data) {
+    return HTTPS.fetchGet(HOST + '/api/5b4094006ea05', data)
+  },
+  //获取我的拓客码
+  getCodeExtend(data){
+    return HTTPS.fetchGet(HOST + '/api/5b4d999e1312d', data)
+  },
+  //获取 我的收益--服务员资金
+  getMoneyRest(data){
+    return HTTPS.fetchGet(HOST + '/api/5b4073a9e4e1c', data)
+  },
+  //获取 个人中心 优惠券数量 我的余额 我的评价数量
+  getMoneyRestAll(data){
+    return HTTPS.fetchPost(HOST + '/api/5b0fb5835553c', data)
+  },
+  //服务员提现
+  getMoneyWithdraw(data){
+    return HTTPS.fetchGet(HOST + '/api/5b4081b5ca2dd', data)
+  },
+  //获取交易明细
+  getMoneyStraeam(data){
+    return HTTPS.fetchGet(HOST + '/api/5b40733ce4e1c', data)
+  },
+  //修改个人中心资料
+  submitUserInfo(data){
+    return HTTPS.fetchPost(HOST + '/api/5b0ccdfe49e21', data)
+  },
+  //获取个人中心资料
+  getUserInfo(data){
+    return HTTPS.fetchGet(HOST + '/api/5b0bf1e0dea80', data)
+  },
 
 
   // //获取商品列表
   // getGoosList() {
   //   return HTTPS.fetchQuickGet(GET_GOODS_LIST_URL);
-  // },
-  // //获取优惠券信息
-  // getCoupons(options){
-  //   return HTTPS.fetchGet(GET_COUPONS_URL,options);
   // },
   // //领取优惠券
   // receiveCoupon(options){
@@ -84,3 +162,25 @@ export const getGoodsLists = REQUESTS.getGoodsLists;
 export const getPhysicalShopDetail = REQUESTS.getPhysicalShopDetail;
 export const getCommentsListsData = REQUESTS.getCommentsListsData;
 export const toggleCollectionStatus = REQUESTS.toggleCollectionStatus;
+export const addCart = REQUESTS.addCart;
+export const changeCartGoodsNum = REQUESTS.changeCartGoodsNum;
+export const getCartLists = REQUESTS.getCartLists;
+export const getPhysicalGoodsDetail = REQUESTS.getPhysicalGoodsDetail;
+export const clearCartLists = REQUESTS.clearCartLists;
+export const getAddress = REQUESTS.getAddress;
+export const getShippingFee = REQUESTS.getShippingFee;
+export const getCoupons = REQUESTS.getCoupons;
+export const getGife = REQUESTS.getGife;
+export const changeAddress = REQUESTS.changeAddress;
+export const submitOrder = REQUESTS.submitOrder;
+
+
+export const getAdminIndexInfo = REQUESTS.getAdminIndexInfo
+export const getCodeMIne = REQUESTS.getCodeMIne
+export const getCodeExtend = REQUESTS.getCodeExtend
+export const getMoneyRest = REQUESTS.getMoneyRest
+export const getMoneyRestAll = REQUESTS.getMoneyRestAll
+export const getMoneyWithdraw = REQUESTS.getMoneyWithdraw
+export const getMoneyStraeam = REQUESTS.getMoneyStraeam
+export const submitUserInfo = REQUESTS.submitUserInfo
+export const getUserInfo = REQUESTS.getUserInfo
