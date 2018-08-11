@@ -1,35 +1,60 @@
+@import '../../styles/variable.less';
 .container {
   width: 100%;
   min-height: 100vh;
+  background-color: #f7f7f7;
 }
 
 .evaluate-rate {
-  padding: .3rem .3rem .2rem;
+  padding: .3rem .3rem .6rem;
+  background-color: #fff;
   &-item {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     align-items: center;
     padding: .1rem 0 0;
     .lside {
-      font-size: .28rem;
-      text-align: right;
-      padding-right: .2rem;
+      font-size: .32rem;
+      padding: .2rem 0 .1rem;
     }
     .rside {
-      flex: 1;
+      padding: .1rem 0;
+    }
+    .tags-wapper {
+      margin-top: .2rem;
+      .tags-item {
+        padding: .14rem .25rem;
+        display: inline-block;
+        min-width: .2rem;
+        border-radius: .4rem;
+        border: .02rem solid #ececec;
+        font-size: .28rem;
+        color: #666;
+        margin: 0 .1rem;
+      }
+      .tags-item.active {
+        border-color: @main-color;
+        color:@main-color;
+      }
     }
   }
 }
-
+.textarea-wapper {
+  background-color: #fff;
+  margin-top: .2rem;
+  padding: .3rem;
+  box-sizing: border-box;
+}
 .textarea {
   width: 100%;
-  height: 2.4rem;
+  height: 1.8rem;
   padding: .12rem .2rem;
-  background-color: #ecebf3;
   border: 0;
   color: #666;
   font-size: .24rem;
   font-family: 'Microsoft YaHei';
-  margin-top: .3rem;
   border-radius: 5px;
 }
 
@@ -39,64 +64,4 @@
   font-size: .24rem;
   color: #999;
   padding-right: .2rem;
-}
-
-.subbtn {
-  position: fixed;
-  height: 1rem;
-  line-height: 1rem;
-  color: #fff;
-  background-color: #fe4e4e;
-  width: 100%;
-  bottom: 0;
-  font-size: .28rem;
-}
-
-.evaluate-img {
-  padding-bottom: 1.2rem;
-  h2 {
-    font-size: .24rem;
-    color: #999;
-    font-weight: normal;
-  }
-  &-wapper {
-    padding: .5rem .4rem;
-    display: flex;
-    justify-content: space-between;
-    .item {
-      width: 2rem;
-      height: 2rem;
-      border: 1px dashed #ecebf3;
-      position: relative;
-      overflow: hidden;
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center center;
-      input {
-        display: block;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-        z-index: 100;
-        left: 0;
-        top: 0;
-      }
-
-      span {
-        line-height: 2rem;
-        display: block;
-        width: 100%;
-        color: #ecebf3;
-        font-weight: normal;
-        position: relative;
-        z-index: -1;
-        top: -4px;
-        i {
-          font-size: 1.2rem;
-          line-height: 2rem;
-        }
-      }
-    }
-  }
 }

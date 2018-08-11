@@ -4,88 +4,98 @@
       <main class="page-main">
         <section class="evaluate-rate">
           <div class="evaluate-rate-item">
-            <div class="lside">口味：</div>
+            <div class="lside">请打分</div>
             <div class="rside">
-              <rate slot="left" v-model="taste" :show-text="rateText"></rate>
+              <rate slot="left" v-model="score" size="42px"></rate>
+            </div>
+            <div class="tags-wapper">
+              <span :class="{'tags-item':true,active:choosedTags[index]}" v-for="item,index in tags" @click="handleChooseTags(index)">{{item.name}}</span>
             </div>
           </div>
-          <div class="evaluate-rate-item">
-            <div class="lside">商家：</div>
-            <div class="rside">
-              <rate slot="left" v-model="shop" :show-text="rateText"></rate>
-            </div>
-          </div>
-          <textarea class="textarea" v-model="evaluateText" name="textarea" placeholder="写下您对本店的评价吧！"></textarea>
-          <p class="evaluate-total">{{evaluateText.length}}/100</p>
         </section>
+        <div class="textarea-wapper">
+
+          <textarea class="textarea" v-model="evaluateText" name="textarea" placeholder="请输入评价内容"></textarea>
+          <p class="evaluate-total">{{evaluateText.length}}/300</p>
+        </div>
       </main>
-      <section class="evaluate-img">
-        <h2>发几张照片来秀一秀吧！最多可上传三张图片（选填）</h2>
-        <section class="evaluate-img-wapper">
-          <div class="item" v-for="(item,index) in viewImgs" :style="'background-image:url('+item+')'">
-            <span><i class="iconfont icon-iconjia"></i></span>
-            <input type="file" :accept="accept" @change="handleChooseImg" :data-index="index" :name="'img'+index">
-          </div>
-        </section>
-      </section>
     </form>
-    <div class="subbtn" @click="handleSubmitEvaluate">提交评价</div>
+    <footer-submit @handleSubmit="handleSubmit" btn-txt="提交"></footer-submit>
   </section>
 </template>
 <script>
-document.title = '评价';
-
+import { getEvaluateTags, submitEvaluate } from '@/api/index.js';
 import rate from '@/components/rate/rate.vue';
-// 创建本地地址
-const getFileUrl = (sourceObj) => { return window.URL.createObjectURL(sourceObj.files.item(0)); };
+import footerSubmit from '@/components/footerSubmit/footerSubmit.vue';
+
 export default {
+  props:{
+    orderNo:{
+      require:true
+    }
+  },
   data() {
     return {
-      taste: 5, //口味评分
       evaluateText: '',
-      accept: 'image/gif,image/jpeg,image/png,image/jpg',
-      viewImgs: ['', '', ''],
-      rateText: ['很差', '还行', '一般', '挺好', '非常好'],
-      shop: 5 //商家评分
+      tags:[],
+      choosedTags:[],
+      score: 5 //商家评分
     };
   },
   watch: {
     //限制长度为100个字符
     evaluateText(now) {
-      this.evaluateText = now.substr(0, 100);
+      this.evaluateText = now.substr(0, 300);
     }
   },
   methods: {
 
-    //选择图片
-    handleChooseImg(e) {
-      let fileType = e.target.files[0].type;
-      // 文件类型只能为accept中定义的类型
-      if (this.accept.indexOf(fileType) == -1 || fileType == '') {
+    //提交评论
+    handleSubmit() {
+      let chooseTag = '';
+      this.choosedTags.forEach((item,index)=>{
+        if(item) chooseTag+= ` ${this.tags[index].name}`
+      });
+
+      submitEvaluate({
+        order_no: this.orderNo,
+        user_id: this.$store.state.user.userid,
+        score: this.score,
+        eval: this.evaluateText,
+        tag: chooseTag
+      }).then(res=>{
         this.feedback.Toast({
-          msg: '请选择正确的文件类型',
-          icon: 'error',
-          timeout: 1500
-        });
-        return;
-      }
-      // 将选择的图片显示到页面中
-      let index = e.target.dataset.index * 1;
-      this.viewImgs.splice(index, 1, getFileUrl(e.srcElement));
+          msg:res.data.info,
+          timeout:1500
+        })
+        if (res.data.code == 1) {
+          setTimeout(()=>{
+            this.$router.go(-1);
+          },1000);
+        }
+      })
     },
 
-    //提交评论
-    handleSubmitEvaluate() {
-      //新建FormData对象 将页面需要提交的数据加入FormData实例中
-      const instance = new FormData(this.$refs.formWapper);
-      instance.append('taste', this.taste);
-      instance.append('shop', this.shop);
+    handleChooseTags(index){
+      this.choosedTags.splice(index, 1, !this.choosedTags[index])
     }
 
   },
 
+  mounted(){
+    getEvaluateTags({
+      user_id:this.$store.state.user.userid
+    }).then(res=>{
+      if(res.data.code == 1){
+        this.tags = res.data.data;
+        this.choosedTags = res.data.data.map(item=>false);
+      }
+    })
+  },
+
   components: {
-    rate
+    rate,
+    footerSubmit
   }
 };
 

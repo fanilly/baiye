@@ -13,6 +13,7 @@ const Evaluate = () => import ('@/pages/Evaluate/Evaluate');
 const Search = () => import ('@/pages/Search/Search');
 const SearchResult = () => import ('@/pages/SearchResult/SearchResult');
 const Order = () => import ('@/pages/Order/Order');
+const OrderDetail = () => import ('@/pages/OrderDetail/OrderDetail');
 const Center = () => import ('@/pages/Center/Center');
 const AdminIndex = () => import ('@/pages/AdminIndex/AdminIndex');
 const AdminShop = () => import ('@/pages/AdminShop/AdminShop');
@@ -53,6 +54,16 @@ const router = new Router({
       path: '/order',
       name: 'Order',
       component: Order,
+      meta: {
+        keepAlive: false,
+        title: '订单'
+      }
+    },
+    {
+      path: '/OrderDetail/:orderNo',
+      name: 'OrderDetail',
+      component: OrderDetail,
+      props: true,
       meta: {
         keepAlive: false,
         title: '订单'
@@ -121,11 +132,13 @@ const router = new Router({
         title: '购物车'
       }
     }, {
-      path: '/evaluate',
+      path: '/evaluate/:orderNo',
       name: 'Evaluate',
+      props: true,
       component: Evaluate,
       mate: {
-        keepAlive: false
+        keepAlive: false,
+        title: '评价'
       }
     }, {
       path: '/adminIndex',

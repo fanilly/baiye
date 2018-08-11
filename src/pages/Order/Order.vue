@@ -8,9 +8,9 @@
       <scroller @getData="getLists">
         <div class="list">
           <div class="item scroll-item" v-for="item,index in lists" :key="index">
-            <div class="first">
-                <img :src="item.shop_avatar" />
-                <span>{{item.shop_name}}</span>
+            <div class="first" @click="goOrderDetail(item.order_no)">
+              <img :src="item.shop_avatar" />
+              <span>{{item.shop_name}}</span>
               <div class="now" v-if="item.status==0">待支付</div>
               <div class="now" v-if="item.status==1">待接单</div>
               <div class="now" v-if="item.status==2">已接单</div>
@@ -19,15 +19,15 @@
               <div class="now" v-if="item.status==5">已完成</div>
               <div class="now" v-if="item.status==6">已退款</div>
             </div>
-            <div class="food zhuse">{{item.goods_detail}}</div>
-            <div class="sum zhuse">
+            <div class="food zhuse" @click="goOrderDetail(item.order_no)">{{item.goods_detail}}</div>
+            <div class="sum zhuse" @click="goOrderDetail(item.order_no)">
               <span class="small">共{{item.goods_count}}件，合计 ¥</span>{{item.total_money}}</div>
             <div class="btn">
               <div class="zhuangtai" v-if="item.status==3">
                 <span>{{item.shipping_type}}</span>
               </div>
               <div class="paya" v-if="item.status==0" @click.stop="goPayment(item.order_no, item.total_money)">立即支付</div>
-              <div class="paya" v-if="item.status==1">去评价</div>
+              <div class="paya" v-if="item.status==1" @click.stop="goEvaluate(item.order_no)">去评价</div>
               <div class="xqa ml" v-if="item.status==0" @click.stop="cancelOrDelOrder(item.order_no,false)">取消订单</div>
               <div class="xqa ml" v-if="item.status>3" @click.stop="cancelOrDelOrder(item.order_no,true)">删除订单</div>
             </div>
@@ -112,6 +112,27 @@
         })
       },
 
+      //查看详情
+      goOrderDetail(orderNo){
+        this.$router.push({
+          name:'OrderDetail',
+          params:{
+            orderNo:orderNo
+          }
+        })
+      },
+
+      //去评价
+      goEvaluate(orderNo){
+        this.$router.push({
+          name:'Evaluate',
+          params:{
+            orderNo:orderNo
+          }
+        })
+      },
+
+      //立即支付
       goPayment(orderNo, totalMoney){
         this.$store.commit(SET_PAYMENT_OPTIONS, {
           canUse: false,

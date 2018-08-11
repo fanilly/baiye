@@ -115,9 +115,21 @@ const REQUESTS = {
   getPhysicalOrderLists(data) {
     return HTTPS.fetchGet(HOST + '/api/5b35f142f0537', data)
   },
-  //获取实体店订单列表
+  //取消或删除掉订单
   cancelOrDelOrder(data) {
     return HTTPS.fetchPost(HOST + '/api/5b35f8754c4b4', data)
+  },
+  //获取评价标签
+  getEvaluateTags(data) {
+    return HTTPS.fetchGet(HOST + '/api/5b0926575f5e1', data)
+  },
+  //提价评价
+  submitEvaluate(data) {
+    return HTTPS.fetchPost(HOST + '/api/5b092c2a03d09', data)
+  },
+  //获取实体店订单详情
+  getPhysicalOrderDetail(data) {
+    return HTTPS.fetchGet(HOST + '/api/5b0691771ab3f', data)
   },
 
   searchShop(data) {
@@ -239,6 +251,9 @@ export const wechatPayment = REQUESTS.wechatPayment;
 export const getHotSearchKeyword = REQUESTS.getHotSearchKeyword;
 export const getSearchResult = REQUESTS.getSearchResult;
 export const cancelOrDelOrder = REQUESTS.cancelOrDelOrder;
+export const getEvaluateTags = REQUESTS.getEvaluateTags;
+export const submitEvaluate = REQUESTS.submitEvaluate;
+export const getPhysicalOrderDetail = REQUESTS.getPhysicalOrderDetail;
 
 
 export const getAdminIndexInfo = REQUESTS.getAdminIndexInfo
