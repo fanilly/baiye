@@ -95,6 +95,22 @@ const REQUESTS = {
   submitOrder(data){
     return HTTPS.fetchPost(HOST + '/api/5b022d3de59d4', data)
   },
+  //余额支付
+  balancePayment(data){
+    return HTTPS.fetchPost(HOST + '/api/5b235e58ddcd4', data)
+  },
+  //微信支付
+  wechatPayment(data){
+    return HTTPS.fetchPost(HOST + '/api/5b06dcf02625a', data)
+  },
+  //获取热搜关键词
+  getHotSearchKeyword(){
+    return HTTPS.fetchQuickGet(HOST + '/api/5b5542e64c4b4')
+  },
+  //获取热搜关键词
+  getSearchResult(data){
+    return HTTPS.fetchGet(HOST + '/api/5b49ae292625a', data)
+  },
 
   searchShop(data) {
     return HTTPS.fetchGet(HOST + '/api/5b49ae292625a', data)
@@ -137,6 +153,34 @@ const REQUESTS = {
     return HTTPS.fetchGet(HOST + '/api/5b0bf1e0dea80', data)
   },
 
+  //获取虚拟店
+  getShopList(data){
+    return HTTPS.fetchGet(HOST + '/api/5b4db309b34a7', data)
+  },
+  //获取虚拟店 下架
+  delFromShop(data){
+    return HTTPS.fetchPost(HOST + '/api/5b4db546d9701', data)
+  },
+  //选品上架 列表
+  getAllShopList(data){
+    return HTTPS.fetchGet(HOST + '/api/5b4da16cd9701', data)
+  },
+  //选品上架 上架
+  addFromShop(data){
+    return HTTPS.fetchPost(HOST + '/api/5b4db546d9701', data)
+  },
+  //发送验证码
+  sendPhoneCode(data){
+    return HTTPS.fetchPost(HOST + '/api/5a60ee2bb46ba', data)
+  },
+  //修改手机号
+  changePhone(data){
+    return HTTPS.fetchPost(HOST + '/api/5b0bfdd5831a8', data)
+  },
+  //上传文件方法
+  publicUploadImg(data){
+    return HTTPS.fetchFilePost(HOST + '/api/5b0bee5c49e21', data)
+  },
 
   // //获取商品列表
   // getGoosList() {
@@ -173,6 +217,10 @@ export const getCoupons = REQUESTS.getCoupons;
 export const getGife = REQUESTS.getGife;
 export const changeAddress = REQUESTS.changeAddress;
 export const submitOrder = REQUESTS.submitOrder;
+export const balancePayment = REQUESTS.balancePayment;
+export const wechatPayment = REQUESTS.wechatPayment;
+export const getHotSearchKeyword = REQUESTS.getHotSearchKeyword;
+export const getSearchResult = REQUESTS.getSearchResult;
 
 
 export const getAdminIndexInfo = REQUESTS.getAdminIndexInfo
@@ -184,3 +232,12 @@ export const getMoneyWithdraw = REQUESTS.getMoneyWithdraw
 export const getMoneyStraeam = REQUESTS.getMoneyStraeam
 export const submitUserInfo = REQUESTS.submitUserInfo
 export const getUserInfo = REQUESTS.getUserInfo
+
+
+export const getShopList = REQUESTS.getShopList
+export const delFromShop = REQUESTS.delFromShop
+export const getAllShopList = REQUESTS.getAllShopList
+export const addFromShop = REQUESTS.addFromShop
+export const sendPhoneCode = REQUESTS.sendPhoneCode
+export const changePhone = REQUESTS.changePhone
+export const publicUploadImg = REQUESTS.publicUploadImg

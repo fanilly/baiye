@@ -1,6 +1,15 @@
 <template>
   <div class="container mj-vux-box">
 
+    <header class="header-search">
+      <section class="header-search-lside">
+        <img :src="icon">
+      </section>
+      <section class="header-search-center">当前位置当前位置当前位置</section>
+      <section class="header-search-rside" @click="jumpSearch">请输入商品名称</section>
+    </header>
+    <section class="header-palceholder"></section>
+
     <!-- banner -->
     <swiper dots-position="center"
       dots-class="dots"
@@ -108,11 +117,17 @@
       });
     },
     methods: {
+      jumpSearch(){
+        console.log('jumg search');
+        this.$router.push({
+          name:'Search'
+        });
+      },
       //获取附近的店
       getNearStore() {
         getNearStore({
-          latitude: 34.79977,
-          longitude: 113.66072
+          latitude: this.$store.state.coordinate.latitude,
+          longitude: this.$store.state.coordinate.longitude
         }).then(res => {
           console.log(res)
           if (res.data.code == 1) {
@@ -123,8 +138,8 @@
       //获取我的店
       getMyShop() {
         getMyShop({
-          lat: 34.79977,
-          lng: 113.66072,
+          lat: this.$store.state.coordinate.latitude,
+          lng: this.$store.state.coordinate.longitude,
           user_id: this.$store.state.user.userid,
           type: 2
         }).then(res => {

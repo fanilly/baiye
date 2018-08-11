@@ -13,9 +13,9 @@ export default function() {
     // });
     console.log(123);
     let userInfo = {
-      userid:45,
+      userid:46,
       nickName:'发光的闪闪闪',
-      userType:1,
+      userType:2,
       avatar:'http://d.hiphotos.baidu.com/image/pic/item/b17eca8065380cd79a75c52cad44ad3458828183.jpg'
     }
     localStorage.setItem('USER_INFO',JSON.stringify(userInfo));

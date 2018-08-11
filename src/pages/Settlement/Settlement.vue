@@ -90,7 +90,6 @@
             <span>{{orderTotalMoney}}</span>
         </div>
       </div>
-
       <textarea class="textarea" v-model="remark" placeholder="订单备注"></textarea>
     </main>
     <footer-submit @handleSubmit="handleSubmit" :btn-txt="'提交订单'+orderTotalMoney"></footer-submit>
@@ -100,6 +99,7 @@
   import { getCartLists, getAddress, getWxSettings, getShippingFee, getCoupons, changeAddress, getGife, submitOrder } from '@/api/index.js';
   import { Picker } from 'vux';
   import footerSubmit from '@/components/footerSubmit/footerSubmit.vue';
+  import { SET_PAYMENT_OPTIONS } from '@/store/mutation-type.js';
   export default {
     name: 'Settlement',
     props:{
@@ -198,12 +198,13 @@
 
       //提交订单
       handleSubmit(){
+        this.feedback.Loading.open('提交中');
         let goods = [];
         this.carlist.data.forEach(item=>{
           goods.push(...item.goods.map(sub=>({id:sub.id,num:sub.number,attr:sub.attr_id})))
         });
-        console.log(goods)
         submitOrder({
+          goods,
           shop_id: this.shopid,
           member:1,
           remark:this.remark,
@@ -216,6 +217,24 @@
           gift_id:this.selectedGifeId
         }).then(res=>{
           console.log(res);
+          this.feedback.Loading.close();
+          if(res.data.code == 1){
+            this.$store.commit(SET_PAYMENT_OPTIONS, {
+              canUse: res.data.data.can_use,
+              orderNo: res.data.data.order_no,
+              totalMoney: res.data.data.total_money,
+              orderType: 'OD',
+              kind: 2,
+            })
+            this.$router.replace({
+              name:'Payment'
+            })
+          }else{
+            this.feedback.Toast({
+              msg:res.data.info,
+              timeout: 1200,
+            })
+          }
         })
       },
 
@@ -244,7 +263,7 @@
           total_price:this.carlist.total_price,
           discounts_price:this.carlist.discounts_price
         }).then(res=>{
-          if(res.data.code == 1){
+          if(res.data.code == 1 && res.data.data.length!=0){
             this.coupons = res.data.data.map(item=>({
               id:item.aid,
               name:item.name,

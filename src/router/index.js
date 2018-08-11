@@ -10,6 +10,8 @@ const Settlement = () => import ('@/pages/Settlement/Settlement');
 const Payment = () => import ('@/pages/Payment/Payment');
 const Trolley = () => import ('@/pages/Trolley/Trolley');
 const Evaluate = () => import ('@/pages/Evaluate/Evaluate');
+const Search = () => import ('@/pages/Search/Search');
+const SearchResult = () => import ('@/pages/SearchResult/SearchResult');
 const Order = () => import ('@/pages/Order/Order');
 const Center = () => import ('@/pages/Center/Center');
 const AdminIndex = () => import ('@/pages/AdminIndex/AdminIndex');
@@ -23,6 +25,10 @@ const MoneyRest = () => import ('@/pages/MoneyRest/MoneyRest');
 const MoneyWithdraw = () => import ('@/pages/MoneyWithdraw/MoneyWithdraw');
 const MoneyStream = () => import ('@/pages/MoneyStream/MoneyStream');
 const UserInfo = () => import ('@/pages/UserInfo/UserInfo');
+const UserPhoneSet = () => import ('@/pages/UserPhoneSet/UserPhoneSet');
+const AdminShopCard = () => import ('@/pages/AdminShopCard/AdminShopCard');
+const AdminCustomer = () => import ('@/pages/AdminCustomer/AdminCustomer');
+const AdminSetting = () => import ('@/pages/AdminSetting/AdminSetting');
 
 
 
@@ -89,6 +95,23 @@ const router = new Router({
         title:'支付'
       }
     }, {
+      path: '/Search',
+      name: 'Search',
+      component: Search,
+      meta: {
+        keepAlive: false,
+        title:'搜索'
+      }
+    }, {
+      path: '/SearchResult/:word',
+      name: 'SearchResult',
+      component: SearchResult,
+      props:true,
+      meta: {
+        keepAlive: false,
+        title:''
+      }
+    }, {
       path: '/trolley/:shopid',
       name: 'Trolley',
       props: true,
@@ -113,7 +136,7 @@ const router = new Router({
         title: '我的店铺'
       }
     }, {
-      path: '/adminShop',
+      path: '/adminShop/:shopid',
       name: 'AdminShop',
       component: AdminShop,
       mate: {
@@ -121,7 +144,7 @@ const router = new Router({
         title: '我的店铺'
       }
     }, {
-      path: '/adminShelf',
+      path: '/adminShelf/:shopid',
       name: 'AdminShelf',
       component: AdminShelf,
       mate: {
@@ -191,6 +214,38 @@ const router = new Router({
       mate: {
         keepAlive: false,
         title: '个人资料'
+      }
+    }, {
+      path: '/userPhoneSet',
+      name: 'UserPhoneSet',
+      component: UserPhoneSet,
+      mate: {
+        keepAlive: false,
+        title: '手机号设置'
+      }
+    }, {
+      path: '/adminShopCard',
+      name: 'AdminShopCard',
+      component: AdminShopCard,
+      mate: {
+        keepAlive: false,
+        title: '我的名片'
+      }
+    }, {
+      path: '/adminCustomer',
+      name: 'AdminCustomer',
+      component: AdminCustomer,
+      mate: {
+        keepAlive: false,
+        title: '我的客户'
+      }
+    }, {
+      path: '/adminSetting',
+      name: 'AdminSetting',
+      component: AdminSetting,
+      mate: {
+        keepAlive: false,
+        title: '店铺设置'
       }
     }
   ]

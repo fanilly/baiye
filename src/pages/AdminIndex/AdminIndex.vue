@@ -7,9 +7,9 @@
             <div class="title text-ellipsis">
                 {{detail.shop_name}}
             </div>
-            <div class="btn">
+            <router-link class="btn" :to='{name:"AdminShopCard"}' >
                 <img src="../../assets/baiye/mp@2x.png" />
-            </div>
+            </router-link>
         </div>
         <div class="rside">
             <img :src="detail.avatar" alt="" />
@@ -60,10 +60,14 @@
             <div class="name">{{item.name}}</div>
         </router-link>
     </div>
+
+    
+
 </div>
 </template>
 
 <script>
+
 
 import { getAdminIndexInfo } from '@/api/index.js';
 const wx = require('weixin-js-sdk');
@@ -73,18 +77,19 @@ export default {
     data() {
         return {
             navLink:[
-                { name: '我的店铺', icon: require('../../assets/baiye/c1@2x.png'), src: 'AdminShop' },
+                { name: '我的店铺', icon: require('../../assets/baiye/c1@2x.png'), src: '' },
                 { name: '选品上架', icon: require('../../assets/baiye/c2@2x.png'), src: 'AdminShelf' },
                 { name: '订单管理', icon: require('../../assets/baiye/c3@2x.png'), src: 'ShopOrder' },
                 { name: '我的财富', icon: require('../../assets/baiye/c4@2x.png'), src: 'Wealth' },
-                { name: '我的客户', icon: require('../../assets/baiye/c5@2x.png'), src: '../adminCustomer/adminCustomer' },
-                { name: '我的名片', icon: require('../../assets/baiye/c7@2x.png'), src: '../../assets/businessCard/businessCard' },
-                { name: '店铺设置', icon: require('../../assets/baiye/c9@2x.png'), src: '../adminSettings/adminSettings' },
+                { name: '我的客户', icon: require('../../assets/baiye/c5@2x.png'), src: 'AdminCustomer' },
+                { name: '我的名片', icon: require('../../assets/baiye/c7@2x.png'), src: 'AdminShopCard' },
+                { name: '店铺设置', icon: require('../../assets/baiye/c9@2x.png'), src: 'AdminSetting' },
             ],
             detail:{
                 shop_name:'紫燕百味鸡',
                 avatar:require('../../assets/head.jpg')
-            }
+            },
+            userInfo:this.$store.state.user
         };
     },
     beforeCreate() {
@@ -97,15 +102,17 @@ export default {
             getAdminIndexInfo({
                 user_id: this.$store.state.user.userid,
             }).then(res => {
-                console.log('虚拟店信息',this.$store.state.user,res)
+                console.log('虚拟店信息',res)
                 if (res.data.code == 1) {
                     this.detail = res.data.data;
+                    this.navLink[0].src = `AdminShop/${this.detail.id}`
+                    this.navLink[1].src = 'AdminShelf/'+this.detail.id
                 }
             });
         }
     },
     components: {
-      
+
     }
 };
 

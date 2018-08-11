@@ -1,5 +1,8 @@
+@import '../../styles/variable.less';
 .container {
   width: 100%;
+  min-height: 100vh;
+  background-color: #f7f7f7;
 }
 
 .payment-btn {
@@ -14,32 +17,20 @@
 }
 
 .header {
-  border-bottom: .16rem solid #ecebf3;
-  padding: .4rem 0 .8rem;
+  padding: .5rem 0 .8rem;
+  background-color: #1b1b1f;
   h1 {
-    font-size: .38rem;
+    font-size: .32rem;
     font-weight: normal;
     font-family: 'Microsoft YaHei';
-    span {
-      display: inline-block;
-      width: .5rem;
-      height: .5rem;
-      background-color: #fe4e4e;
-      border-radius: 50%;
-      line-height: .5rem;
-      margin-right: .2rem;
-      i {
-        color: #fff;
-        position: relative;
-        top: -2px;
-      }
-    }
+    color:#999;
   }
   h2 {
-    font-size: .8rem;
-    padding-top: .5rem;
+    font-size: .6rem;
+    padding-top: .2rem;
+    color: @main-color;
     span {
-      font-size: .32rem;
+      font-size: .28rem;
     }
   }
 }
@@ -57,22 +48,23 @@
 }
 
 .payment-item {
+  background-color: #fff;
   display: flex;
   align-items: center;
-  padding: .25rem 0;
-  border-bottom: 1px dashed #cbcbcb;
+  padding: .4rem 0;
+  border-bottom: 1px solid #f7f7f7;
   &-lside {
-    width: 1.2rem;
+    width: 1rem;
     text-align: center;
-    span i {
-      font-size: .8rem;
+    img {
+      width: .36rem;
     }
   }
   &-center {
     flex: 1;
     h3 {
       font-size: .32rem;
-      color: #333;
+      color: #1b1b1f;
       font-weight: normal;
     }
     p {
@@ -83,24 +75,24 @@
   &-rside {
     padding-right: .2rem;
     .choose-btn {
-      width: .5rem;
-      height: .5rem;
+      width: .42rem;
+      height: .42rem;
       border-radius: 50%;
       border: 1px solid #9fa4a8;
       position: relative;
       text-align: center;
-      line-height: .5rem;
+      line-height: .42rem;
       span {
         display: none;
       }
     }
     .choosed {
-      background-color: #3cb036;
-      border-color: #3cb036;
+      background-color: @main-color;
+      border-color: @main-color;
       span {
         display: inline-block;
         i {
-          font-size: .2rem;
+          font-size: .1rem;
           color: #fff;
         }
       }

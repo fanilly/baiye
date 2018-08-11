@@ -6,7 +6,7 @@
  */
 
 import axios from 'axios';
-// axios.defaults.headers.post['Content-Type'] = 'application/x-www=form-urlencoded';
+axios.defaults.headers.post['Content-Type'] = 'application/x-www=form-urlencoded';
 const publicRequests = {
   fetchGet(url, params = {}) {
     return new Promise((resolve, reject) => {
@@ -35,7 +35,7 @@ const publicRequests = {
       });
     });
   },
-  fetchFilePost(){
+  fetchFilePost(url, params){
     const instance = axios.create({
       headers:{'Content-Type':'multipart/form-data'}
     });

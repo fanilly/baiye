@@ -613,18 +613,15 @@ export default {
 
     //获取评价列表
     getCommentsListsData() {
-      console.log(this.allowLoadMore,this.commentLoadedAll,this.noCommentLists);
       if(!this.allowLoadMore || this.commentLoadedAll || this.noCommentLists) return;
       this.allowLoadMore = false;
       getCommentsListsData({
         shop_id:this.shopid,
         page:this.commentPage
       }).then(res=>{
-        console.log(res);
         if (res.data.data.length < 20) this.commentLoadedAll = true;
         if (res.data.data.length == 0 && this.commentLists.length == 0) this.noCommentLists = true;
         this.commentLists.push(...res.data.data);
-        console.log(this.commentLists);
         this.allowLoadMore = true;
         this.commentPage++;
       });

@@ -1,0 +1,129 @@
+@import '../../styles/variable.less';
+.container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f7f7f7;
+}
+
+.header-palceholder {
+  height: .94rem;
+}
+
+.header-search {
+  background-color: #fff;
+  padding: .15rem .3rem;
+  height: .94rem;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  &-input {
+    flex: 1;
+    height: .64rem;
+    border-radius: .32rem;
+    font-family: 'Microsoft YaHei';
+    text-align: left;
+    box-sizing: border-box;
+    padding-left: .5rem;
+    line-height: .64rem;
+    border: 0;
+    color: #1b1b1f;
+    background: #f2f2f2 url(../../assets/baiye/icon02@2x.png) no-repeat .2rem center;
+    background-size: .22rem;
+    font-size: .28rem;
+  }
+}
+
+
+.host {
+  background-color: #fff;
+  padding-top: .2rem;
+  text-align: left;
+  .tit1 {
+    display: block;
+    font-size: .28rem;
+    color: #1b1b1f;
+    line-height: .7rem;
+    padding-left: .32rem;
+    position: relative;
+    padding-right: 2.4rem;
+    &:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      height: .26rem;
+      margin-top: -.13rem;
+      width: .08rem;
+      background-color: #1c1b1f;
+    }
+    .empty {
+      display: block;
+      position: absolute;
+      right: .2rem;
+      top: 0;
+      height: .7rem;
+      line-height: .7rem;
+      font-size: .28rem;
+      color: #999;
+      overflow: hidden;
+      img {
+        display: block;
+        width: .28rem;
+        height: .26rem;
+        margin: .22rem .08rem .22rem 0;
+        float: left;
+        position: relative;
+        top: -.04rem;
+      }
+      span {
+        display: block;
+        float: left;
+      }
+    }
+  }
+
+
+
+  .tips {
+    padding: .1rem .4rem .3rem .4rem;
+    overflow: hidden;
+  }
+  .tips span {
+    padding: .14rem .25rem;
+    display: block;
+    min-width: .2rem;
+    border-radius: .4rem;
+    float: left;
+    border: .02rem solid #ececec;
+    font-size: .28rem;
+    color: #666;
+    margin: 0 .16rem .16rem 0;
+  }
+  .tips span.on {
+    color: #266ef4;
+    border: .02rem solid #266ef4;
+  }
+
+  .list {
+    padding: .1rem .4rem .3rem .4rem;
+  }
+  .list span {
+    display: block;
+    font-size: .3rem;
+    line-height: .9rem;
+    color: #1b1b1f;
+    border-bottom: 1px solid #eee;
+  }
+  .list span:last-child {
+    border-bottom: 0;
+  }
+}
+
+.b20 {
+  border-bottom: .2rem solid #f8f8f8;
+}
