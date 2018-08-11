@@ -232,7 +232,7 @@ const router = new Router({
         title: '我的名片'
       }
     }, {
-      path: '/adminCustomer',
+      path: '/adminCustomer/:shopid',
       name: 'AdminCustomer',
       component: AdminCustomer,
       mate: {

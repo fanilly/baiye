@@ -88,7 +88,6 @@
       },
       // 获取列表
       getLists() {
-        console.log(this.word)
         if (!this.allowLoadMore || this.listLoadedAll || this.noLists) return;
         this.allowLoadMore = false;
         getSearchResult({

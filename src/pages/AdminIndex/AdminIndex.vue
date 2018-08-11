@@ -81,14 +81,11 @@ export default {
                 { name: '选品上架', icon: require('../../assets/baiye/c2@2x.png'), src: 'AdminShelf' },
                 { name: '订单管理', icon: require('../../assets/baiye/c3@2x.png'), src: 'ShopOrder' },
                 { name: '我的财富', icon: require('../../assets/baiye/c4@2x.png'), src: 'Wealth' },
-                { name: '我的客户', icon: require('../../assets/baiye/c5@2x.png'), src: 'AdminCustomer' },
+                { name: '我的客户', icon: require('../../assets/baiye/c5@2x.png'), src: '' },
                 { name: '我的名片', icon: require('../../assets/baiye/c7@2x.png'), src: 'AdminShopCard' },
                 { name: '店铺设置', icon: require('../../assets/baiye/c9@2x.png'), src: 'AdminSetting' },
             ],
-            detail:{
-                shop_name:'紫燕百味鸡',
-                avatar:require('../../assets/head.jpg')
-            },
+            detail:{},
             userInfo:this.$store.state.user
         };
     },
@@ -106,6 +103,7 @@ export default {
                 if (res.data.code == 1) {
                     this.detail = res.data.data;
                     this.navLink[0].src = `AdminShop/${this.detail.id}`
+                    this.navLink[4].src = `AdminCustomer/${this.detail.id}`
                     this.navLink[1].src = 'AdminShelf/'+this.detail.id
                 }
             });

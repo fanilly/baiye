@@ -111,6 +111,14 @@ const REQUESTS = {
   getSearchResult(data){
     return HTTPS.fetchGet(HOST + '/api/5b49ae292625a', data)
   },
+  //获取实体店订单列表
+  getPhysicalOrderLists(data) {
+    return HTTPS.fetchGet(HOST + '/api/5b35f142f0537', data)
+  },
+  //获取实体店订单列表
+  cancelOrDelOrder(data) {
+    return HTTPS.fetchPost(HOST + '/api/5b35f8754c4b4', data)
+  },
 
   searchShop(data) {
     return HTTPS.fetchGet(HOST + '/api/5b49ae292625a', data)
@@ -177,9 +185,17 @@ const REQUESTS = {
   changePhone(data){
     return HTTPS.fetchPost(HOST + '/api/5b0bfdd5831a8', data)
   },
-  //上传文件方法
+  //上传文件方法 --暂时不用
   publicUploadImg(data){
     return HTTPS.fetchFilePost(HOST + '/api/5b0bee5c49e21', data)
+  },
+  //修改虚拟店信息 post
+  changeShopBanner(data){
+    return HTTPS.fetchPost(HOST + '/api/5b50042a81b32', data)
+  },
+  //获取我的客户
+  getShopCustomer(data){
+    return HTTPS.fetchGet(HOST + '/api/5b4f19a6d9701', data)
   },
 
   // //获取商品列表
@@ -204,6 +220,7 @@ export const getMyShop = REQUESTS.getMyShop;
 export const getGoodsCate = REQUESTS.getGoodsCate;
 export const getGoodsLists = REQUESTS.getGoodsLists;
 export const getPhysicalShopDetail = REQUESTS.getPhysicalShopDetail;
+export const getPhysicalOrderLists = REQUESTS.getPhysicalOrderLists;
 export const getCommentsListsData = REQUESTS.getCommentsListsData;
 export const toggleCollectionStatus = REQUESTS.toggleCollectionStatus;
 export const addCart = REQUESTS.addCart;
@@ -221,6 +238,7 @@ export const balancePayment = REQUESTS.balancePayment;
 export const wechatPayment = REQUESTS.wechatPayment;
 export const getHotSearchKeyword = REQUESTS.getHotSearchKeyword;
 export const getSearchResult = REQUESTS.getSearchResult;
+export const cancelOrDelOrder = REQUESTS.cancelOrDelOrder;
 
 
 export const getAdminIndexInfo = REQUESTS.getAdminIndexInfo
@@ -241,3 +259,5 @@ export const addFromShop = REQUESTS.addFromShop
 export const sendPhoneCode = REQUESTS.sendPhoneCode
 export const changePhone = REQUESTS.changePhone
 export const publicUploadImg = REQUESTS.publicUploadImg
+export const changeShopBanner = REQUESTS.changeShopBanner
+export const getShopCustomer = REQUESTS.getShopCustomer

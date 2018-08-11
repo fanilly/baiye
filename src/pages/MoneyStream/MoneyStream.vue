@@ -89,7 +89,7 @@ export default {
                 this.moneyinfo.push(...res.data.data);
                 this.allowLoadMore = true;
                 this.page++;
-          });
+            });
         },
 
     },
