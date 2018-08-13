@@ -9,7 +9,7 @@
       <scroller @getData="getLists">
         <!-- list -->
         <div class="list" v-for="item,index in lists" :key="index">
-          <div class="item scroll-item">
+          <div class="item scroll-item" @click.stop="goShopIndex(item.shop_id)">
             <div class="lside">
               <img :src="item.shop_avatar" alt="" />
             </div>
@@ -25,7 +25,7 @@
               <span>{{item.distance}}</span>
             </div>
           </div>
-          <div class="item item-goods" v-for="iitem,i in item.goods" :key="i">
+          <div class="item item-goods" v-for="iitem,i in item.goods" :key="i" @click.stop="goShopIndex(item.shop_id,iitem.cate_id,iitem.id)">
             <div class="lside">
               <img :src="iitem.img_url" />
             </div>
@@ -60,6 +60,7 @@
   import scroller from '../../components/scroller/scroller.vue';
   import { LoadMore } from 'vux';
   import { getWxSettings, getSearchResult } from '@/api/index.js';
+  import { SET_SEARCH_RESULT } from '@/store/mutation-type.js';
 
   export default {
     name: 'SearchResult',
@@ -86,6 +87,7 @@
           name:'Search'
         });
       },
+
       // 获取列表
       getLists() {
         if (!this.allowLoadMore || this.listLoadedAll || this.noLists) return;
@@ -102,6 +104,21 @@
           this.lists.push(...res.data.data);
           this.allowLoadMore = true;
           this.page++;
+        })
+      },
+
+      goShopIndex(shopId,cateId,goodsId){
+        if(cateId && goodsId){
+          this.$store.commit(SET_SEARCH_RESULT, {
+            cateId,
+            goodsId
+          });
+        }
+        this.$router.push({
+          name:'Shop',
+          params:{
+            shopid:shopId
+          }
         })
       }
     },

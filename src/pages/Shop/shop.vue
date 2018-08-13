@@ -52,6 +52,7 @@
             <section
               v-for="(sub, key) in goodsLists[index]"
               :key="key"
+              :data-goodsid="sub.id"
               @click="handleShowGoodsDetail(index,key,sub.id)">
                 <goods-item
                   :item="sub"
@@ -214,12 +215,10 @@ import rate from '@/components/rate/rate.vue';
 import goodsItem from '@/components/goodsItem/goodsItem.vue';
 import footerTrolley from '@/components/footerTrolley/footerTrolley.vue';
 
-import storageUtils from '@/utils/Storage.js';
 import parabola from '@/utils/parabola.js';
 import ScrollTo from '@/utils/scrollTo.js';
-const getGoosList = ()=>{};
-const getCoupons = ()=>{};
-const receiveCoupon = ()=>{};
+
+import { SET_SEARCH_RESULT } from '@/store/mutation-type.js';
 import {
   getGoodsCate,
   getGoodsLists,
@@ -303,7 +302,7 @@ export default {
   methods: {
 
     //触发搜索
-    handleSearch(){
+    handleSearch(cateId,goodsId){
       let searchKeyWord = this.$refs.searchBox.value;
       if(searchKeyWord == '' || searchKeyWord.trim() == '') return;
       //开始搜索
@@ -321,7 +320,9 @@ export default {
         });
 
         //过滤所有内容包含搜索关键词的DOM对象
-        let searchLists = items.filter(item => item.innerText.indexOf(searchKeyWord) != -1);
+        let searchLists = cateId && goodsId
+          ? items.filter(item => item.getAttribute('data-goodsid') == goodsId)
+          : items.filter(item => item.innerText.indexOf(searchKeyWord) != -1);
 
         if (searchLists.length >= 1){ //搜索到内容
           ScrollTo(this.scrollView,this.scrollView.scrollTop,searchLists[0].offsetTop);
@@ -335,6 +336,16 @@ export default {
       };
       this.$refs.searchBox.blur();
       searchStart.call(this.$refs.scrollTabBox,searchKeyWord);
+    },
+
+    //检测是否通过外部搜索点击商品进入本页面
+    testingEntryIsSearch(){
+      if(!this.$store.state.searchResult.cateId) return;
+      this.handleSearch(this.$store.state.searchResult.cateId,this.$store.state.searchResult.goodsId);
+      this.$store.commit(SET_SEARCH_RESULT,{
+        cateId:null,
+        goodsId: null
+      });
     },
 
     //点击底部购物车图标
@@ -457,15 +468,15 @@ export default {
           user_id:this.$store.state.user.userid,
           is_waimai:1
         }).then(res=>{
-          this.feedback.Toast({
-            msg: res.data.info,
-            timeout: 800
-          });
           if(res.data.code == 1){
             if(!options.isNoAttr){
               this.handleCloseChooseAttrPop();
             }
           }else {
+            this.feedback.Toast({
+              msg: res.data.info,
+              timeout: 800
+            });
             this.getGoodsLists();
             this.getCartLists();
           }
@@ -490,13 +501,13 @@ export default {
           user_id:this.$store.state.user.userid,
           is_waimai:1
         }).then(res=>{
-          this.feedback.Toast({
-            msg: res.data.info,
-            timeout: 1500
-          });
           if(res.data.code != 1){
             this.getGoodsLists();
             this.getCartLists();
+            this.feedback.Toast({
+              msg: res.data.info,
+              timeout: 1500
+            });
           }
           console.log(res);
         });
@@ -589,7 +600,9 @@ export default {
               return sub;
             })
           });
-          console.log(this.goodsLists);
+          setTimeout(()=>{
+            this.testingEntryIsSearch();
+          },100);
         }
       });
     },

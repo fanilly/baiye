@@ -131,6 +131,10 @@ const REQUESTS = {
   getPhysicalOrderDetail(data) {
     return HTTPS.fetchGet(HOST + '/api/5b0691771ab3f', data)
   },
+  //获取收藏列表
+  getCollectionLists(data) {
+    return HTTPS.fetchGet(HOST + '/api/5b34838376417', data)
+  },
 
   searchShop(data) {
     return HTTPS.fetchGet(HOST + '/api/5b49ae292625a', data)
@@ -213,7 +217,7 @@ const REQUESTS = {
   getShopWealth(data){
     return HTTPS.fetchPost(HOST + '/api/5b4f11151312d', data)
   },
-  //获取虚拟店我的财富明细 
+  //获取虚拟店我的财富明细
   getWealthStream(data){
     return HTTPS.fetchGet(HOST + '/api/5b4f0e0acdfe6', data)
   },
@@ -286,6 +290,7 @@ export const cancelOrDelOrder = REQUESTS.cancelOrDelOrder;
 export const getEvaluateTags = REQUESTS.getEvaluateTags;
 export const submitEvaluate = REQUESTS.submitEvaluate;
 export const getPhysicalOrderDetail = REQUESTS.getPhysicalOrderDetail;
+export const getCollectionLists = REQUESTS.getCollectionLists;
 
 
 export const getShopList = REQUESTS.getShopList

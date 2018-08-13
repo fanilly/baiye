@@ -42,7 +42,7 @@ export default {
         return {
             nav: [
                 { name: '我的订单', url: 'Order', words: '', src: require('../../assets/takeout04.png') },
-                { name: '我的收藏', url: '../takecollect/takecollect', words: '', src: require('../../assets/sc.png') },
+                { name: '我的收藏', url: 'Collection', words: '', src: require('../../assets/sc.png') },
             ],
             nav2: [
                 { name: '地址管理', url: '../address/index', src: require('../../assets/icon04.png') },

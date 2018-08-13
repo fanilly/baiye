@@ -14,6 +14,7 @@ const Search = () => import ('@/pages/Search/Search');
 const SearchResult = () => import ('@/pages/SearchResult/SearchResult');
 const Order = () => import ('@/pages/Order/Order');
 const OrderDetail = () => import ('@/pages/OrderDetail/OrderDetail');
+const Collection = () => import ('@/pages/Collection/Collection');
 const Center = () => import ('@/pages/Center/Center');
 const AdminIndex = () => import ('@/pages/AdminIndex/AdminIndex');
 const AdminShop = () => import ('@/pages/AdminShop/AdminShop');
@@ -116,6 +117,14 @@ const router = new Router({
       meta: {
         keepAlive: false,
         title:'搜索'
+      }
+    }, {
+      path: '/Collection',
+      name: 'Collection',
+      component: Collection,
+      meta: {
+        keepAlive: false,
+        title:'我的收藏'
       }
     }, {
       path: '/SearchResult/:word',
@@ -303,16 +312,16 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   if(to.meta.title) document.title = to.meta.title;
 
-  if (!localStorage.getItem('USER_INFO')) {
+  // if (!localStorage.getItem('USER_INFO')) {
     login().then(res => {
       store.commit(SET_USER_INFO, res);
       next();
     });
-  } else {
-    let userInfo = JSON.parse(localStorage.getItem('USER_INFO'));
-    store.commit(SET_USER_INFO, userInfo);
-    next();
-  }
+  // } else {
+    // let userInfo = JSON.parse(localStorage.getItem('USER_INFO'));
+    // store.commit(SET_USER_INFO, userInfo);
+    // next();
+  // }
 });
 
 export default router;

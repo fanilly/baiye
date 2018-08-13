@@ -118,7 +118,6 @@
     },
     methods: {
       jumpSearch(){
-        console.log('jumg search');
         this.$router.push({
           name:'Search'
         });

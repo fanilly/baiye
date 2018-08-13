@@ -101,6 +101,7 @@
           let tempHistory = this.history.length != 0 ? [...this.history] : [];
           if(tempHistory.length>=10) tempHistory.pop();
           tempHistory.unshift(this.searchKeyWord);
+          tempHistory = Array.from(new Set(tempHistory));
           localStorage.setItem('SEARCH_KEYWORD',JSON.stringify(tempHistory));
           resolve();
         });

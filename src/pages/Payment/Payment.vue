@@ -111,8 +111,8 @@
             },
             fail:err=>{
               this.feedback.Toast({
-                msg:'取消支付',
-                timeout:1200
+                msg:JSON.stringify(err),
+                timeout:20000
               })
             }
           });

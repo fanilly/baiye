@@ -288,7 +288,7 @@
           shop_id:this.shopid,
           user_id:this.$store.state.user.userid
         }).then(res=>{
-          if(res.data.code == 1){
+          if(res.data.code == 1 && res.data.data.length!=0){
             this.gifes = res.data.data.map(item=>({
               id:item.aid,
               name:item.name,

@@ -1,0 +1,72 @@
+@import '../../styles/variable.less';
+
+.scroller-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background-color: #f7f7f7;
+}
+
+
+.list {
+  text-align: left;
+}
+
+.list .item {
+  padding: .3rem;
+  height: 1.5rem;
+  background-color: #fff;
+  margin-bottom: .02rem;
+  display: flex;
+  align-items: center;
+  .avatar{
+    width: .9rem;
+    height: .9rem;
+    border-radius: 50%;
+  }
+  .name{
+    font-size: .3rem;
+    color:#1b1b1f;
+    flex: 1;
+    padding: 0 .2rem;
+    font-weight: normal;
+    .text-overflow-ellipsis;
+  }
+
+  .btn {
+    display: block;
+    width: 1.4rem;
+    height: .5rem;
+    line-height: .5rem;
+    text-align: center;
+    color: #999;
+    border: 1px solid #999;
+    border-radius: .25rem;
+  }
+}
+
+
+
+.empty-status {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background-color: #fff;
+  padding: 2rem .5rem 0 .5rem;
+  z-index: 10;
+}
+
+.empty-status>img {
+  width: 2.39rem;
+}
+
+.empty-status .desc {
+  color: #999;
+  font-size: .28rem;
+  padding: .5rem 0;
+}
