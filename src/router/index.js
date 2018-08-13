@@ -341,12 +341,15 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   if(to.meta.title) document.title = to.meta.title;
 
-
     if (!sessionStorage.getItem('USER_INFO')) {
-      login().then(res => {
-        store.commit(SET_USER_INFO, res);
-        next();
-      });
+      if(to.query.user_token){
+        login(to.query.user_token).then(res => {
+          store.commit(SET_USER_INFO, res);
+          next();
+        });
+      }else{
+        location.href = 'https://food.zzebz.com/index/login/login?jump_url=' + to.path.replace(/\//g, '^');
+      }
     } else {
       let userInfo = JSON.parse(sessionStorage.getItem('USER_INFO'));
       store.commit(SET_USER_INFO, userInfo);

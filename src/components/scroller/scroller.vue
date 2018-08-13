@@ -22,6 +22,7 @@ export default {
       this.timer = setTimeout(()=>{
         this.items = this.scrollView.querySelectorAll('.scroll-item');
         this.lastItem = this.items[this.items.length-1];
+        if(!this.lastItem) return;
         if(this.lastItem.getBoundingClientRect().top -500 < this.viewportHeight){
           this.$emit('getData');
         }

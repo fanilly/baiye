@@ -1,10 +1,10 @@
 import axios from 'axios';
-export default function() {
+export default function(userToken) {
   return new Promise((resolve, reject) => {
     const isDev = process.env.NODE_ENV === 'development';
     if (isDev) {
       let userInfo = {
-        userid: 45,
+        userid: 46,
         nickName: '发光的闪闪闪',
         userType: 2,
         avatar: 'http://d.hiphotos.baidu.com/image/pic/item/b17eca8065380cd79a75c52cad44ad3458828183.jpg'
@@ -12,7 +12,9 @@ export default function() {
       sessionStorage.setItem('USER_INFO', JSON.stringify(userInfo));
       resolve(userInfo)
     } else {
-      axios.post('/index/login/get_user_info').then(res => {
+      axios.post('https://food.zzebz.com/index/login/get_user_info',{
+        user_token:userToken
+      }).then(res => {
         if (res.data.code == 0) {
           location.href = 'https://food.zzebz.com/index/login/login?jump_url=' + location.pathname.replace(/\//g, '^');
         } else if (res.data.code == 1) {
