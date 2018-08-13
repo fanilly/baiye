@@ -189,7 +189,7 @@ const REQUESTS = {
   addFromShop(data){
     return HTTPS.fetchPost(HOST + '/api/5b4db546d9701', data)
   },
-  //发送验证码
+  //发送验证码 --普通用户
   sendPhoneCode(data){
     return HTTPS.fetchPost(HOST + '/api/5a60ee2bb46ba', data)
   },
@@ -209,6 +209,38 @@ const REQUESTS = {
   getShopCustomer(data){
     return HTTPS.fetchGet(HOST + '/api/5b4f19a6d9701', data)
   },
+  //获取我的财富
+  getShopWealth(data){
+    return HTTPS.fetchPost(HOST + '/api/5b4f11151312d', data)
+  },
+  //获取虚拟店我的财富明细 
+  getWealthStream(data){
+    return HTTPS.fetchGet(HOST + '/api/5b4f0e0acdfe6', data)
+  },
+  //修改提现密码,查看是否设置手机号
+  checkShopSetting(data){
+    return HTTPS.fetchPost(HOST + '/api/5b4eed0b81b32', data)
+  },
+  //提交密码修改
+  submitPasswordChange(data){
+    return HTTPS.fetchPost(HOST + '/api/5b4ee53fc65d4', data)
+  },
+  //提交密码设置
+  submitPasswordSet(data){
+    return HTTPS.fetchPost(HOST + '/api/5b4ee593dd40a', data)
+  },
+  //获取商户验证码 5b19fb9e7a120 post
+  sendAdminCode(data){
+    return HTTPS.fetchPost(HOST + '/api/5b19fb9e7a120', data)
+  },
+  //获取钱包明细 5b4f11bfc65d4 get
+  getWealthDetail(data){
+    return HTTPS.fetchGet(HOST + '/api/5b4f11bfc65d4', data)
+  },
+  //获取虚拟店订单列表 5b4ef4e2c65d4
+  getShopOrder(data){
+    return HTTPS.fetchGet(HOST + '/api/5b4ef4e2c65d4', data)
+  }
 
   // //获取商品列表
   // getGoosList() {
@@ -256,6 +288,16 @@ export const submitEvaluate = REQUESTS.submitEvaluate;
 export const getPhysicalOrderDetail = REQUESTS.getPhysicalOrderDetail;
 
 
+export const getShopList = REQUESTS.getShopList
+export const delFromShop = REQUESTS.delFromShop
+export const getAllShopList = REQUESTS.getAllShopList
+export const addFromShop = REQUESTS.addFromShop
+export const sendPhoneCode = REQUESTS.sendPhoneCode
+export const changePhone = REQUESTS.changePhone
+export const publicUploadImg = REQUESTS.publicUploadImg
+export const changeShopBanner = REQUESTS.changeShopBanner
+
+
 export const getAdminIndexInfo = REQUESTS.getAdminIndexInfo
 export const getCodeMIne = REQUESTS.getCodeMIne
 export const getCodeExtend = REQUESTS.getCodeExtend
@@ -265,14 +307,16 @@ export const getMoneyWithdraw = REQUESTS.getMoneyWithdraw
 export const getMoneyStraeam = REQUESTS.getMoneyStraeam
 export const submitUserInfo = REQUESTS.submitUserInfo
 export const getUserInfo = REQUESTS.getUserInfo
-
-
-export const getShopList = REQUESTS.getShopList
-export const delFromShop = REQUESTS.delFromShop
-export const getAllShopList = REQUESTS.getAllShopList
-export const addFromShop = REQUESTS.addFromShop
-export const sendPhoneCode = REQUESTS.sendPhoneCode
-export const changePhone = REQUESTS.changePhone
-export const publicUploadImg = REQUESTS.publicUploadImg
-export const changeShopBanner = REQUESTS.changeShopBanner
 export const getShopCustomer = REQUESTS.getShopCustomer
+export const getShopWealth = REQUESTS.getShopWealth
+export const getWealthStream = REQUESTS.getWealthStream
+export const checkShopSetting = REQUESTS.checkShopSetting
+export const submitPasswordChange = REQUESTS.submitPasswordChange
+export const submitPasswordSet = REQUESTS.submitPasswordSet
+export const sendAdminCode = REQUESTS.sendAdminCode
+export const getWealthDetail = REQUESTS.getWealthDetail
+export const getShopOrder = REQUESTS.getShopOrder
+
+
+
+

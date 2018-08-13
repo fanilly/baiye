@@ -1,0 +1,31 @@
+/* pages/wealth/wealth.wxss */
+.container { background-color: #f7f7f7;/*padding: 0 0 .20rem; */width: 100%;text-align: left; }
+
+.header{display: flex;align-items: center;height: 1.20rem;padding: 1.20rem 0;background-color: #1b1b1f;}
+.header .item{flex: 1;text-align: center;color: #fff;}
+.header .item div:first-child{font-size: .58rem;}
+.header .item div:first-child span{font-size: .24rem;}
+.header .item div:last-child{font-size: .28rem;}
+.nav-bar{display: flex;justify-content: center;align-items: center;height: 1.00rem;z-index: 999;top: 0;left: 0;width: 100%;background-color: #fff;border-bottom: 1px solid #e6e6e6;}
+.nav-bar-item{flex: 1;text-align: center;font-size: .30rem;line-height: 1.00rem;position: relative;}
+.nav-bar .nav-bar-item:first-child:after{content: '';display: block;height: .40rem;width: 1px;background-color: #e6e6e6;position: absolute;right: 0;top: 0;bottom: 0;margin: auto;}
+.nav-line{width: .50rem;height: 0.06rem;background-color: #000000;position: absolute;left: 0;bottom: 0;right: 0;margin: auto;transition: opacity .3s ease-in-out;}
+.list-header{display: flex;height: .98rem;align-items: center;padding: 0 .56rem;background-color: #fff;}
+.list-header div{flex: 1;text-align: center;font-size: .32rem;}
+.list-header div:first-child{text-align: left;}
+.list-header div:last-child{text-align: right;}
+.list{background-color: #fff;}
+.list-item{border-bottom: 1px solid #f7f7f7;display: flex;align-items: center;height: 1.48rem;padding: 0 .56rem;}
+.list-item .lside{flex: 1;}
+.list-item .lside div:first-child{font-size: .32rem;color: #1b1b1f;}
+.list-item>div:first-child div:first-child{color: #000}
+.list-item>div:first-child div:last-child{color: #999}
+.list-item>div:nth-child(2){text-align: center;}
+.list-item>div:nth-child(2) div:first-child{font-size: .36rem;color: rgb(255,168,0)}
+.list-item>div:nth-child(2) div:first-child span{font-size: .24rem;}
+.list-item>div:nth-child(2) div:last-child{color: #999}
+.list-item .lside div:last-child{font-size: .24rem;color: #999;padding-top: .12rem;}
+.list-item .rside{flex: 1;text-align: right;font-size: .30rem;font-weight: 600;color: #000;}
+.list-item.income .rside{color: #266ef4;}
+
+.scrollBox{ position: fixed; left:0; top: 4.4rem; bottom: 0; right: 0; background-color: #f7f7f7; }

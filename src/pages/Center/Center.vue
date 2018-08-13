@@ -41,7 +41,7 @@ export default {
     data() {
         return {
             nav: [
-                { name: '我的订单', url: '../order/order', words: '', src: require('../../assets/takeout04.png') },
+                { name: '我的订单', url: 'Order', words: '', src: require('../../assets/takeout04.png') },
                 { name: '我的收藏', url: '../takecollect/takecollect', words: '', src: require('../../assets/sc.png') },
             ],
             nav2: [

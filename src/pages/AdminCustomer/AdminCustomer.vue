@@ -6,7 +6,7 @@
         <div class='scrollBox'>
             <scroller @getData="getShopCustomer">
                 <div class="list" v-if='lists.length>0'>
-                    <div class="list-item" v-for="item in lists" >
+                    <div class="list-item scroll-item" v-for="item in lists" >
                         <div class="lside">
                             <img :src="item.headimgurl" />
                         </div>

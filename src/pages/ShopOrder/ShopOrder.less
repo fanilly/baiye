@@ -1,0 +1,43 @@
+.scroller-container {
+  position: fixed;
+  left: 0;
+  top: 1rem;
+  bottom: 0rem;
+  right: 0;
+  background-color: #f7f7f7;
+}
+
+
+
+.order-item{background-color: #fff;margin-bottom: .20rem;}
+.order-item-header{display: flex;font-size: .30rem;align-items: center;padding: .30rem;height: 1.00rem;border-bottom: 1px solid #f7f7f7;}
+.order-item-header div:first-child{flex: 1;}
+.order-item-main{display: flex;padding: .30rem;}
+.order-item-main .lside{padding-right: .20rem;}
+.order-item-main .lside img{width: 1.50rem;height: 1.50rem;}
+.order-item-main .rside{flex: 1;height: 1.50rem;display: flex;flex-direction: column;justify-content: space-between;}
+.order-item-main .rside .goods-title{font-size: .30rem;line-height: .38rem;height: .76rem;overflow: hidden;margin-bottom: 0;}
+.order-item-main .rside .goods-spec{font-size: .26rem;line-height: .38rem;color: #666666;}
+.order-item-main .rside .goods-price{font-size: .28rem;line-height: .38rem;color: #000000;flex: 1;display: flex;align-items: flex-end;}
+.order-item-main .rside .goods-spec span{font-size: .22rem;}
+.order-item-main .rside .goods-price span{font-size: .22rem;}
+.order-item-footer{height: 1.34rem;border-top: 1px solid #f7f7f7;display: flex;padding: 0 .30rem;align-items: center;}
+.order-item-footer .lside{}
+.order-item-footer .lside>div:first-child{font-size: .26rem;}
+.order-item-footer .lside>div:first-child span{font-size: .32rem;}
+.order-item-footer .lside>div:last-child{color: #999;font-size: .26rem;}
+.order-item-footer .rside{flex: 1;text-align: right;}
+.order-item-footer .rside .btn{display: inline-block;font-size: .30rem;padding: .13rem .30rem;text-align: center;border-radius: 0.04rem;margin-left: .20rem; margin-top: 0; border:none;}
+.order-item-footer .rside .btn:first-child{margin-left: 0;}
+.order-item-footer .rside .btn-line{border: 1px solid #ccc;}
+.order-item-footer .rside .btn-fill{background-color: #000;border: 1px solid #000;color: #fff}
+.order-item-footer .rside .btn-txt{font-size: .24rem;color: #999;}
+.order-item-footer .rside .btn-txt span.unit{font-size: .20rem;color: #df443b;}
+.order-item-footer .rside .btn-txt span.price{font-size: .32rem;color: #df443b;}
+
+.pop-mask{position: fixed;left: 0;top: 0;width: 100%;height: 100%;background-color: rgba(0, 0, 0, .5);padding: .50rem;z-index: 99999;}
+.pop-content{width: 90%;height: 50vh;position: absolute;top: 0;bottom: 0;margin: auto;background-color: #fff;border-radius: .10rem;box-sizing: border-box;left: 0;right: 0;}
+.pop-img-box{position: relative;padding: 1.20rem .30rem .30rem;display: flex;flex-wrap: nowrap;}
+.pop-img-box img{margin-right: .20rem;width: 1.88rem;height: 1.88rem;}
+.pop-img-box img:nth-child(3n){margin-right: 0;}
+.ib-title{font-size: .28rem;position: absolute;top: 0;line-height: 1.10rem;text-align: center;width: 100%;left: 0;}

@@ -30,6 +30,10 @@ const UserPhoneSet = () => import ('@/pages/UserPhoneSet/UserPhoneSet');
 const AdminShopCard = () => import ('@/pages/AdminShopCard/AdminShopCard');
 const AdminCustomer = () => import ('@/pages/AdminCustomer/AdminCustomer');
 const AdminSetting = () => import ('@/pages/AdminSetting/AdminSetting');
+const WealthStream = () => import ('@/pages/WealthStream/WealthStream');
+const WealthPassword = () => import ('@/pages/WealthPassword/WealthPassword');
+const WealthDetail = () => import ('@/pages/WealthDetail/WealthDetail');
+const WealthWithdraw = () => import ('@/pages/WealthWithdraw/WealthWithdraw');
 
 
 
@@ -165,7 +169,7 @@ const router = new Router({
         title: '选品上架'
       }
     }, {
-      path: '/shopOrder',
+      path: '/shopOrder/:shopid',
       name: 'ShopOrder',
       component: ShopOrder,
       mate: {
@@ -173,7 +177,7 @@ const router = new Router({
         title: '订单管理'
       }
     }, {
-      path: '/wealth',
+      path: '/wealth/:shopid',
       name: 'Wealth',
       component: Wealth,
       mate: {
@@ -259,6 +263,38 @@ const router = new Router({
       mate: {
         keepAlive: false,
         title: '店铺设置'
+      }
+    }, {
+      path: '/wealthStream/:shopid/:money/:cash',
+      name: 'WealthStream',
+      component: WealthStream,
+      mate: {
+        keepAlive: false,
+        title: '账单明细'
+      }
+    }, {
+      path: '/wealthPassword/:shopid/:haspassword',
+      name: 'WealthPassword',
+      component: WealthPassword,
+      mate: {
+        keepAlive: false,
+        title: '提现密码设置'
+      }
+    }, {
+      path: '/wealthDetail/:shopid/:index',
+      name: 'WealthDetail',
+      component: WealthDetail,
+      mate: {
+        keepAlive: false,
+        title: '钱包明细'
+      }
+    }, {
+      path: '/wealthWithdraw/:money',
+      name: 'WealthWithdraw',
+      component: WealthWithdraw,
+      mate: {
+        keepAlive: false,
+        title: '提现'
       }
     }
   ]
