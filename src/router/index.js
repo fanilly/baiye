@@ -341,21 +341,18 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   if(to.meta.title) document.title = to.meta.title;
 
-  // const login = () => {
-    // if (!localStorage.getItem('USER_INFO')) {
+
+    if (!sessionStorage.getItem('USER_INFO')) {
       login().then(res => {
         store.commit(SET_USER_INFO, res);
         next();
       });
-    // } else {
-      // let userInfo = JSON.parse(localStorage.getItem('USER_INFO'));
-      // store.commit(SET_USER_INFO, userInfo);
-      // next();
-    // }
-  // };
-  // if(to.name === 'Index' || to.name === 'SearchResult'){
-  //   console.log('need coordinate')
-  // }
+    } else {
+      let userInfo = JSON.parse(sessionStorage.getItem('USER_INFO'));
+      store.commit(SET_USER_INFO, userInfo);
+      next();
+    }
+
 });
 
 export default router;
