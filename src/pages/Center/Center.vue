@@ -46,7 +46,7 @@ export default {
             ],
             nav2: [
                 { name: '地址管理', url: '../address/index', src: require('../../assets/icon04.png') },
-                { name: '帮助中心', url: '../issue/issue', words: '', src: require('../../assets/icon05.png') },
+                { name: '帮助中心', url: 'Issue/List', words: '', src: require('../../assets/icon05.png') },
             ],
             uerInfo:this.$store.state.user,
         };

@@ -135,6 +135,18 @@ const REQUESTS = {
   getCollectionLists(data) {
     return HTTPS.fetchGet(HOST + '/api/5b34838376417', data)
   },
+  //获取地址名称
+  getCoorDinateName(data) {
+    return HTTPS.fetchGet(HOST + '/api/5b71283b33d91', data)
+  },
+  //获取帮助列表
+  getIssueLists() {
+    return HTTPS.fetchPost(HOST + '/api/5b0fd232c3f41', {uid: 1, cid: 1})
+  },
+  //获取帮助详情
+  getIssueDetail(data){
+    return HTTPS.fetchPost(HOST + '/api/5b0ffeaecb953', data)
+  },
 
   searchShop(data) {
     return HTTPS.fetchGet(HOST + '/api/5b49ae292625a', data)
@@ -291,6 +303,9 @@ export const getEvaluateTags = REQUESTS.getEvaluateTags;
 export const submitEvaluate = REQUESTS.submitEvaluate;
 export const getPhysicalOrderDetail = REQUESTS.getPhysicalOrderDetail;
 export const getCollectionLists = REQUESTS.getCollectionLists;
+export const getCoorDinateName = REQUESTS.getCoorDinateName;
+export const getIssueLists = REQUESTS.getIssueLists;
+export const getIssueDetail = REQUESTS.getIssueDetail;
 
 
 export const getShopList = REQUESTS.getShopList

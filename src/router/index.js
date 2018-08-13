@@ -16,6 +16,9 @@ const Order = () => import ('@/pages/Order/Order');
 const OrderDetail = () => import ('@/pages/OrderDetail/OrderDetail');
 const Collection = () => import ('@/pages/Collection/Collection');
 const Center = () => import ('@/pages/Center/Center');
+const IssueIndex = () => import ('@/pages/Issue/Index');
+const IssueList = () => import ('@/pages/Issue/Issue');
+const IssueDetail = () => import ('@/pages/Issue/Detail');
 const AdminIndex = () => import ('@/pages/AdminIndex/AdminIndex');
 const AdminShop = () => import ('@/pages/AdminShop/AdminShop');
 const AdminShelf = () => import ('@/pages/AdminShelf/AdminShelf');
@@ -153,6 +156,32 @@ const router = new Router({
         keepAlive: false,
         title: '评价'
       }
+    }, {
+      path: '/Issue',
+      name: 'IssueIndex',
+      component: IssueIndex,
+      mate: {
+        keepAlive: false,
+        title: '帮助中心'
+      },
+      children:[{
+        path: '/Issue/List',
+        name: 'IssueList',
+        component: IssueList,
+        meta:{
+          keepAlive: false,
+          title: '帮助中心'
+        }
+      }, {
+        path: '/Issue/List/:id',
+        name: 'IssueDetail',
+        props: true,
+        component: IssueDetail,
+        meta:{
+          keepAlive: false,
+          title: ''
+        }
+      }]
     }, {
       path: '/adminIndex',
       name: 'AdminIndex',

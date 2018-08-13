@@ -5,7 +5,7 @@
       <section class="header-search-lside">
         <img :src="icon">
       </section>
-      <section class="header-search-center">当前位置当前位置当前位置</section>
+      <section class="header-search-center">{{coordinateName}}</section>
       <section class="header-search-rside" @click="jumpSearch">请输入商品名称</section>
     </header>
     <section class="header-palceholder"></section>
@@ -76,7 +76,7 @@
   import footerNav from '@/components/footerNav/footerNav.vue';
   import { Swiper } from 'vux';
   import { mapActions } from 'vuex';
-  import { getIndexBanner, getWxSettings, getNearStore, getMyShop } from '@/api/index.js';
+  import { getIndexBanner, getWxSettings, getNearStore, getMyShop, getCoorDinateName } from '@/api/index.js';
 
   export default {
     name: 'Index',
@@ -84,6 +84,7 @@
       return {
         userType: this.$store.state.user.userType,
         myShop: null,
+        coordinateName:'获取中...',
         myShopIcon01: require('../../assets/baiye/myshop1.png'),
         myShopIcon02: require('../../assets/baiye/myshop2.png'),
         icon: require('../../assets/baiye/icon01@2x.png'),
@@ -105,6 +106,14 @@
       if(!this.$store.state.coordinate.latitude) await this.getCoordinate();
       this.getNearStore();
       this.getMyShop();
+      getCoorDinateName({
+        lat: this.$store.state.coordinate.latitude,
+        lng: this.$store.state.coordinate.longitude,
+      }).then(res=>{
+        if(res.data.code == 1){
+          this.coordinateName = res.data.data.address;
+        }
+      })
     },
     methods: {
       ...mapActions(['getCoordinate']),
