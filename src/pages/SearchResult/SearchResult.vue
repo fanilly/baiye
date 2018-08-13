@@ -61,6 +61,7 @@
   import { LoadMore } from 'vux';
   import { getWxSettings, getSearchResult } from '@/api/index.js';
   import { SET_SEARCH_RESULT } from '@/store/mutation-type.js';
+  import { mapActions } from 'vuex';
 
   export default {
     name: 'SearchResult',
@@ -82,6 +83,8 @@
       };
     },
     methods: {
+      ...mapActions(['getCoordinate']),
+
       jumpSearch(){
         this.$router.replace({
           name:'Search'
@@ -98,7 +101,6 @@
           search: this.word,
           page: this.page
         }).then(res => {
-          console.log(res)
           if (res.data.data.length < 20) this.listLoadedAll = true;
           if (res.data.data.length == 0 && this.lists.length == 0) this.noLists = true;
           this.lists.push(...res.data.data);
@@ -120,21 +122,11 @@
             shopid:shopId
           }
         })
-      }
+      },
     },
-    mounted() {
+    async mounted() {
+      if(!this.$store.state.coordinate.latitude) await this.getCoordinate();
       this.getLists();
-      getWxSettings().then(res => {
-        let data = res.data.data;
-        this.wx.config({
-          debug: global.isDev,
-          appId: data.appid,
-          timestamp: data.timestamp,
-          nonceStr: data.nonceStr,
-          signature: data.signature,
-          jsApiList: ['chooseWXPay']
-        });
-      });
     },
     components: {
       scroller,

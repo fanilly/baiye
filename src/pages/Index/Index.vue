@@ -75,8 +75,8 @@
 <script>
   import footerNav from '@/components/footerNav/footerNav.vue';
   import { Swiper } from 'vux';
+  import { mapActions } from 'vuex';
   import { getIndexBanner, getWxSettings, getNearStore, getMyShop } from '@/api/index.js';
-  const wx = require('weixin-js-sdk');
 
   export default {
     name: 'Index',
@@ -91,21 +91,7 @@
         banners: []
       };
     },
-    mounted() {
-      console.log(this.userType)
-      // getWxSettings().then(res => {
-      //   let data = res.data.data;
-      //   wx.config({
-      //     debug: true,
-      //     appId: data.appid,
-      //     timestamp: data.timestamp,
-      //     nonceStr: data.nonceStr,
-      //     signature: data.signature,
-      //     jsApiList: ['getLocation','openlocation']
-      //   });
-      // });
-      this.getNearStore();
-      this.getMyShop();
+    async mounted() {
       getIndexBanner().then(res => {
         if (res.data.code == 1) {
           let resData = res.data.data;
@@ -115,8 +101,13 @@
           }));
         }
       });
+
+      if(!this.$store.state.coordinate.latitude) await this.getCoordinate();
+      this.getNearStore();
+      this.getMyShop();
     },
     methods: {
+      ...mapActions(['getCoordinate']),
       jumpSearch(){
         this.$router.push({
           name:'Search'

@@ -1,9 +1,10 @@
 import { SET_COORDINATE } from '../mutation-type.js';
+import getCoordinate from '@/api/getCoordinate.js';
 
 export default {
   state: {
-    latitude: 34.79977,
-    longitude: 113.66072
+    latitude: null,
+    longitude: null
   },
 
   getters: {},
@@ -15,5 +16,13 @@ export default {
     }
   },
 
-  actions: {}
+  actions: {
+    async getCoordinate({ commit }) {
+      const coordinate = await getCoordinate();
+      commit(SET_COORDINATE, {
+        latitude: coordinate.latitude,
+        longitude: coordinate.longitude
+      });
+    }
+  }
 }

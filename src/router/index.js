@@ -312,15 +312,20 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   if(to.meta.title) document.title = to.meta.title;
 
-  // if (!localStorage.getItem('USER_INFO')) {
-    login().then(res => {
-      store.commit(SET_USER_INFO, res);
-      next();
-    });
-  // } else {
-    // let userInfo = JSON.parse(localStorage.getItem('USER_INFO'));
-    // store.commit(SET_USER_INFO, userInfo);
-    // next();
+  // const login = () => {
+    // if (!localStorage.getItem('USER_INFO')) {
+      login().then(res => {
+        store.commit(SET_USER_INFO, res);
+        next();
+      });
+    // } else {
+      // let userInfo = JSON.parse(localStorage.getItem('USER_INFO'));
+      // store.commit(SET_USER_INFO, userInfo);
+      // next();
+    // }
+  // };
+  // if(to.name === 'Index' || to.name === 'SearchResult'){
+  //   console.log('need coordinate')
   // }
 });
 
