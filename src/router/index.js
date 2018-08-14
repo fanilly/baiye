@@ -48,6 +48,9 @@ const AdminShopDetail = () => import ('@/pages/AdminShopDetail/AdminShopDetail')
 const AdminShopSettlement = () => import ('@/pages/AdminShopSettlement/AdminShopSettlement');
 const MyWallet = () => import ('@/pages/MyWallet/MyWallet');
 const MyWalletStream = () => import ('@/pages/MyWalletStream/MyWalletStream');
+const BuyVipCard = () => import ('@/pages/BuyVipCard/BuyVipCard');
+const BuyVipDetail = () => import ('@/pages/BuyVipDetail/BuyVipDetail');
+
 
 
 
@@ -433,6 +436,22 @@ const router = new Router({
       mate: {
         keepAlive: false,
         title: '钱包明细'
+      }
+    }, {
+      path: '/buyVipCard/:storeid',
+      name: 'BuyVipCard',
+      component: BuyVipCard,
+      mate: {
+        keepAlive: false,
+        title: '会员卡'
+      }
+    }, {
+      path: '/buyVipDetail/:storeid/:goodid/:status',
+      name: 'BuyVipDetail',
+      component: BuyVipDetail,
+      mate: {
+        keepAlive: false,
+        title: '会员卡'
       }
     }
   ]

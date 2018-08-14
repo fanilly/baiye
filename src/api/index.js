@@ -291,7 +291,6 @@ const REQUESTS = {
   getShopItemDetail(data){
     return HTTPS.fetchGet(HOST + '/api/5b4dde8fcdfe6', data)
   },
-
   //虚拟店下单：
   makeVirtualOrder(data){
     return HTTPS.fetchPost(HOST + '/api/5b4ea4e190f56', data)
@@ -312,8 +311,22 @@ const REQUESTS = {
   getUserWalletDetail(data){
     return HTTPS.fetchPost(HOST + '/api/5b0fc261ea19b', data)
   },
-
-
+  //获取我购买的会员卡：
+  getMyVipCard(data){
+    return HTTPS.fetchPost(HOST + '/api/5b0d3d2ba9402', data)
+  },
+  //获取我购买的会员卡：
+  getVipCardList(data){
+    return HTTPS.fetchPost(HOST + '/api/5b0d3ccfa56f9', data)
+  },
+  //获取可购买的店铺会员卡列表
+  getVipCardDetail(data){
+    return HTTPS.fetchGet(HOST + '/api/5b0e500bc0238', data)
+  },
+  //goBuyVipCard https://food.zzebz.com/api/5b0e95b83a9fd POST
+  goBuyVipCard(data){
+    return HTTPS.fetchPost(HOST + '/api/5b0e95b83a9fd', data)
+  },
 
   // //获取商品列表
   // getGoosList() {
@@ -406,7 +419,11 @@ export const getShopSetting = REQUESTS.getShopSetting
 export const changeShopSetting = REQUESTS.changeShopSetting
 export const getUserWallet = REQUESTS.getUserWallet
 export const getUserWalletDetail = REQUESTS.getUserWalletDetail
+export const getMyVipCard = REQUESTS.getMyVipCard
+export const getVipCardList = REQUESTS.getVipCardList
+export const getVipCardDetail = REQUESTS.getVipCardDetail
+export const goBuyVipCard = REQUESTS.goBuyVipCard
 
-
+ 
 
 

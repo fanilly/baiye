@@ -51,12 +51,12 @@
         emptyIcon: require('../../assets/baiye/empty005.png'),
 
         status: 0,
-        currentName:'已使用',
+        currentName:'未使用',
         navs: [{
-          name: '已使用',
+          name: '未使用',
           status: 0,
         }, {
-          name: '未使用',
+          name: '已使用',
           status: 1,
         }, {
           name: '已过期',

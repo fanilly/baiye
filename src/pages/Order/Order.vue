@@ -27,7 +27,7 @@
                 <span>{{item.shipping_type}}</span>
               </div>
               <div class="paya" v-if="item.status==0" @click.stop="goPayment(item.order_no, item.total_money)">立即支付</div>
-              <div class="paya" v-if="item.status==1" @click.stop="goEvaluate(item.order_no)">去评价</div>
+              <div class="paya" v-if="item.status==4" @click.stop="goEvaluate(item.order_no)">去评价</div>
               <div class="xqa ml" v-if="item.status==0" @click.stop="cancelOrDelOrder(item.order_no,false)">取消订单</div>
               <div class="xqa ml" v-if="item.status>3" @click.stop="cancelOrDelOrder(item.order_no,true)">删除订单</div>
             </div>

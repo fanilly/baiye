@@ -4,7 +4,7 @@
     <div class='rest'>
         <div class='tit1'>当前余额</div>
         <div class='tit2'>{{income.money}}</div>
-        <router-link :to="{name:'MoneyWithdraw',params:{money:income.money}}"  class='gopay JB'>购卡充值</router-link>
+        <router-link :to="{name:'BuyVipCard',params:{storeid:storeid}}"  class='gopay JB'>购卡充值</router-link>
     </div>
 
 

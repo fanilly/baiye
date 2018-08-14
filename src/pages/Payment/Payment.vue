@@ -59,7 +59,7 @@
             });
             setTimeout(() => {
               var str = ''
-              if (that.data.kind == 1) {
+              if (this.$store.state.payment.kind == 1) {
 
               } else {
                 this.$router.replace({
@@ -93,15 +93,14 @@
               this.feedback.Alert({
                 msg:'付款成功，现在为你跳转订单页面',
                 callback:()=>{
-                  if (that.data.kind == 1) {
+                  if (this.$store.state.payment.kind == 1) {
 
-                  } else if (that.data.kind == 3) {
+                  } else if (this.$store.state.payment.kind == 3) {
 
                   } else {
                     this.$router.replace({
                       name:'Order'
                     });
-                    return;
                   }
                 }
               })
