@@ -44,19 +44,23 @@ body{ background-color: #fff; padding-bottom: 1.40rem;}
 
 /* pages/shopWithdrawCash/shopWithdrawCash.wxss*/page{background-color: #f7f7f7;}
 
-.pop-mask{position: fixed;left: 0;top: 0;width: 100%;height: 100%;background-color: rgba(0, 0, 0, 0.5);z-index: 9999;}
-.pop{width: 5.60rem;height: 4.34rem;background-color: #fff;border-radius: .20rem;margin: 1.00rem auto 0;overflow: hidden;position: relative;}
+.pop-mask{position: fixed;left: 0;top: 0;width: 100%;height: 100%;background-color: rgba(0, 0, 0, 0.5);z-index: 2;}
+.pop{width: 5.60rem;/*height: 4.34rem;*/background-color: #fff;border-radius: .20rem;margin: 2.00rem auto 0;overflow: hidden;position: relative;}
 .pop .ptitle{text-align: center;font-size: .32rem;line-height: 1.10rem;border-bottom: 1px solid #f7f7f7;}
 .pop .close{width: 1.10rem;height: 1.10rem;position: absolute;right: 0;top: 0;}
-.pop .close image{width: .20rem;height: .20rem;position: absolute;left: 0;right: 0;top: 0;bottom: 0;margin: auto;}
+.pop .close img{width: .36rem;height: .36rem;position: absolute;left: 0;right: 0;top: 0;bottom: 0;margin: auto;}
 .pop .price{text-align: center;font-size: .66rem;color: #000000;font-weight: 600;padding: .40rem 0 0rem;}
-.pop .price text{text-align: center;font-size: .24rem;color: #000000;font-weight: normal;}
+.pop .price span{text-align: center;font-size: .24rem;color: #000000;font-weight: normal;}
 .pop .desc{text-align: center;font-size: .28rem;color: #666666;margin-bottom: .40rem;}
 .input-group{display: flex;justify-content: center;position: relative;}
-.input-group>input{border: 1px solid #f7f7f7;height: .82rem;width: .82rem;border-right: 0;text-align: center;}
-.input-group>input:nth-child(6){border-right: 1px solid #f7f7f7;}
+.input-group input{border: 1px solid #f7f7f7;height: .82rem;width: 80%; margin:0 auto; text-align: center; }
+/*.input-group>input:nth-child(6){border-right: 1px solid #f7f7f7;}*/
 .hide-input{position: absolute;width: 4.92rem;height: 100%;background-color: #000;opacity: 0;z-index: 1000;}
 .hide-input input{position: absolute;top: -2000px;}
+.sure{ text-align: center; font-size: 0.3rem; line-height: 0.9rem;background-image: linear-gradient(150deg, #ffbf00 0%, #ffa800 100%), linear-gradient( #23252a, #23252a);  text-align: center; margin-top: 0.4rem; border-top: 1px sloid #f5f5f5; color:#fff; }
 
 
-
+// .input-group>input{border: 1px solid #f7f7f7;height: .82rem;width: .82rem;border-right: 0;text-align: center;}
+// .input-group>input:nth-child(6){border-right: 1px solid #f7f7f7;}
+// .hide-input{position: absolute;width: 4.92rem;height: 100%;background-color: #000;opacity: 0;z-index: 1000;}
+// .hide-input input{position: absolute;top: -2000px;}

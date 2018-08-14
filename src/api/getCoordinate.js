@@ -15,25 +15,33 @@ export default function() {
       });
     });
     if (isDev) {
-      setTimeout(() => {
-        resolve({
-          latitude: 34.79977,
-          longitude: 113.66072
-        })
-      }, 2000);
+      if (sessionStorage.getItem('USER_COORDINATE')) {
+        resolve(JSON.parse(sessionStorage.getItem('USER_COORDINATE')));
+      } else {
+        setTimeout(() => {
+          const coordinate = {
+            latitude: 34.79977,
+            longitude: 113.66072
+          };
+          sessionStorage.setItem('USER_COORDINATE', JSON.stringify(coordinate));
+          resolve(coordinate);
+        }, 2000);
+      }
     } else {
-      wx.ready(function() {
-        console.log('ready')
-        wx.getLocation({
-          type: 'wgs84',
-          success: function(res) {
-            console.log('get location success')
-            let latitude = res.latitude;
-            let longitude = res.longitude;
-            resolve({ latitude, longitude });
-          }
+      if (sessionStorage.getItem('USER_COORDINATE')) {
+        resolve(JSON.parse(sessionStorage.getItem('USER_COORDINATE')));
+      } else {
+        wx.ready(function() {
+          wx.getLocation({
+            type: 'wgs84',
+            success: function(res) {
+              const coordinate = { latitude: res.latitude, longitude: res.longitude };
+              sessionStorage.setItem('USER_COORDINATE', JSON.stringify(coordinate));
+              resolve(coordinate);
+            }
+          });
         });
-      });
+      }
     }
   });
 }

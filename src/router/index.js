@@ -23,6 +23,7 @@ const CouponIndex = () => import ('@/pages/Issue/Index');
 const AdminIndex = () => import ('@/pages/Coupon/Index');
 const CouponBuy = () => import ('@/pages/Coupon/Buy');
 const CouponList = () => import ('@/pages/Coupon/List');
+const MyEvaluate = () => import ('@/pages/MyEvaluate/MyEvaluate');
 const AdminShop = () => import ('@/pages/AdminShop/AdminShop');
 const AdminShelf = () => import ('@/pages/AdminShelf/AdminShelf');
 const ShopOrder = () => import ('@/pages/ShopOrder/ShopOrder');
@@ -45,6 +46,8 @@ const WealthWithdraw = () => import ('@/pages/WealthWithdraw/WealthWithdraw');
 const AdminShopPreview = () => import ('@/pages/AdminShopPreview/AdminShopPreview');
 const AdminShopDetail = () => import ('@/pages/AdminShopDetail/AdminShopDetail');
 const AdminShopSettlement = () => import ('@/pages/AdminShopSettlement/AdminShopSettlement');
+const MyWallet = () => import ('@/pages/MyWallet/MyWallet');
+const MyWalletStream = () => import ('@/pages/MyWalletStream/MyWalletStream');
 
 
 
@@ -62,7 +65,8 @@ const router = new Router({
       component: Index,
       meta: {
         keepAlive: true,
-        title: '首页'
+        title: '首页',
+        locationAssign: true
       }
     },
     {
@@ -81,7 +85,7 @@ const router = new Router({
       props: true,
       meta: {
         keepAlive: false,
-        title: '订单'
+        title: '订单详情'
       }
     },
     {
@@ -110,7 +114,8 @@ const router = new Router({
       component: Shop,
       meta: {
         keepAlive: false,
-        title:'店铺首页'
+        title:'店铺首页',
+        locationAssign: true
       }
     },
     {
@@ -120,7 +125,8 @@ const router = new Router({
       component: Settlement,
       meta: {
         keepAlive: false,
-        title: '确认订单'
+        title: '确认订单',
+        locationAssign: true
       }
     }, {
       path: '/payment',
@@ -214,7 +220,8 @@ const router = new Router({
         component: CouponBuy,
         meta:{
           keepAlive: false,
-          title: '领取优惠券'
+          title: '领取优惠券',
+          locationAssign: true
         }
       }, {
         path: '/Coupon/List/:shopid',
@@ -226,6 +233,15 @@ const router = new Router({
           title: '我的优惠券'
         }
       }]
+    }, {
+      path: '/MyEvaluate/:shopid',
+      props:true,
+      name: 'MyEvaluate',
+      component: MyEvaluate,
+      mate: {
+        keepAlive: false,
+        title: '我的评价'
+      }
     }, {
       path: '/adminIndex',
       name: 'AdminIndex',
@@ -371,7 +387,7 @@ const router = new Router({
         title: '钱包明细'
       }
     }, {
-      path: '/wealthWithdraw/:money',
+      path: '/wealthWithdraw/:money/:shopid',
       name: 'WealthWithdraw',
       component: WealthWithdraw,
       mate: {
@@ -402,6 +418,22 @@ const router = new Router({
         keepAlive: false,
         title: '确认订单'
       }
+    }, {
+      path: '/myWallet/:storeid',
+      name: 'MyWallet',
+      component: MyWallet,
+      mate: {
+        keepAlive: false,
+        title: '我的钱包'
+      }
+    }, {
+      path: '/myWalletStream/:storeid',
+      name: 'MyWalletStream',
+      component: MyWalletStream,
+      mate: {
+        keepAlive: false,
+        title: '钱包明细'
+      }
     }
   ]
 });
@@ -409,18 +441,22 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
 
   if(to.meta.title) document.title = to.meta.title;
-
-  //解决SPA ios微信版本问题导致页面跳转url未变化
   const userAgent = navigator.userAgent;
-  if (/iPhone|iPad|iPod/i.test(userAgent) && to.path !== location.pathname) location.assign(to.fullPath);
 
-  //登录
+  if(to.meta.locationAssign && /iPhone|iPad|iPod/i.test(userAgent) && to.path != location.pathname){
+    location.assign(to.fullPath);
+    return;
+  }
+
   if (!sessionStorage.getItem('USER_INFO')) {
     if(to.query.user_token){
+
       login(to.query.user_token).then(res => {
         store.commit(SET_USER_INFO, res);
+        location.href = location.origin + location.pathname;
         next();
       });
+
     }else{
       const isDev = process.env.NODE_ENV === 'development';
       if(isDev){

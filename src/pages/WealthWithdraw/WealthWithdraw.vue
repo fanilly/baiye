@@ -21,38 +21,39 @@
         <div class='both'>
             <span class='tl'>可提现金额 ¥{{myMoney}}</span>
             <span class='t2' @click='getAll'>全部提现</span>
-             <!-- bindtap='choseall' -->
         </div>
     </div>
 
     <div class='fbottom'>
-        <div class='submit JB' @click='MoneyWithdraw'>确认提现</div>
-         <!-- bindtap='gopay' -->
+        <div class='submit JB' @click='goWithdraw'>确认提现</div>
     </div>
 
     <div class="popBg" v-cloak v-if='openAccountOk' @click='openAccountOk = false'></div>
     <div class="popPicker" v-cloak v-if='openAccountOk'>
-        <h2>选择性别 <span  @click='openAccountOk = false'>确定</span></h2>
+        <h2>选择提现方式 <span  @click='openAccountOk = false'>确定</span></h2>
         <picker :data='accounts' v-model='accountValue' @on-change='changeAccount'></picker>
     </div>
 
-    <!-- <view class="pop-mask" wx:if="{{startWidthdraw}}">
-        <view class="pop">
-            <view class="ptitle">请输入提现密码</view>
-            <view class="close" bindtap="handleClosePop">
-                <image src="../images/shopicon48.png"></image>
-            </view>
-            <view class="price">
-                <text>￥</text>{{inputMoney}}</view>
-            <view class="desc">提现金额</view>
-            <view class="input-group">
-                <input wx:for="{{password}}" wx:key="{{index}}" maxlength="1" type="password" data-index="{{index}}" value="{{item == -1 ? '' : item}}" />
-                <view class="hide-input" bindtap="handleStartInput">
-                    <input type="number" focus="{{foucs}}" maxlength="6" bindinput="handleRecordPwd" confirm-type="send" />
-                </view>
-            </view>
-        </view>
-    </view> -->
+    <div class="pop-mask" v-if="startWidthdraw">
+        <div class="pop">
+            <div class="ptitle">请输入提现密码</div>
+            <div class="close" @click='startWidthdraw=false'>
+                <img src='../../assets/shopicon17.png' />
+            </div>
+            <div class="price">
+                <span>￥</span>{{inputvalue}}</div>
+            <div class="desc">提现金额</div>
+            <div class="input-group">
+                <input type="password" maxlength="6" v-model ='password'/>
+                <!-- <input v-for="(item,index) in passwordData" maxlength="1" type="password" v-model="passwordData[index]" />
+                <div class="hide-input" bindtap="handleStartInput">
+                    <input type="number" focus="foucs" maxlength="6" bindinput="handleRecordPwd" confirm-type="send" />
+                </div> -->
+            </div>
+            <div class='sure' @click='makeShopWithdraw'>确定</div>
+
+        </div>
+    </div>
 
    
 </div>
@@ -76,7 +77,12 @@ export default {
             ]],
             accountValue:[''],
             account:'',
-            openAccountOk:false
+            openAccountOk:false,
+            type:1,
+            passwordData:[-1, -1, -1, -1, -1, -1],
+            foucs: false,
+            password:' ',
+            startWidthdraw:false
         };
     },
     beforeCreate() {
@@ -84,57 +90,72 @@ export default {
     created(){
        console.log('created',this.$route.params.money) 
        this.myMoney = this.$route.params.money
+       this.shopid = this.$route.params.shopid
     },
     mounted(){
         
     },
     methods:{
-        makeShopWithdraw(){
+        //打开密码框
+        goWithdraw(){
             if(this.myMoney==0){
                 this.feedback.Toast({  msg:'当前余额为0，无法提现',  timeout:1500 });
             }else if(this.inputvalue==""){
                 this.feedback.Toast({  msg:'请先输入提现金额',  timeout:1500 });
-                this.inputvalue = ''
             }else if(this.inputvalue*1>this.myMoney*1){
                 this.feedback.Toast({  msg:'提现金额不足，请重新输入',  timeout:1500 });
-                this.inputvalue = ''
             }else if(this.inputvalue==0){
                 this.feedback.Toast({  msg:'请输入正确的提现金额',  timeout:1500 });
-                this.inputvalue = ''
+            }else{
+                this.password = ''
+                this.startWidthdraw = true
+            }
+            
+        },
+        //提交
+        makeShopWithdraw(){
+            console.log('dfdjs',this.myMoney,this.inputvalue)
+            if(this.password.length==''){
+                this.feedback.Toast({  msg:'请输入提现密码',  timeout:1500 });
+            }else if(this.password.length!=6){
+                this.feedback.Toast({  msg:'提现密码长度有误',  timeout:1500 });
             }else{
                 makeShopWithdraw({
-                    /*waiter_id: this.$store.state.user.userid,
-                    money: this.inputvalue*/
-
-                    // shop_id Integer[整数] 必填   1  虚拟店ID 
-                    // money Integer[整数] 必填   10  提现金额 最少10元 
-                    // password String[字符串] 必填     提现密码 
-                    // type 1微信 2支付宝
-
+                    shop_id: this.shopid,
+                    money: this.inputvalue,
+                    type: this.type,
+                    password:this.password
                 }).then(res => {
                     console.log('提现',res)
-                    this.inputvalue = ''
                     if (res.data.code == 1) {
+                        this.startWidthdraw = false
                         this.feedback.Toast({  msg:'提现成功！',  timeout:1500 });
                         setTimeout(()=>{
                              this.$router.back(-1)
                         },1500)
+                    }else{
+                        this.feedback.Toast({  msg:res.data.info,  timeout:1500 });
                     }
                 });
             }
         },
+
+        //全部提现
         getAll(){
             this.inputvalue = this.myMoney
         },
+
+        //选择提现方式
         changeAccount(value){
-            this.accountValue = value
-            if(value=='微信零钱') this.sex = 1
-            else if(value=='支付宝账户') this.sex = 2
+            var res = value[0]
+            console.log(value[0])
+            if(res=='微信零钱'){ this.type = 1
+            }else{   this.type = 2  }
         },
         
     },
     components: {
-      
+        Picker
     }
 };
 

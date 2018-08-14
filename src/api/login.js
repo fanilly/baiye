@@ -4,7 +4,7 @@ export default function(userToken) {
     const isDev = process.env.NODE_ENV === 'development';
     if (isDev) {
       let userInfo = {
-        userid: 45,
+        userid: 46,
         nickName: '发光的闪闪闪',
         userType: 2,
         avatar: 'http://d.hiphotos.baidu.com/image/pic/item/b17eca8065380cd79a75c52cad44ad3458828183.jpg'

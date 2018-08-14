@@ -48,7 +48,7 @@
         listLoadedAll: false,
         noLists: false,
 
-        emptyIcon: require('../../assets/k2.png'),
+        emptyIcon: require('../../assets/baiye/empty005.png'),
 
         status: 0,
         currentName:'已使用',
@@ -137,7 +137,7 @@
   }
 
   .empty-status>img {
-    width: 2.39rem;
+    width: 2.4rem;
   }
 
   .empty-status .desc {

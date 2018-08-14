@@ -64,7 +64,7 @@
         allowLoadMore: true,
         listLoadedAll: false,
         noLists: false,
-        emptyIcon:require('../../assets/k2.png'),
+        emptyIcon:require('../../assets/baiye/empty001.png'),
 
         status: -1,
         navs: [{

@@ -1,3 +1,4 @@
+@import '../base.less';
 .mask {
   position: fixed;
   width: 100%;
@@ -50,7 +51,7 @@
       font-size: .42rem;
       color: #333;
       font-weight: normal;
-      color: #ff8657;
+      color: @main-color;
       span {
         font-size: .28rem;
       }
@@ -65,7 +66,7 @@
         height: .5rem;
         text-align: center;
         border-radius: 50%;
-        background-color: #ff8657;
+        background-color: @main-color;
         line-height: .5rem;
       }
       .count-box {
@@ -75,9 +76,9 @@
       }
       .reduce {
         background-color: transparent;
-        border: 2px solid #ff8657;
+        border: 2px solid @main-color;
         i {
-          color: #ff8657;
+          color: @main-color;
         }
       }
       i {
@@ -86,6 +87,15 @@
         position: relative;
         top: -1px;
       }
+    }
+    .choose {
+      padding: 0 .2rem;
+      font-size: .28rem;
+      height: .5rem;
+      line-height: .5rem;
+      border-radius: .25rem;
+      color: #fff;
+      background-color: @main-color;
     }
   }
   .content-box {

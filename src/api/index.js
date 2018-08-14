@@ -165,6 +165,14 @@ const REQUESTS = {
   buyCouponPayment(data){
     return HTTPS.fetchGet(HOST + '/api/5b06dcf02625a', data)
   },
+  //获取会员中心数据
+  getShopCenterData(data){
+    return HTTPS.fetchPost(HOST + '/api/5b0fb5835553c', data)
+  },
+  //获取我的评价
+  getMyEvaluateLists(data){
+    return HTTPS.fetchGet(HOST + '/api/5b093b1c16e36', data)
+  },
 
   searchShop(data) {
     return HTTPS.fetchGet(HOST + '/api/5b49ae292625a', data)
@@ -296,6 +304,16 @@ const REQUESTS = {
   changeShopSetting(data){
     return HTTPS.fetchPost(HOST + '/api/5b4db787bebc2', data)
   },
+  //获取普通用户的钱包余额 5b0fb5835553c POST
+  getUserWallet(data){
+    return HTTPS.fetchPost(HOST + '/api/5b0fb5835553c', data)
+  },
+  //用户消费明细
+  getUserWalletDetail(data){
+    return HTTPS.fetchPost(HOST + '/api/5b0fc261ea19b', data)
+  },
+
+
 
   // //获取商品列表
   // getGoosList() {
@@ -349,6 +367,8 @@ export const getAllowBuyCouponList = REQUESTS.getAllowBuyCouponList;
 export const buyCoupon = REQUESTS.buyCoupon;
 export const buyCouponPayment = REQUESTS.buyCouponPayment;
 export const getBuyCouponList = REQUESTS.getBuyCouponList;
+export const getShopCenterData = REQUESTS.getShopCenterData;
+export const getMyEvaluateLists = REQUESTS.getMyEvaluateLists;
 
 
 export const getShopList = REQUESTS.getShopList
@@ -384,6 +404,9 @@ export const getShopItemDetail = REQUESTS.getShopItemDetail
 export const makeVirtualOrder = REQUESTS.makeVirtualOrder
 export const getShopSetting = REQUESTS.getShopSetting
 export const changeShopSetting = REQUESTS.changeShopSetting
+export const getUserWallet = REQUESTS.getUserWallet
+export const getUserWalletDetail = REQUESTS.getUserWalletDetail
+
 
 
 

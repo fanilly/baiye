@@ -124,7 +124,8 @@
               buyCouponPayment({
                 order_no: res.data.data.order_no,
                 user_id: this.$store.state.user.userid,
-                order_type: 'CO'
+                order_type: 'CO',
+                type: 2
               }).then(res => {
                 if (res.data.code == 1) {
                   resolve(res);

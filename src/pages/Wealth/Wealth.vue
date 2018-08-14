@@ -6,7 +6,7 @@
             <div>我的余额(元)</div>
             <div>{{moneyData.available_money}}</div>
         </div>
-        <div class="rside">申请提现</div>
+        <router-link class="rside" :to='{name:"WealthWithdraw",params:{money:moneyData.available_money,shopid:shopid}}'>申请提现</router-link>
     </div>
 
     <div class="record">

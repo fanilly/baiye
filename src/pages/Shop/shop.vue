@@ -11,7 +11,7 @@
             </section>
             <section class="mall-info-header-rside" @click="showShopDetailPop = true">
               <h2 class="mall-name">{{shopDetail.name}}</h2>
-              <h3 class="mall-flags">{{shopDetail.is_dada ? '达达配送' : '商家自配'}} 月销{{shopDetail.sales_num}}</h3>
+              <h3 class="mall-flags">{{shopDetail.is_dada ? '达达配送' : '商家自配'}} 月销{{shopDetail.sales_num}} (满{{shopDetail.minimum}}元起送)</h3>
               <p class="mall-desc">{{shopDetail.description}}</p>
             </section>
             <section class="mall-info-header-star" @click="handleToggleCollectionStatus">
@@ -40,6 +40,7 @@
           @plus="plus"
           @reduce="reduce"
           @maskHandle="maskHandle"
+          @choose="choose"
         ></goods-detail>
       </transition>
     </section>
@@ -95,10 +96,10 @@
                 </section>
                 <section class="shop-info-wapper">
                   <div class="detail-title">商家信息</div>
-                  <div class="info-list" @click="handleCallPhone(shopDetail.mobile)">门店电话：
+                  <a :href="'tel:'+shopDetail.mobile" class="info-list">门店电话：
                       <span class="info-list-content">{{shopDetail.mobile}}</span>
                       <span class="info-list-btn">联系TA</span>
-                  </div>
+                  </a>
                   <div class="info-list">商品数量：
                       <span class="info-list-content">{{shopDetail.goods_count}}</span>
                   </div>
@@ -195,8 +196,10 @@
 
     <!-- 底部 -->
     <footer-trolley
+      v-if="shopDetail"
       :totalMoney="choosedTotalPrice"
       :total="choosedTotalNum"
+      :minimum="shopDetail.minimum"
       @initTrolleyPos="initTrolleyPos"
       @handleClickBtn="handleGoSettlement"
       @handleClickTrolley="handleClickTrolley"
@@ -228,6 +231,7 @@ import {
   changeCartGoodsNum,
   addCart,
   getCartLists,
+  getWxSettings,
   getPhysicalGoodsDetail,
 } from '@/api/index.js';
 
@@ -681,8 +685,33 @@ export default {
         }
       })
     },
+
+    //打开地图查看店铺地址
+    handleGoMapCoordinate(coordinate){
+      coordinate = coordinate.split(',');
+      wx.openLocation({
+        latitude: parseFloat(coordinate[1]), // 纬度，浮点数，范围为90 ~ -90
+        longitude: parseFloat(coordinate[0]), // 经度，浮点数，范围为180 ~ -180。
+        name: this.shopDetail.coordinate_address, // 位置名
+        address: this.shopDetail.name, // 地址详情说明
+        scale: 1, // 地图缩放级别,整形值,范围从1~28。默认为最大
+        infoUrl: '' // 在查看位置界面底部显示的超链接,可点击跳转
+      });
+    }
   },
   mounted() {
+
+    getWxSettings().then(res => {
+      let data = res.data.data;
+      this.wx.config({
+        debug: global.isDev,
+        appId: data.appid,
+        timestamp: data.timestamp,
+        nonceStr: data.nonceStr,
+        signature: data.signature,
+        jsApiList: ['openLocation']
+      });
+    });
 
     setTimeout(() => {
       ScrollTo(window,0,1);

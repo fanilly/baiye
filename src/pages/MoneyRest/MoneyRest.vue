@@ -15,7 +15,7 @@
         <router-link :to="{name:'MoneyStream'}" class='yellow'>交易明细</router-link>
         <span>|</span>
         <!--  bindtap='golink' data-url='../issue/issue' -->
-        <span class='yellow'>常见问题</span>
+        <router-link class='yellow' :to="{name:'IssueList'}">常见问题</router-link>
     </div>
 
     

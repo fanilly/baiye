@@ -74,7 +74,7 @@
     data() {
       return {
         coordinateIcon: require('../../assets/baiye/icon01@2x.png'),
-        emptyIcon: require('../../assets/emptystatus.png'),
+        emptyIcon: require('../../assets/baiye/empty002.png'),
         lists:[],
         page: 1,
         allowLoadMore: true,
