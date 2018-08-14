@@ -57,18 +57,16 @@
               msg: res.data.info,
               timeout: 1000
             });
-            // setTimeout(() => {
-            //   var str = ''
-            //   if (that.data.kind == 1) {
-            //     str = '../order/order?index=1'
-            //   } else {
-            //     str = '../takeorder/takeorder';
-            //     wx.switchTab({
-            //       url: str
-            //     });
-            //     return;
-            //   }
-            // }, 1000)
+            setTimeout(() => {
+              var str = ''
+              if (that.data.kind == 1) {
+
+              } else {
+                this.$router.replace({
+                  name:'Order'
+                })
+              }
+            }, 1000)
           } else {
             this.feedback.Toast({
               msg: res.data.info,
@@ -95,24 +93,23 @@
               this.feedback.Alert({
                 msg:'付款成功，现在为你跳转订单页面',
                 callback:()=>{
-                  // if (that.data.kind == 1) {
-                  //   str = '../order/order?index=1'
-                  // } else if (that.data.kind == 3) {
-                  //   str = '../order/order?index=1'
-                  // } else {
-                  //   str = '../takeorder/takeorder';
-                  //   wx.switchTab({
-                  //       url: str
-                  //   });
-                  //   return;
-                  // }
+                  if (that.data.kind == 1) {
+
+                  } else if (that.data.kind == 3) {
+
+                  } else {
+                    this.$router.replace({
+                      name:'Order'
+                    });
+                    return;
+                  }
                 }
               })
             },
             fail:err=>{
               this.feedback.Toast({
                 msg:JSON.stringify(err),
-                timeout:20000
+                timeout:1500
               })
             }
           });

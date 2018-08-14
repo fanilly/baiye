@@ -29,14 +29,14 @@
           {
             "pagePath": "/order",
             "text": "订单",
-            "iconPath": require('../../assets/baiye/title2-2@3x.png'),
-            "selectedIconPath": require('../../assets/baiye/title2-1@3x.png')
+            "iconPath": require('../../assets/baiye/title0-3@3x.png'),
+            "selectedIconPath": require('../../assets/baiye/title0-4@3x.png')
           },
           {
             "pagePath": "/center",
             "text": "我的",
-            "iconPath": require('../../assets/baiye/title3-2@3x.png'),
-            "selectedIconPath": require('../../assets/baiye/title3-1@3x.png')
+            "iconPath": require('../../assets/baiye/title0-5@3x.png'),
+            "selectedIconPath": require('../../assets/baiye/title0-6@3x.png')
           }
         ]
       }

@@ -1,46 +1,53 @@
 <template>
-  <section :class="settings.isSelf*1 === 1 ? 'coupon-item received' : 'coupon-item'">
-    <span class="horn top-left"></span>
-    <span class="horn top-right"></span>
-    <span class="horn bottom-left"></span>
-    <span class="horn bottom-right"></span>
-    <span class="line bottom-line"></span>
-    <span class="line top-line"></span>
-    <span class="line right-line"></span>
-    <span class="line left-line"></span>
-    <section class="coupon-item-content">
-      <section class="coupon-item-content-lside">
-        <h3><span>$</span> 300</h3>
-        <h4>满 2000 可用</h4>
-        <p>有效期至2018-09-09</p>
-      </section>
-      <section class="coupon-item-content-rside" @click="handleReceiveCoupon">
-        <span>{{settings.isSelf*1 === 1 ? '已' : ''}}领取</span>
-      </section>
-    </section>
+  <section class="qlist">
+    <div :class="{item:true,out:item.status!=0}">
+      <div class="fone">
+        <div class="fleft">
+          <img :src="icon01" style="width: 1.04rem;" />
+          <div class="tit2" v-if="item.type != 4">优惠券</div>
+          <div class="tit2" v-if="item.type == 4">赠品券</div>
+        </div>
+        <div class="fright">
+          <div class="tit1">{{item.name}}</div>
+          <div class="tit2" v-if="item.end_time==''">永久有效</div>
+          <div class="tit2" v-if="item.end_time !=''">有限期至：{{item.end_time}}</div>
+        </div>
+        <img v-if="item.status ==2" class="dimg" :src="icon02" />
+        <img v-if="item.status ==1" class="dimg" :src="icon03" />
+      </div>
+      <div class="dw">
+        <div class="dl"></div>
+        <div class="dr"></div>
+      </div>
+      <div class="rules" v-if="item.type !='4'">订单满{{item.min_money}}元可以使用</div>
+    </div>
   </section>
 </template>
 <script>
-export default {
-  props: {
-    settings: {
-      type: Object,
-      default: {},
-      required: true
+  export default {
+    name:'couponItem',
+    props: {
+      item: {
+        type: Object,
+        default: {},
+        required: true
+      }
+    },
+    data() {
+      return {
+        icon01: require('../../assets/coupon_2.png'),
+        icon02: require('../../assets/quan_03.png'),
+        icon03: require('../../assets/quan_06.png'),
+      };
+    },
+    methods: {
+      handleReceiveCoupon() {
+        this.$emit('handleReceiveCoupon');
+      }
     }
-  },
-  data() {
-    return {};
-  },
-  methods: {
-    handleReceiveCoupon(){
-      this.$emit('handleReceiveCoupon');
-    }
-  }
-};
+  };
 
 </script>
 <style lang="less" scoped>
-@import './coupon.less';
-
+  @import './coupon.less';
 </style>

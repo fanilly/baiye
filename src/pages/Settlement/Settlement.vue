@@ -173,9 +173,9 @@
             }).then(resData=>{
               if(resData.data.code == 1){
                 this.address.aid = resData.data.data.address_id;
-                this.address.user_name = res.userName;
-                this.address.user_address = res.detailInfo;
-                this.address.user_phone = res.telNumber;
+                this.address.user_name = res.userName || '';
+                this.address.user_address = res.detailInfo || '';
+                this.address.user_phone = res.telNumber || '';
                 this.getShippingFee();
               }else{
                 this.feedback.Toast({
@@ -344,7 +344,7 @@
       getWxSettings().then(res => {
         let data = res.data.data;
         this.wx.config({
-          debug: global.isDev,
+          debug: true,
           appId: data.appid,
           timestamp: data.timestamp,
           nonceStr: data.nonceStr,

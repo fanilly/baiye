@@ -19,7 +19,10 @@ const Center = () => import ('@/pages/Center/Center');
 const IssueIndex = () => import ('@/pages/Issue/Index');
 const IssueList = () => import ('@/pages/Issue/Issue');
 const IssueDetail = () => import ('@/pages/Issue/Detail');
-const AdminIndex = () => import ('@/pages/AdminIndex/AdminIndex');
+const CouponIndex = () => import ('@/pages/Issue/Index');
+const AdminIndex = () => import ('@/pages/Coupon/Index');
+const CouponBuy = () => import ('@/pages/Coupon/Buy');
+const CouponList = () => import ('@/pages/Coupon/List');
 const AdminShop = () => import ('@/pages/AdminShop/AdminShop');
 const AdminShelf = () => import ('@/pages/AdminShelf/AdminShelf');
 const ShopOrder = () => import ('@/pages/ShopOrder/ShopOrder');
@@ -194,6 +197,33 @@ const router = new Router({
         meta:{
           keepAlive: false,
           title: ''
+        }
+      }]
+    }, {
+      path: '/Coupon',
+      name: 'CouponIndex',
+      component: CouponIndex,
+      mate: {
+        keepAlive: false,
+        title: ''
+      },
+      children:[{
+        path: '/Coupon/Buy/:shopid/:waitid',
+        name: 'CouponBuy',
+        props:true,
+        component: CouponBuy,
+        meta:{
+          keepAlive: false,
+          title: '领取优惠券'
+        }
+      }, {
+        path: '/Coupon/List/:shopid',
+        name: 'CouponList',
+        props: true,
+        component: CouponList,
+        meta:{
+          keepAlive: false,
+          title: '我的优惠券'
         }
       }]
     }, {
@@ -377,31 +407,36 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
+
   if(to.meta.title) document.title = to.meta.title;
 
-    if (!sessionStorage.getItem('USER_INFO')) {
-      if(to.query.user_token){
+  //解决SPA ios微信版本问题导致页面跳转url未变化
+  const userAgent = navigator.userAgent;
+  if (/iPhone|iPad|iPod/i.test(userAgent) && to.path !== location.pathname) location.assign(to.fullPath);
+
+  //登录
+  if (!sessionStorage.getItem('USER_INFO')) {
+    if(to.query.user_token){
+      login(to.query.user_token).then(res => {
+        store.commit(SET_USER_INFO, res);
+        next();
+      });
+    }else{
+      const isDev = process.env.NODE_ENV === 'development';
+      if(isDev){
         login(to.query.user_token).then(res => {
           store.commit(SET_USER_INFO, res);
           next();
         });
       }else{
-        const isDev = process.env.NODE_ENV === 'development';
-        if(isDev){
-          login(to.query.user_token).then(res => {
-            store.commit(SET_USER_INFO, res);
-            next();
-          });
-        }else{
-          location.href = 'https://food.zzebz.com/index/login/login?jump_url=' + to.path.replace(/\//g, '^');
-        }
+        location.href = 'https://food.zzebz.com/index/login/login?jump_url=' + to.path.replace(/\//g, '^');
       }
-    } else {
-      let userInfo = JSON.parse(sessionStorage.getItem('USER_INFO'));
-      store.commit(SET_USER_INFO, userInfo);
-      next();
     }
-
+  } else {
+    let userInfo = JSON.parse(sessionStorage.getItem('USER_INFO'));
+    store.commit(SET_USER_INFO, userInfo);
+    next();
+  }
 });
 
 export default router;

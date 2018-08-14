@@ -13,8 +13,10 @@ console.log(typeof HOST);
 const REQUESTS = {
   //获取微信JS-SDK配置信息
   getWxSettings() {
+    console.log(encodeURIComponent(location.href))
+    console.log(location.href)
     return HTTPS.fetchPost(HOST + '/api/5b69400bc5674', {
-      jump_url: location.href
+      jump_url: encodeURIComponent(location.href)
     })
   },
   //获取首页banner数据
@@ -147,6 +149,22 @@ const REQUESTS = {
   getIssueDetail(data){
     return HTTPS.fetchPost(HOST + '/api/5b0ffeaecb953', data)
   },
+  //获取可购买优惠券
+  getAllowBuyCouponList(data){
+    return HTTPS.fetchGet(HOST + '/api/5b0e10f601676', data)
+  },
+  //获取已购买优惠券
+  getBuyCouponList(data){
+    return HTTPS.fetchGet(HOST + '/api/5b0e691bc7c4a', data)
+  },
+  //购买优惠券
+  buyCoupon(data){
+    return HTTPS.fetchGet(HOST + '/api/5b0e4d582f2e2', data)
+  },
+  //购买优惠券
+  buyCouponPayment(data){
+    return HTTPS.fetchGet(HOST + '/api/5b06dcf02625a', data)
+  },
 
   searchShop(data) {
     return HTTPS.fetchGet(HOST + '/api/5b49ae292625a', data)
@@ -245,33 +263,38 @@ const REQUESTS = {
   submitPasswordSet(data){
     return HTTPS.fetchPost(HOST + '/api/5b4ee593dd40a', data)
   },
-  //获取商户验证码 5b19fb9e7a120 post
+  //获取商户验证码
   sendAdminCode(data){
     return HTTPS.fetchPost(HOST + '/api/5b19fb9e7a120', data)
   },
-  //获取钱包明细 5b4f11bfc65d4 get
+  //获取钱包明细
   getWealthDetail(data){
     return HTTPS.fetchGet(HOST + '/api/5b4f11bfc65d4', data)
   },
-  //获取虚拟店订单列表 5b4ef4e2c65d4
+  //获取虚拟店订单列表
   getShopOrder(data){
     return HTTPS.fetchGet(HOST + '/api/5b4ef4e2c65d4', data)
   },
-  //虚拟店提现 5b4fe3d63567e POST 测试模式 
+  //虚拟店提现
   makeShopWithdraw(data){
     return HTTPS.fetchPost(HOST + '/api/5b4fe3d63567e', data)
   },
-  //获取虚拟店商品详情 5b4dde8fcdfe6 GET 测试模式 
+  //获取虚拟店商品详情
   getShopItemDetail(data){
     return HTTPS.fetchGet(HOST + '/api/5b4dde8fcdfe6', data)
   },
-  //虚拟店下单： https://food.zzebz.com/api/5b4ea4e190f56 POST 测试模式 
+
+  //虚拟店下单：
   makeVirtualOrder(data){
     return HTTPS.fetchPost(HOST + '/api/5b4ea4e190f56', data)
   },
-  //获取虚拟店铺设置数据： https://food.zzebz.com/api/5b4eed0b81b32 POST 测试模式 
+  //获取虚拟店铺设置数据：
   getShopSetting(data){
     return HTTPS.fetchPost(HOST + '/api/5b4eed0b81b32', data)
+  },
+  //修改虚拟店个人信息：
+  changeShopSetting(data){
+    return HTTPS.fetchPost(HOST + '/api/5b4db787bebc2', data)
   },
 
   // //获取商品列表
@@ -322,6 +345,10 @@ export const getCollectionLists = REQUESTS.getCollectionLists;
 export const getCoorDinateName = REQUESTS.getCoorDinateName;
 export const getIssueLists = REQUESTS.getIssueLists;
 export const getIssueDetail = REQUESTS.getIssueDetail;
+export const getAllowBuyCouponList = REQUESTS.getAllowBuyCouponList;
+export const buyCoupon = REQUESTS.buyCoupon;
+export const buyCouponPayment = REQUESTS.buyCouponPayment;
+export const getBuyCouponList = REQUESTS.getBuyCouponList;
 
 
 export const getShopList = REQUESTS.getShopList
@@ -356,5 +383,7 @@ export const makeShopWithdraw = REQUESTS.makeShopWithdraw
 export const getShopItemDetail = REQUESTS.getShopItemDetail
 export const makeVirtualOrder = REQUESTS.makeVirtualOrder
 export const getShopSetting = REQUESTS.getShopSetting
+export const changeShopSetting = REQUESTS.changeShopSetting
+
 
 

@@ -9,7 +9,7 @@
     </router-link>
 
     <nav class="nav">
-      <router-link to="/" class="item">
+      <router-link :to="{name:'CouponList',params:{shopid:shopid}}" class="item">
         <p>10</p>
         <h3>优惠券</h3>
       </router-link>
@@ -47,7 +47,7 @@
     data() {
       return {
         nav: [
-          { name: '领取优惠券', url: '/Order', words: '', src: require('../../assets/icon01.png') },
+          { name: '领取优惠券', url: `/Coupon/Buy/${this.shopid}/0`, words: '', src: require('../../assets/icon01.png') },
           { name: '会员卡', url: '/Collection', words: '', src: require('../../assets/icon02.png') },
             ],
         uerInfo: this.$store.state.user,

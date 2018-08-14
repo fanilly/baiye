@@ -3,39 +3,40 @@
     
     <!--pages/shopPwd/shopPwd.wxml-->
     <div class="wapper">
-        <form bindsubmit="handleFormSubmit">
-            <div class="input-box-wapper">
-                <div class="input-box-type1">
-                    <div class="lside">店铺名称:</div>
-                    <input placeholder-style="color:#ccc" type="text" name="shop_name" placeholder="请输入店铺名称" v-model="shop_name" />
-                </div>
-                <div class="input-box-type1">
-                    <div class="lside">店主名称:</div>
-                    <input placeholder-style="color:#ccc" type="text" name="real_name" placeholder="请输入店主姓名" v-model="real_name" />
-                </div>
-                <div class="input-box-type1">
-                    <div class="lside">手机号:</div>
-                    <input placeholder-style="color:#ccc" type='number' maxlength="11" name="phone" placeholder="请输入负责人手机号" v-model="phone" />
-                </div>
-                <div class="input-box-type1">
-                    <div class="lside">支付宝号:</div>
-                    <input placeholder-style="color:#ccc" type="text" maxlength="80" name="alipay_no" placeholder="请输入支付宝账号" v-model="alipay_no" />
-                </div>
+        
+        <div class="input-box-wapper">
+            <div class="input-box-type1">
+                <div class="lside">店铺名称:</div>
+                <input placeholder-style="color:#ccc" type="text" name="shop_name" placeholder="请输入店铺名称" v-model="shop_name" />
             </div>
-            <div class="img-upload">
-                <div class="header">
-                    <div class="lside">店铺主图</div>
-                    <div class="center">建议上传750*350</div>
-                    <!-- <div class="rside" bindtap="handleChooseImage">上传</div> -->
-                    <div class="rside"><input type="file" class="upload" :accept="accept" @change="handleChooseImg" >上传</div>
-                </div>
-                <img class="img" :src="viewImgs ? viewImgs : require('../../assets/baiye/c23@2x.png') " />
-                <!-- <img class="img" :src="../../assets/baiye/c23@2x.png"/> -->
+            <div class="input-box-type1">
+                <div class="lside">店主名称:</div>
+                <input placeholder-style="color:#ccc" type="text" name="real_name" placeholder="请输入店主姓名" v-model="real_name" />
             </div>
-            <div class="footer">
-                <button form-type="submit" class="btn">确认</button>
+            <div class="input-box-type1">
+                <div class="lside">手机号:</div>
+                <input placeholder-style="color:#ccc" type='number' maxlength="11" name="phone" placeholder="请输入负责人手机号" v-model="phone" />
             </div>
-        </form>
+            <div class="input-box-type1">
+                <div class="lside">支付宝号:</div>
+                <input placeholder-style="color:#ccc" type="text" maxlength="80" name="alipay_no" placeholder="请输入支付宝账号" v-model="alipay_no" />
+            </div>
+        </div>
+        <div class="img-upload">
+            <div class="header">
+                <div class="lside">店铺主图</div>
+                <div class="center">建议上传750*350</div>
+                <!-- <div class="rside" bindtap="handleChooseImage">上传</div> -->
+                <div class="rside"><input type="file" class="upload" :accept="accept" @change="handleChooseImg" >上传</div>
+            </div>
+            <img class="img" :src="banner" />
+            <!--  ? banner : require('../../assets/baiye/c23@2x.png')  -->
+            <!-- <img class="img" :src="../../assets/baiye/c23@2x.png"/> -->
+        </div>
+        <div class="footer">
+            <div form-type="submit" class="btn" @click = 'changeShopSetting'>确认</div>
+        </div>
+        
     </div>
 
 
@@ -48,7 +49,7 @@
 const getFileUrl = (sourceObj) => { return window.URL.createObjectURL(sourceObj.files.item(0)); };
 import axios from 'axios';
 
-import { getShopSetting, } from '@/api/index.js';
+import { getShopSetting, changeShopSetting } from '@/api/index.js';
 const wx = require('weixin-js-sdk');
 
 export default {
@@ -62,8 +63,9 @@ export default {
             uploadFile:{path:''},
             shopid:'',
             accept: 'image/gif,image/jpeg,image/png,image/jpg',
-            viewImgs: '',
+            banner: '',
             filedata:Object,
+            ImdID:''
         };
     },
     beforeCreate() {
@@ -72,6 +74,7 @@ export default {
         this.shopid = this.$route.params.shopid
     },
     mounted() {
+        this.feedback.Loading.open('加载中');
         this.getShopSetting()
     },
     methods:{
@@ -80,7 +83,14 @@ export default {
             getShopSetting({
                 shop_id: this.shopid
             }).then(res=>{
+                this.feedback.Loading.close();
                 console.log('获取店铺数据',res)
+                this.shop_name = res.data.data.shop_name ? res.data.data.shop_name : ''
+                this.real_name = res.data.data.real_name ? res.data.data.real_name : ''
+                this.phone = res.data.data.phone ? res.data.data.phone : ''
+                this.alipay_no = res.data.data.alipay_no ? res.data.data.alipay_no : ''
+                this.banner = res.data.data.banner ? res.data.data.banner : "require('../../assets/baiye/c23@2x.png')"
+                this.ImdID = res.data.data.banner_id ? res.data.data.banner_id : ''
             })
         },
         //选择图片
@@ -96,10 +106,10 @@ export default {
                  });
                 return;
             }
-            //this.feedback.Loading.open('操作中');
+            this.feedback.Loading.open('操作中');
             // 将选择的图片显示到页面中
             let index = e.target.dataset.index * 1;
-            this.viewImgs = getFileUrl(e.srcElement)
+            this.banner = getFileUrl(e.srcElement)
             
             //上传图片
             let file = e.target.files[0]
@@ -112,13 +122,52 @@ export default {
             }
             axios.post(global.host+'/api/5b0bee5c49e21', param, config)
             .then(response => {
+                this.feedback.Loading.close();
                 if (response.data.code == 1) {
+                    this.feedback.Toast({  msg:'上传成功',  timeout:1500 });
                     console.log(response.data.data.id)
                     // this.changeShopBanner(response.data.data.id)
+                    this.ImdID = response.data.data.id
                 }
                 console.log(response.data)
             })
         },
+
+
+        
+        //提交
+        changeShopSetting(){
+            if(this.shop_name==''){ this.feedback.Toast({  msg:'店铺名称不能为空',  timeout:1500 });}
+            else if(this.real_name==''){ this.feedback.Toast({  msg:'店主姓名不能为空',  timeout:1500 });}
+            else if(this.phone==''){ this.feedback.Toast({  msg:'手机号不能为空',  timeout:1500 });}
+            else if(this.phone.length!=11){ this.feedback.Toast({  msg:'手机号长度有误',  timeout:1500 });}
+            else if(this.alipay_no==''){ this.feedback.Toast({  msg:'支付宝账号不能为空',  timeout:1500 });}
+            else if(this.ImdID==''){ this.feedback.Toast({  msg:'请上传店铺主图',  timeout:1500 });}
+            else{
+                this.feedback.Loading.open('提交中');
+                changeShopSetting({
+                    shop_name:this.shop_name,
+                    real_name:this.real_name,
+                    phone:this.phone,
+                    banner:this.ImdID,
+                    alipay_no:this.alipay_no,
+                    shop_id:this.shopid
+                }).then(res=>{
+                    console.log('修改店铺信息',res)
+                    this.feedback.Loading.close();
+                    if(res.data.code==1){
+                        this.feedback.Toast({  msg:'修改成功',  timeout:1500 });
+                        setTimeout(()=>{
+                             this.$router.back(-1)
+                        },1500)
+                    }
+                })
+            }
+            
+        }
+
+
+
     },
     components: {
       
