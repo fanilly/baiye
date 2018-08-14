@@ -2,10 +2,11 @@ const wx = require('weixin-js-sdk');
 import { getWxSettings } from './index.js';
 export default function() {
   return new Promise(resolve => {
+    const isDev = process.env.NODE_ENV === 'development';
     getWxSettings().then(res => {
       let data = res.data.data;
       wx.config({
-        debug: true,
+        debug: isDev,
         appId: data.appid,
         timestamp: data.timestamp,
         nonceStr: data.nonceStr,
@@ -13,7 +14,6 @@ export default function() {
         jsApiList: ['getLocation', 'openlocation']
       });
     });
-    const isDev = process.env.NODE_ENV === 'development';
     if (isDev) {
       setTimeout(() => {
         resolve({

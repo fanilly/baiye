@@ -23,6 +23,7 @@ const AdminIndex = () => import ('@/pages/AdminIndex/AdminIndex');
 const AdminShop = () => import ('@/pages/AdminShop/AdminShop');
 const AdminShelf = () => import ('@/pages/AdminShelf/AdminShelf');
 const ShopOrder = () => import ('@/pages/ShopOrder/ShopOrder');
+const ShopCenter = () => import ('@/pages/ShopCenter/ShopCenter');
 const Wealth = () => import ('@/pages/Wealth/Wealth');
 const CodeMine = () => import ('@/pages/CodeMine/CodeMine');
 const CodeExtend = () => import ('@/pages/CodeExtend/CodeExtend');
@@ -38,6 +39,9 @@ const WealthStream = () => import ('@/pages/WealthStream/WealthStream');
 const WealthPassword = () => import ('@/pages/WealthPassword/WealthPassword');
 const WealthDetail = () => import ('@/pages/WealthDetail/WealthDetail');
 const WealthWithdraw = () => import ('@/pages/WealthWithdraw/WealthWithdraw');
+const AdminShopPreview = () => import ('@/pages/AdminShopPreview/AdminShopPreview');
+const AdminShopDetail = () => import ('@/pages/AdminShopDetail/AdminShopDetail');
+const AdminShopSettlement = () => import ('@/pages/AdminShopSettlement/AdminShopSettlement');
 
 
 
@@ -84,6 +88,16 @@ const router = new Router({
       meta: {
         keepAlive: false,
         title: '个人中心'
+      }
+    },
+    {
+      path: '/ShopCenter/:shopid',
+      name: 'ShopCenter',
+      props: true,
+      component: ShopCenter,
+      meta: {
+        keepAlive: false,
+        title: '会员中心'
       }
     },
     {
@@ -295,7 +309,7 @@ const router = new Router({
         title: '我的客户'
       }
     }, {
-      path: '/adminSetting',
+      path: '/adminSetting/:shopid',
       name: 'AdminSetting',
       component: AdminSetting,
       mate: {
@@ -334,6 +348,30 @@ const router = new Router({
         keepAlive: false,
         title: '提现'
       }
+    }, {
+      path: '/adminShopPreview/:shopid',
+      name: 'AdminShopPreview',
+      component: AdminShopPreview,
+      mate: {
+        keepAlive: false,
+        title: '店铺预览'
+      }
+    }, {
+      path: '/adminShopDetail/:shopid/:goodid',
+      name: 'AdminShopDetail',
+      component: AdminShopDetail,
+      mate: {
+        keepAlive: false,
+        title: '商品详情'
+      }
+    }, {
+      path: '/adminShopSettlement/:name/:img/:num/:attr/:price/:goodid/:shopid/:virtualshopid/attrid',
+      name: 'AdminShopSettlement',
+      component: AdminShopSettlement,
+      mate: {
+        keepAlive: false,
+        title: '确认订单'
+      }
     }
   ]
 });
@@ -348,7 +386,15 @@ router.beforeEach((to, from, next) => {
           next();
         });
       }else{
-        location.href = 'https://food.zzebz.com/index/login/login?jump_url=' + to.path.replace(/\//g, '^');
+        const isDev = process.env.NODE_ENV === 'development';
+        if(isDev){
+          login(to.query.user_token).then(res => {
+            store.commit(SET_USER_INFO, res);
+            next();
+          });
+        }else{
+          location.href = 'https://food.zzebz.com/index/login/login?jump_url=' + to.path.replace(/\//g, '^');
+        }
       }
     } else {
       let userInfo = JSON.parse(sessionStorage.getItem('USER_INFO'));

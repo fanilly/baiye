@@ -83,7 +83,7 @@ export default {
                 { name: '我的财富', icon: require('../../assets/baiye/c4@2x.png'), src: '' },
                 { name: '我的客户', icon: require('../../assets/baiye/c5@2x.png'), src: '' },
                 { name: '我的名片', icon: require('../../assets/baiye/c7@2x.png'), src: 'AdminShopCard' },
-                { name: '店铺设置', icon: require('../../assets/baiye/c9@2x.png'), src: 'AdminSetting' },
+                { name: '店铺设置', icon: require('../../assets/baiye/c9@2x.png'), src: '' },
             ],
             detail:{},
             userInfo:this.$store.state.user
@@ -107,6 +107,7 @@ export default {
                     this.navLink[2].src = `ShopOrder/${this.detail.id}`
                     this.navLink[3].src = `Wealth/${this.detail.id}`
                     this.navLink[4].src = `AdminCustomer/${this.detail.id}`
+                    this.navLink[6].src = `AdminSetting/${this.detail.id}`
                 }
             });
         }

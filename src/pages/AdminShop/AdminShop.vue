@@ -49,12 +49,12 @@
             <span>店铺二维码</span>
         </div>
         <!-- bindtap="handleJump" data-url="../adminShopPreview/adminShopPreview?shopid={{fictitiousShopId}}&userid={{userid}}" -->
-        <div class="sin" >
+        <router-link class="sin" :to='{name:"AdminShopPreview"}' >
             <img src="../../assets/baiye/c25@2x.png" />
             <span>店铺预览</span>
-        </div>
+        </router-link>
          <!-- bindtap="handleJump" data-url="../adminShelf/adminShelf" -->
-        <router-link  class="sin" :to='{name:"AdminShelf"}'>
+        <router-link  class="sin" :to='{name:"AdminShelf",params:{shopid:shopid}}'>
             <img src="../../assets/baiye/c26@2x.png" />
             <span>添加商品</span>
         </router-link>
@@ -104,7 +104,6 @@ export default {
     beforeCreate() {
     },
     created(){
-        console.log(123)
         this.shopid = this.$route.params.shopid
     },
     mounted() {

@@ -4,7 +4,7 @@
 
     <div class='sing'>
         <div class='chose'>
-            <div class='one'>
+            <div class='one'  @click='openAccountOk = true'>
                 <div class='sleft'>提现至</div>
                 <img src='../../assets/return.png' />
                 <div class="sr">微信</div>
@@ -30,14 +30,38 @@
          <!-- bindtap='gopay' -->
     </div>
 
-    
+    <div class="popBg" v-cloak v-if='openAccountOk' @click='openAccountOk = false'></div>
+    <div class="popPicker" v-cloak v-if='openAccountOk'>
+        <h2>选择性别 <span  @click='openAccountOk = false'>确定</span></h2>
+        <picker :data='accounts' v-model='accountValue' @on-change='changeAccount'></picker>
+    </div>
+
+    <!-- <view class="pop-mask" wx:if="{{startWidthdraw}}">
+        <view class="pop">
+            <view class="ptitle">请输入提现密码</view>
+            <view class="close" bindtap="handleClosePop">
+                <image src="../images/shopicon48.png"></image>
+            </view>
+            <view class="price">
+                <text>￥</text>{{inputMoney}}</view>
+            <view class="desc">提现金额</view>
+            <view class="input-group">
+                <input wx:for="{{password}}" wx:key="{{index}}" maxlength="1" type="password" data-index="{{index}}" value="{{item == -1 ? '' : item}}" />
+                <view class="hide-input" bindtap="handleStartInput">
+                    <input type="number" focus="{{foucs}}" maxlength="6" bindinput="handleRecordPwd" confirm-type="send" />
+                </view>
+            </view>
+        </view>
+    </view> -->
+
    
 </div>
 </template>
 
 <script>
+import {  Picker } from 'vux'
 
-import { getMoneyWithdraw} from '@/api/index.js';
+import { makeShopWithdraw} from '@/api/index.js';
 const wx = require('weixin-js-sdk');
 
 export default {
@@ -45,7 +69,14 @@ export default {
     data() {
         return {
             myMoney:'',
-            inputvalue:''
+            inputvalue:'',
+            accounts:[[
+                { id: 0, name: '微信零钱', value:'微信零钱' },
+                { id: 1, name: '支付宝账户', value:'支付宝账户' }
+            ]],
+            accountValue:[''],
+            account:'',
+            openAccountOk:false
         };
     },
     beforeCreate() {
@@ -58,7 +89,7 @@ export default {
         
     },
     methods:{
-        MoneyWithdraw(){
+        makeShopWithdraw(){
             if(this.myMoney==0){
                 this.feedback.Toast({  msg:'当前余额为0，无法提现',  timeout:1500 });
             }else if(this.inputvalue==""){
@@ -71,9 +102,15 @@ export default {
                 this.feedback.Toast({  msg:'请输入正确的提现金额',  timeout:1500 });
                 this.inputvalue = ''
             }else{
-                getMoneyWithdraw({
-                    waiter_id: this.$store.state.user.userid,
-                    money: this.inputvalue
+                makeShopWithdraw({
+                    /*waiter_id: this.$store.state.user.userid,
+                    money: this.inputvalue*/
+
+                    // shop_id Integer[整数] 必填   1  虚拟店ID 
+                    // money Integer[整数] 必填   10  提现金额 最少10元 
+                    // password String[字符串] 必填     提现密码 
+                    // type 1微信 2支付宝
+
                 }).then(res => {
                     console.log('提现',res)
                     this.inputvalue = ''
@@ -88,13 +125,22 @@ export default {
         },
         getAll(){
             this.inputvalue = this.myMoney
-        }
+        },
+        changeAccount(value){
+            this.accountValue = value
+            if(value=='微信零钱') this.sex = 1
+            else if(value=='支付宝账户') this.sex = 2
+        },
         
     },
     components: {
       
     }
 };
+
+
+
+
 
 </script>
 

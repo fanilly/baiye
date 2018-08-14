@@ -26,7 +26,7 @@
         </router-link>
     </div>
 
-    <div class="list-btn-wapper">
+    <div class="list-btn-wapper" v-if='isOff'>
         <router-link class="btn-lists" :to='{name:"WealthStream",params:{shopid:shopid,money:moneyData.money,cash:moneyData.cash_money}}'>
             <img class="icon" src="../../assets/baiye/c19@2x.png" />
             <div class="center">账单明细</div>
@@ -57,7 +57,8 @@ export default {
     data() {
         return {
            moneyData:{},
-           shopid:''
+           shopid:'',
+           isOff:false
         };
     },
     beforeCreate() {
@@ -66,7 +67,7 @@ export default {
         this.shopid = this.$route.params.shopid
     },
     mounted() {
-        this.feedback.Loading.open('请求中');
+        //this.feedback.Loading.open('请求中');
         this.getShopWealth()
     },
     methods:{
@@ -74,7 +75,8 @@ export default {
             getShopWealth({
                shop_id :this.shopid
             }).then(res=>{
-                this.feedback.Loading.close();
+                this.isOff = true
+                //this.feedback.Loading.close();
                 console.log('我的财富',res)
                 if(res.data.code==1){
                     this.moneyData = res.data.data

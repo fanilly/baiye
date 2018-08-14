@@ -256,7 +256,23 @@ const REQUESTS = {
   //获取虚拟店订单列表 5b4ef4e2c65d4
   getShopOrder(data){
     return HTTPS.fetchGet(HOST + '/api/5b4ef4e2c65d4', data)
-  }
+  },
+  //虚拟店提现 5b4fe3d63567e POST 测试模式 
+  makeShopWithdraw(data){
+    return HTTPS.fetchPost(HOST + '/api/5b4fe3d63567e', data)
+  },
+  //获取虚拟店商品详情 5b4dde8fcdfe6 GET 测试模式 
+  getShopItemDetail(data){
+    return HTTPS.fetchGet(HOST + '/api/5b4dde8fcdfe6', data)
+  },
+  //虚拟店下单： https://food.zzebz.com/api/5b4ea4e190f56 POST 测试模式 
+  makeVirtualOrder(data){
+    return HTTPS.fetchPost(HOST + '/api/5b4ea4e190f56', data)
+  },
+  //获取虚拟店铺设置数据： https://food.zzebz.com/api/5b4eed0b81b32 POST 测试模式 
+  getShopSetting(data){
+    return HTTPS.fetchPost(HOST + '/api/5b4eed0b81b32', data)
+  },
 
   // //获取商品列表
   // getGoosList() {
@@ -336,7 +352,9 @@ export const submitPasswordSet = REQUESTS.submitPasswordSet
 export const sendAdminCode = REQUESTS.sendAdminCode
 export const getWealthDetail = REQUESTS.getWealthDetail
 export const getShopOrder = REQUESTS.getShopOrder
-
-
+export const makeShopWithdraw = REQUESTS.makeShopWithdraw
+export const getShopItemDetail = REQUESTS.getShopItemDetail
+export const makeVirtualOrder = REQUESTS.makeVirtualOrder
+export const getShopSetting = REQUESTS.getShopSetting
 
 

@@ -26,7 +26,7 @@
     <!-- 搜索 -->
     <section class="search-box">
       <input class="search-box-content" ref="searchBox" @blur="handleSearch" @keyup.enter="handleSearch" type="search" placeholder="请输入关键词搜索商品" name="">
-      <img class="search-box-coupon" :src="couponIcons" alt="">
+      <img class="search-box-coupon" :src="couponIcons" @click="goShopCenter" alt="">
     </section>
 
     <!-- 商品详情 -->
@@ -378,6 +378,15 @@ export default {
           msg:'请至少选择一件商品'
         });
       }
+    },
+
+    goShopCenter(){
+      this.$router.push({
+        name:'ShopCenter',
+        params:{
+          shopid:this.shopid
+        }
+      })
     },
 
     //展示商品详情

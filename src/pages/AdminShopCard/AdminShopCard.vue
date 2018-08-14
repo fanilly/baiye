@@ -34,10 +34,7 @@ export default {
     data() {
         return {
             shopInfo:{},
-            imgs: [],
-            imgData: {
-                accept: 'image/gif, image/jpeg, image/png, image/jpg',
-            },
+
             accept: 'image/gif,image/jpeg,image/png,image/jpg',
             viewImgs: '',
             filedata:Object,

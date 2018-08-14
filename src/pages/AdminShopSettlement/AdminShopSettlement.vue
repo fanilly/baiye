@@ -11,24 +11,23 @@
       </div>
       <img class="arrow" :src="arrowIcon" alt="">
     </header>
-    <main class="main" v-if="carlist && carlist.data.length>0">
+    <main class="main">
       <div class='tit1'>
         <!-- <image src='../images/banyuan.png'></image> -->
-        请仔细确认您的订单
+        请仔细确认您的订单 
       </div>
-      <div v-for="(item,index) in carlist.data" :key="index"  :class="{order:true,bn:index==(carlist.data.length-1)}">
-        <div class="dwt JB">{{item.cate_name}}</div>
-        <div class="item" v-for="(now,nowdex) in item.goods" :key="nowdex">
-          <img :src="now.img_url+'?x-oss-process=image/resize,m_lfit,w_50,limit_0/auto-orient,1/quality,q_90'"
-            class="pic" />
-          <div class="name" v-if="now.attr==''">{{now.title}}</div>
-          <div class="nameb" v-if="now.attr!=''">
-            <span class="tone">{{now.title}}</span>
-            <span class="two">{{now.attr}}</span>
+      <div class="order bn">
+        <!-- <div class="dwt JB">{{goodInfo.cate_name}}</div> -->
+        <div class="item">
+          <img :src="goodInfo.img" class="pic" />
+          <div class="name" v-if="goodInfo.attr==''">{{goodInfo.name}}</div>
+          <div class="nameb" v-if="goodInfo.attr!=''">
+            <span class="tone">{{goodInfo.name}}</span>
+            <span class="two">{{goodInfo.attr}}</span>
           </div>
-          <div class="num">×{{now.number}}</div>
+          <div class="num">×{{goodInfo.num}}</div>
           <div class="price">¥
-            <span>{{now.price}}</span>
+            <span>{{goodInfo.price}}</span>
           </div>
         </div>
       </div>
@@ -39,7 +38,7 @@
       </div>
 
       <!-- 优惠券 -->
-      <div class="select-box" @click.stop="showSelectCoupon = true">
+      <!-- <div class="select-box" @click.stop="showSelectCoupon = true">
         <div class="lside">优惠券</div>
         <div :class="{center:true,'red-color':coupons.length!=0&&!selectedCoupon[0]}">{{coupons.length == 0 ? '无优惠券可用' : selectedCoupon[0] ? selectedCoupon[0] : '有'+(coupons.length-1)+'张优惠券可用'}}</div>
         <img :src="arrowIcon" alt="">
@@ -55,10 +54,10 @@
             <picker class="picker" :data="coupons" :columns="3" v-model="selectedCoupon" @on-change="selectCouponChange"></picker>
           </div>
         </div>
-      </transition>
+      </transition> -->
 
       <!-- 赠品券 -->
-      <div class="select-box" v-if="gifes.length >= 1" @click.stop="showSelectGife = true">
+      <!-- <div class="select-box" v-if="gifes.length > 1" @click.stop="showSelectGife = true">
         <div class="lside">赠品券</div>
         <div :class="{center:true,'red-color':gifes.length!=0&&!selectedGife[0]}">{{gifes.length == 0 ? '无赠品券可用' : selectedGife[0] ? selectedGife[0] : '有'+(gifes.length-1)+'张赠品券可用'}}</div>
         <img :src="arrowIcon" alt="">
@@ -74,7 +73,7 @@
             <picker class="picker" :data="gifes" :columns="3" v-model="selectedGife" @on-change="selectGifeChange"></picker>
           </div>
         </div>
-      </transition>
+      </transition> -->
 
       <div class="sum">
         <div class="sl">运费</div>
@@ -85,23 +84,24 @@
       </div>
       <div class="sum">
         <div class="sl">总计</div>
-        <div class="sm">共{{carlist.total_num}}个</div>
+        <div class="sm">共{{goodInfo.num}}个</div>
         <div class="sr yl">¥
             <span>{{orderTotalMoney}}</span>
         </div>
       </div>
-      <textarea class="textarea" v-model="remark" placeholder="点击添加订单备注"></textarea>
+      <textarea class="textarea" v-model="remark" placeholder="订单备注"></textarea>
     </main>
-    <footer-submit @handleSubmit="handleSubmit" :btn-txt="'提交订单'+orderTotalMoney"></footer-submit>
+    <footer-submit @handleSubmit="makeVirtualOrder" :btn-txt="'提交订单'+orderTotalMoney"></footer-submit>
   </section>
 </template>
+
 <script>
-  import { getCartLists, getAddress, getWxSettings, getShippingFee, getCoupons, changeAddress, getGife, submitOrder } from '@/api/index.js';
+  import { getCartLists, getAddress, getWxSettings, getShippingFee, getCoupons, changeAddress, getGife, submitOrder, makeVirtualOrder } from '@/api/index.js';
   import { Picker } from 'vux';
   import footerSubmit from '@/components/footerSubmit/footerSubmit.vue';
   import { SET_PAYMENT_OPTIONS } from '@/store/mutation-type.js';
   export default {
-    name: 'Settlement',
+    name: 'AdminShopSettlement',
     props:{
       shopid:{
         require: true
@@ -131,21 +131,25 @@
         selectedGifeId:0,
         selectedGife:[],
         gifes: [],
+
+        orderTotalMoney:0,
+        total_price:0
       };
     },
+    created(){
+      this.goodInfo = this.$route.params
+      console.log(this.goodInfo)
+      this.total_price = this.$route.params.price * this.$route.params.num
+    },
     computed:{
-      orderTotalMoney(){
-        if(!this.carlist) return '';
+      /*orderTotalMoney(){
+        // if(!this.carlist) return '';
         if(!this.orderData) return '';
-        console.log(this.actuallyMoney);
-        return this.actuallyMoney ? ((this.actuallyMoney * 1 + this.orderData.shipping_fee * 1).toFixed(2)) : ((this.carlist.total_price * 1 + this.orderData.shipping_fee * 1).toFixed(2));
-      }
+        return this.actuallyMoney ? ((this.actuallyMoney * 1 + this.orderData.shipping_fee * 1).toFixed(2)) : ((this.total_price * 1 + this.orderData.shipping_fee * 1).toFixed(2));
+      }*/
     },
     watch:{
-      // actuallyMoney(){
-      //   let at = this.actuallyMoney ? ((this.actuallyMoney * 1 + this.orderData.shipping_fee * 1).toFixed(2)) : ((this.carlist.total_price * 1 + this.orderData.shipping_fee * 1).toFixed(2));
-      //   console.log(at);
-      // }
+      
     },
     methods: {
       selectCouponChange(current){
@@ -197,7 +201,7 @@
       },
 
       //提交订单
-      handleSubmit(){
+      /*handleSubmit(){
         this.feedback.Loading.open('提交中');
         let goods = [];
         this.carlist.data.forEach(item=>{
@@ -205,7 +209,7 @@
         });
         submitOrder({
           goods,
-          shop_id: this.shopid,
+          shop_id: this.goodInfo.shopid,
           member:1,
           remark:this.remark,
           user_id:this.$store.state.user.userid,
@@ -236,21 +240,56 @@
             })
           }
         })
+      },*/
+      makeVirtualOrder(){
+        this.feedback.Loading.open('提交中');
+        makeVirtualOrder({
+          order_no:this.orderData.order_no,
+          shop_id:this.goodInfo.shopid,
+          goods_id:this.goodInfo.goodid,
+          virtual_id:this.goodInfo.virtualshopid,
+          shipping_fee:this.orderData.shipping_fee,
+          remark: this.remark,
+          attr:this.goodInfo.attrid,
+          num:this.goodInfo.num,
+          user_id: this.$store.state.user.userid,
+        }).then(res=>{
+          console.log(res);
+          this.feedback.Loading.close();
+          if(res.data.code == 1){
+            this.$store.commit(SET_PAYMENT_OPTIONS, {
+              canUse: res.data.data.can_use,
+              orderNo: res.data.data.order_no,
+              totalMoney: res.data.data.total_money,
+              orderType: 'OD',
+              kind: 2,
+            })
+            this.$router.replace({
+              name:'Payment'
+            })
+          }else{
+            this.feedback.Toast({
+              msg:res.data.info,
+              timeout: 1200,
+            })
+          }
+        })
       },
+
 
       //获取购物车数据
       getCartLists() {
         getCartLists({
           is_waimai: 1,
-          shop_id: this.shopid,
+          shop_id: this.goodInfo.shopid,
           user_id: this.$store.state.user.userid
         }).then(res => {
           if (res.data.code == 1) {
             this.carlist = res.data.data;
             if(this.address) this.getShippingFee();
-            this.getCoupons();
+            //this.getCoupons();
             this.getGife();
-            console.log(this.carlist);
+            //console.log(this.carlist);
           }
         })
       },
@@ -258,11 +297,12 @@
       //获取优惠券
       getCoupons(){
         getCoupons({
-          shop_id:this.shopid,
+          shop_id:this.goodInfo.shopid,
           user_id:this.$store.state.user.userid,
-          total_price:this.carlist.total_price,
-          discounts_price:this.carlist.discounts_price
+          total_price: this.orderTotalMoney, //this.carlist.total_price,
+          discounts_price:this.orderTotalMoney //this.carlist.discounts_price
         }).then(res=>{
+          console.log('获取优惠券',res)
           if(res.data.code == 1 && res.data.data.length!=0){
             this.coupons = res.data.data.map(item=>({
               id:item.aid,
@@ -278,17 +318,18 @@
               type:''
             })
           }
-          console.log('优惠券',res)
+          
+          
         })
       },
 
       //获取赠品券
       getGife(){
         getGife({
-          shop_id:this.shopid,
+          shop_id:this.goodInfo.shopid,
           user_id:this.$store.state.user.userid
         }).then(res=>{
-          if(res.data.code == 1 && res.data.data.length!=0){
+          if(res.data.code == 1){
             this.gifes = res.data.data.map(item=>({
               id:item.aid,
               name:item.name,
@@ -307,14 +348,16 @@
       //获取运费
       getShippingFee(){
         getShippingFee({
-          shop_id:this.shopid,
+          shop_id:this.goodInfo.shopid,
           address_id:this.address.aid,
           order_no: '',
-          order_price:this.carlist.total_price,
+          order_price:this.total_price,
           remark:this.remark || '无'
         }).then(res=>{
           if(res.data.code == 1){
             this.orderData = res.data.data;
+            this.orderTotalMoney = (this.total_price * 1 + this.orderData.shipping_fee * 1).toFixed(2)
+
           }else{
             this.feedback.Toast({
               msg:res.data.info,
@@ -328,18 +371,28 @@
 
     mounted() {
       console.log(this.wx);
-      this.getCartLists();
+      //从购物车获取数据 删除
+      //this.getCartLists();
+
+
       getAddress({ uid: this.$store.state.user.userid }).then(res=>{
+        console.log('获取地址信息')
         if(res.data.code == 1){
           this.address = res.data.data[0];
           console.log(this.address);
-          if(this.carlist) this.getShippingFee();
+          this.getShippingFee();
+          
         }else{
           this.feedback.Toast({
             msg:res.data.info
           });
+          
         }
       });
+
+      
+      //this.getGife();
+
 
       getWxSettings().then(res => {
         let data = res.data.data;
@@ -362,6 +415,17 @@
 </script>
 <style lang="less"
   scoped>
-  @import './Settlement.less';
+  @import './AdminShopSettlement.less';
 
 </style>
+
+
+<!-- order_no String[字符串] 必填     订单编号 
+shop_id Integer[整数] 必填   1  商品所属实体店ID 
+goods_id Integer[整数] 必填   1  商品ID 
+virtual_id Integer[整数] 必填   1  虚拟店ID 
+shipping_fee Float[浮点数] 必填   0.00  运费 
+remark String[字符串] 选填     备注 
+attr String[字符串] 选填     所选商品属性ID 35,36 
+num Integer[整数] 必填   1  所选商品数量 
+user_id Integer[整数] 必填   1  下单用户ID  -->
