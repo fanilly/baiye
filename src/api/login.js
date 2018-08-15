@@ -1,11 +1,11 @@
 import axios from 'axios';
-import Alert from '@/components/feedback/src/alert';
+
 export default function(userToken) {
   return new Promise((resolve, reject) => {
     const isDev = process.env.NODE_ENV === 'development';
     if (isDev) {
       let userInfo = {
-        userid: 169,
+        userid: 67,
         nickName: '发光的闪闪闪',
         userType: 2,
         subscribe: true,
@@ -28,14 +28,6 @@ export default function(userToken) {
             avatar: resData.headimgurl,
             subscribe: resData.subscribe
           };
-          if(!resData.subscribe){
-            Alert({
-              msg:'检测到您未关注公众号，请先关注公众号',
-              callback:()=>{
-                location.href = location.origin + '/Follow';
-              }
-            });
-          }
           sessionStorage.setItem('USER_INFO', JSON.stringify(userInfo));
           resolve(res);
         }

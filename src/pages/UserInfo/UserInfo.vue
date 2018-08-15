@@ -19,15 +19,15 @@
             <img src='../../assets/return.png' class='imgr'  />
             <span class='rt'>{{uesrdata.mobile}}</span>
         </router-link> 
-        <div class='slin'>
+        <div class='slin' @click='openSexyOk = true'>
             <span class="tl">性别</span>
             <img src='../../assets/return.png' class='imgr' />
-            <input class="right" readonly type="text" v-model='sexyValue' placeholder="选择"  @click='openSexyOk = true'>
+            <input class="right" disabled type="text" v-model='sexyValue' placeholder="选择" >
         </div>
-        <div class='slin'>
+        <div class='slin' @click='openAgeOk = true'>
             <span class="tl">年龄</span>
             <img src='../../assets/return.png' class='imgr' />
-            <input class="right" readonly type="text" v-model='ageValue' placeholder="选择" @click='openAgeOk = true'>
+            <input class="right" disabled type="text" v-model='ageValue' placeholder="选择">
         </div>
     </div>
     

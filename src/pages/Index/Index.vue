@@ -10,7 +10,8 @@
     </header>
     <section class="header-palceholder"></section>
 
-    <scroller class='scrollBox' @getData="getIndexNearShop">
+    <div class='scrollBox'>
+    <scroller class='' @getData="getIndexNearShop">
     <!-- banner -->
     <div class='swiperbox'>
     <swiper dots-position="center"
@@ -141,6 +142,7 @@
     <!-- near -->
     <load-more :show-loading="!commentLoadedAll && !noCommentLists" :tip="!commentLoadedAll && !noCommentLists ? '加载中' : '已加载全部数据'" background-color="#fbf9fe"></load-more>
     </scroller>
+  </div>
 
     <footer-nav active-index="0"></footer-nav>
 

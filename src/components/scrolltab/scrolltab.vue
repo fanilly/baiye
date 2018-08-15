@@ -11,6 +11,7 @@
         <div class="mj-scrolltab-icon"><i :class="'iconfont '+item.icon"></i></div>
         <div class="mj-scrolltab-title">{{item.label}}</div>
       </a>
+      <div style="height:1rem;"></div>
     </div>
     <div class="mj-scrolltab-content" ref="scrollView">
       <slot></slot>

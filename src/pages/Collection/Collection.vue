@@ -6,7 +6,7 @@
         <div class="list">
           <div class="item scroll-item" v-for="item,index in lists" :key="index">
             <img class="avatar" @click.stop="goShopIndex(item.id)" :src="item.avatar" alt="">
-            <h4 class="name" @click.stop="goShopIndex(item.id)">{{item.name}}取消关注取消关注取消关注</h4>
+            <h4 class="name" @click.stop="goShopIndex(item.id)">{{item.name}}</h4>
             <span class="btn" @click.stop="cancelCollection(item.id)">取消关注</span>
           </div>
           <load-more v-if="!noLists" :show-loading="!listLoadedAll && !noLists" :tip="!listLoadedAll ? '加载中' : '已加载全部数据'" background-color="#fbf9fe"></load-more>

@@ -47,26 +47,28 @@
 
     <!-- 商品列表 -->
     <main class="main">
-      <scrolltab ref="scrollTabBox" v-if="goodsLists && goodsCate">
-        <scrolltab-panel :label="item.name" :icon="item.icon || ''" v-for="item,index in goodsCate" :key="index">
-          <section class="class-container">
-            <section
-              v-for="(sub, key) in goodsLists[index]"
-              :key="key"
-              :data-goodsid="sub.id"
-              @click="handleShowGoodsDetail(index,key,sub.id)">
-                <goods-item
-                  :item="sub"
-                  :parentIndex="index"
-                  :currentIndex="key"
-                  @plus="plus"
-                  @reduce="reduce"
-                  @choose="choose"
-                ></goods-item>
-              </section>
-          </section>
-        </scrolltab-panel>
-      </scrolltab>
+      <div>
+        <scrolltab ref="scrollTabBox" v-if="goodsLists && goodsCate">
+          <scrolltab-panel :label="item.name" :icon="item.icon || ''" v-for="item,index in goodsCate" :key="index">
+            <section class="class-container">
+              <section
+                v-for="(sub, key) in goodsLists[index]"
+                :key="key"
+                :data-goodsid="sub.id"
+                @click="handleShowGoodsDetail(index,key,sub.id)">
+                  <goods-item
+                    :item="sub"
+                    :parentIndex="index"
+                    :currentIndex="key"
+                    @plus="plus"
+                    @reduce="reduce"
+                    @choose="choose"
+                  ></goods-item>
+                </section>
+            </section>
+          </scrolltab-panel>
+        </scrolltab>
+      </div>
     </main>
 
     <!-- 店铺详情弹出层 -->
@@ -573,15 +575,15 @@ export default {
     hanldeControlScroll(flag){
       const mo = function(e){ e.preventDefault() };
       if(flag == 'stop'){
-        pageScroll.handle(window)
+        // pageScroll.handle(window)
         document.body.style.overflow = 'hidden';
-        document.body.style.overflow='hidden';
-        document.addEventListener("touchmove",mo,false);
+        // document.body.style.overflow='hidden';
+        // document.addEventListener("touchmove",mo,false);
       }else{
-        pageScroll.unhandle(window);
+        // pageScroll.unhandle(window);
         document.body.style.overflow = 'auto';
-        document.body.style.overflow='';
-        document.removeEventListener("touchmove",mo,false);
+        // document.body.style.overflow='';
+        // document.removeEventListener("touchmove",mo,false);
       }
     },
 
@@ -639,13 +641,13 @@ export default {
           //设置分享
           let self = this;
           this.wx.ready(function() {
-            wx.onMenuShareTimeline({
+            self.wx.onMenuShareTimeline({
                 title: self.shopDetail.name,
                 link: location.href,
                 imgUrl: self.shopDetail.avatar,
                 success: () => {}
             });
-            this.wx.onMenuShareAppMessage({
+            self.wx.onMenuShareAppMessage({
               title: self.shopDetail.name, // 分享标题
               desc: self.shopDetail.description, // 分享描述
               link: location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致

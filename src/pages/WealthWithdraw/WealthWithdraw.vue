@@ -7,7 +7,7 @@
             <div class='one'  @click='openAccountOk = true'>
                 <div class='sleft'>提现至</div>
                 <img src='../../assets/return.png' />
-                <div class="sr">微信</div>
+                <div class="sr">{{types}}</div>
             </div>
         </div>
     </div>
@@ -82,7 +82,8 @@ export default {
             passwordData:[-1, -1, -1, -1, -1, -1],
             foucs: false,
             password:' ',
-            startWidthdraw:false
+            startWidthdraw:false,
+            types:'微信零钱'
         };
     },
     beforeCreate() {
@@ -148,6 +149,7 @@ export default {
         //选择提现方式
         changeAccount(value){
             var res = value[0]
+            this.types = res
             console.log(value[0])
             if(res=='微信零钱'){ this.type = 1
             }else{   this.type = 2  }
