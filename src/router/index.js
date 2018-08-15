@@ -4,7 +4,7 @@ import Index from '@/pages/Index/Index';
 import login from '../api/login.js';
 import store from '../store/index.js';
 import { SET_USER_INFO } from '../store/mutation-type.js';
-
+import Alert from '@/components/feedback/src/alert';
 const Shop = () => import ('@/pages/Shop/Shop');
 const Settlement = () => import ('@/pages/Settlement/Settlement');
 const Payment = () => import ('@/pages/Payment/Payment');
@@ -13,16 +13,21 @@ const Evaluate = () => import ('@/pages/Evaluate/Evaluate');
 const Search = () => import ('@/pages/Search/Search');
 const SearchResult = () => import ('@/pages/SearchResult/SearchResult');
 const Order = () => import ('@/pages/Order/Order');
+const PhysicalOrder = () => import ('@/pages/PhysicalOrder/PhysicalOrder');
+const RegisterSalesman = () => import ('@/pages/RegisterSalesman/RegisterSalesman');
+const Follow = () => import ('@/pages/Other/Follow');
 const OrderDetail = () => import ('@/pages/OrderDetail/OrderDetail');
 const Collection = () => import ('@/pages/Collection/Collection');
 const Center = () => import ('@/pages/Center/Center');
 const IssueIndex = () => import ('@/pages/Issue/Index');
 const IssueList = () => import ('@/pages/Issue/Issue');
 const IssueDetail = () => import ('@/pages/Issue/Detail');
-const CouponIndex = () => import ('@/pages/Issue/Index');
-const AdminIndex = () => import ('@/pages/Coupon/Index');
+
+const CouponIndex = () => import ('@/pages/Coupon/Index');
+const AdminIndex = () => import ('@/pages/AdminIndex/AdminIndex');
 const CouponBuy = () => import ('@/pages/Coupon/Buy');
 const CouponList = () => import ('@/pages/Coupon/List');
+
 const MyEvaluate = () => import ('@/pages/MyEvaluate/MyEvaluate');
 const AdminShop = () => import ('@/pages/AdminShop/AdminShop');
 const AdminShelf = () => import ('@/pages/AdminShelf/AdminShelf');
@@ -50,6 +55,7 @@ const MyWallet = () => import ('@/pages/MyWallet/MyWallet');
 const MyWalletStream = () => import ('@/pages/MyWalletStream/MyWalletStream');
 const BuyVipCard = () => import ('@/pages/BuyVipCard/BuyVipCard');
 const BuyVipDetail = () => import ('@/pages/BuyVipDetail/BuyVipDetail');
+const ShopList = () => import ('@/pages/ShopList/ShopList');
 
 
 
@@ -82,6 +88,15 @@ const router = new Router({
       }
     },
     {
+      path: '/PhysicalOrder',
+      name: 'PhysicalOrder',
+      component: PhysicalOrder,
+      meta: {
+        keepAlive: false,
+        title: '虚拟店订单'
+      }
+    },
+    {
       path: '/OrderDetail/:orderNo',
       name: 'OrderDetail',
       component: OrderDetail,
@@ -89,6 +104,25 @@ const router = new Router({
       meta: {
         keepAlive: false,
         title: '订单详情'
+      }
+    },
+    {
+      path: '/Follow',
+      name: 'Follow',
+      component: Follow,
+      meta: {
+        keepAlive: false,
+        title: '关注公众号'
+      }
+    },
+    {
+      path: '/RegisterSalesman/:shopid',
+      name: 'RegisterSalesman',
+      component: RegisterSalesman,
+      props: true,
+      meta: {
+        keepAlive: false,
+        title: '业务员注册'
       }
     },
     {
@@ -453,6 +487,14 @@ const router = new Router({
         keepAlive: false,
         title: '会员卡'
       }
+    }, {
+      path: '/shopList/:cateid',
+      name: 'ShopList',
+      component: ShopList,
+      mate: {
+        keepAlive: false,
+        title: '附近店铺'
+      }
     }
   ]
 });
@@ -493,5 +535,17 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
+
+//如果未关注公众号 去关注
+router.afterEach((to,from)=>{
+  if(!store.state.user.subscribe && to.name != 'Follow'){
+    Alert({
+      msg:'检测到您未关注公众号，请先关注公众号',
+      callback:()=>{
+        location.href = location.origin + '/Follow';
+      }
+    })
+  }
+})
 
 export default router;

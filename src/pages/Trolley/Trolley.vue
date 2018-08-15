@@ -58,8 +58,12 @@
       changeCartGoodsNum(goodsId, attrId, type, index, parentIndex) {
         if(type === 'add'){
           this.trolleys[parentIndex]['goods'][index].number ++;
+          this.trolleysTotal ++;
+          this.totalMoney += this.trolleys[parentIndex]['goods'][index].price*1;
         }else{
           this.trolleys[parentIndex]['goods'][index].number --;
+          this.trolleysTotal --;
+          this.totalMoney -= this.trolleys[parentIndex]['goods'][index].price*1;
           if(this.trolleys[parentIndex]['goods'][index].number < 1){
             this.trolleys[parentIndex]['goods'].splice(index,1);
             if(this.trolleys[parentIndex]['goods'].length == 0){
@@ -101,8 +105,8 @@
         }).then(res => {
           console.log(res);
           if (res.data.code == 1) {
-            this.choosedTotalNum = res.data.data.total_num;
-            this.choosedTotalPrice = res.data.data.total_price;
+            this.trolleysTotal = res.data.data.total_num;
+            this.totalMoney = res.data.data.total_price;
             this.trolleys = res.data.data.data;
           }
         })

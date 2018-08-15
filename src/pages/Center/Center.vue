@@ -41,11 +41,11 @@ export default {
     data() {
         return {
             nav: [
-                { name: '我的订单', url: '/Order', words: '', src: require('../../assets/takeout04.png') },
+                { name: '虚拟店订单', url: '/PhysicalOrder', words: '', src: require('../../assets/takeout04.png') },
                 { name: '我的收藏', url: '/Collection', words: '', src: require('../../assets/sc.png') },
             ],
             nav2: [
-                { name: '地址管理', url: '../address/index', src: require('../../assets/icon04.png') },
+                // { name: '地址管理', url: '../address/index', src: require('../../assets/icon04.png') },
                 { name: '帮助中心', url: '/Issue/List', words: '', src: require('../../assets/icon05.png') },
             ],
             uerInfo:this.$store.state.user,
@@ -59,8 +59,8 @@ export default {
         }
         if(this.uerInfo.userType==1){
             let nav = this.nav;
-            nav.push(...[{ name: '我的二维码', url: 'CodeMine', words: '', src: require('../../assets/sc5.png') },
-                    { name: '我的拓客码', url: 'CodeExtend', words: '', src: require('../../assets/sc5.png') },
+            nav.push(...[{ name: '我的二维码', url: '/CodeMine', words: '', src: require('../../assets/sc5.png') },
+                    { name: '我的拓客码', url: '/CodeExtend', words: '', src: require('../../assets/sc5.png') },
                     { name: '我的收益', url: '/MoneyRest/'+this.$store.state.user.userid, words: '', src: require('../../assets/sc6.png') }]);
             this.nav = nav
         }

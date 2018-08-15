@@ -5,7 +5,8 @@ export default {
     userid: null,
     nickName: '',
     userType: '',
-    avatar: ''
+    avatar: '',
+    subscribe: true
   },
 
   getters: {},
@@ -19,6 +20,7 @@ export default {
       state.nickName = payload.nickName;
       state.userType = payload.userType;
       state.avatar = payload.avatar;
+      state.subscribe = payload.subscribe;
     }
   },
 

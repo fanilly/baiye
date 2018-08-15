@@ -217,6 +217,7 @@ import rate from '@/components/rate/rate.vue';
 
 import goodsItem from '@/components/goodsItem/goodsItem.vue';
 import footerTrolley from '@/components/footerTrolley/footerTrolley.vue';
+import pageScroll from '@/utils/pageScroll.js';
 
 import parabola from '@/utils/parabola.js';
 import ScrollTo from '@/utils/scrollTo.js';
@@ -308,7 +309,9 @@ export default {
     //触发搜索
     handleSearch(cateId,goodsId){
       let searchKeyWord = this.$refs.searchBox.value;
-      if(searchKeyWord == '' || searchKeyWord.trim() == '') return;
+      if(!cateId && !goodsId){
+        if(searchKeyWord == '' || searchKeyWord.trim() == '') return;
+      }
       //开始搜索
       const searchStart = function(searchKeyWord){
         let items = []; //保存所有包含商品及分类名的DOM对象
@@ -331,6 +334,12 @@ export default {
         if (searchLists.length >= 1){ //搜索到内容
           ScrollTo(this.scrollView,this.scrollView.scrollTop,searchLists[0].offsetTop);
           ScrollTo(window,0,500);
+          if(cateId && goodsId){
+            this.$store.commit(SET_SEARCH_RESULT,{
+              cateId:null,
+              goodsId: null
+            });
+          }
         }else{  //未搜索的内容
           this.feedback.Toast({
             msg:'未搜索的内容',
@@ -344,12 +353,8 @@ export default {
 
     //检测是否通过外部搜索点击商品进入本页面
     testingEntryIsSearch(){
-      if(!this.$store.state.searchResult.cateId) return;
-      this.handleSearch(this.$store.state.searchResult.cateId,this.$store.state.searchResult.goodsId);
-      this.$store.commit(SET_SEARCH_RESULT,{
-        cateId:null,
-        goodsId: null
-      });
+      if(!this.$store.getters.getSearchResultData.cateId) return;
+      this.handleSearch(this.$store.getters.getSearchResultData.cateId,this.$store.getters.getSearchResultData.goodsId);
     },
 
     //点击底部购物车图标
@@ -401,7 +406,6 @@ export default {
         goods_id: goodsId,
         type:1
       }).then(res=>{
-        console.log(res);
         this.feedback.Loading.close();
         if(res.data.code == 1){
           let goodsDetailData = res.data.data;
@@ -493,7 +497,6 @@ export default {
             this.getGoodsLists();
             this.getCartLists();
           }
-          console.log(res);
         });
       },300);
     },
@@ -522,7 +525,6 @@ export default {
               timeout: 1500
             });
           }
-          console.log(res);
         });
       },300);
     },
@@ -571,11 +573,13 @@ export default {
     hanldeControlScroll(flag){
       const mo = function(e){ e.preventDefault() };
       if(flag == 'stop'){
-        document.body.style.overflow = 'hidden';
+        pageScroll.handle()
+        // document.body.style.overflow = 'hidden';
         // document.body.style.overflow='hidden';
         // document.addEventListener("touchmove",mo,false);
       }else{
-        document.body.style.overflow = 'auto';
+        pageScroll.unhandle();
+        // document.body.style.overflow = 'auto';
         // document.body.style.overflow='';
         // document.removeEventListener("touchmove",mo,false);
       }
@@ -590,7 +594,6 @@ export default {
       }).then(res=>{
         if(res.data.code == 1){
           this.goodsCate = res.data.data;
-          console.log(this.goodsCate);
         }
       });
     },
@@ -607,7 +610,6 @@ export default {
             return item.map((sub,subkey)=>{
               if(sub.attr.length > 0){
                 let checkSku = sub.check_sku.split(',');
-                console.log(sub)
                 sub.choosedAttr = checkSku.map((i,iindex) => sub.attr[iindex].specs.findIndex(j=>j.id == i) );
               }
               return sub;
@@ -615,7 +617,7 @@ export default {
           });
           setTimeout(()=>{
             this.testingEntryIsSearch();
-          },100);
+          },500);
         }
       });
     },
@@ -632,7 +634,6 @@ export default {
             msrc:item,
             src:item
           }))
-          console.log(this.shopDetail);
         }
       });
     },

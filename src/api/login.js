@@ -7,6 +7,7 @@ export default function(userToken) {
         userid: 46,
         nickName: '发光的闪闪闪',
         userType: 2,
+        subscribe: true,
         avatar: 'http://d.hiphotos.baidu.com/image/pic/item/b17eca8065380cd79a75c52cad44ad3458828183.jpg'
       }
       sessionStorage.setItem('USER_INFO', JSON.stringify(userInfo));
@@ -23,7 +24,8 @@ export default function(userToken) {
             userid: resData.user_id,
             userType: resData.usertype,
             nickName: resData.nickname,
-            avatar: resData.headimgurl
+            avatar: resData.headimgurl,
+            subscribe: resData.subscribe
           };
           sessionStorage.setItem('USER_INFO', JSON.stringify(userInfo));
           resolve(res);

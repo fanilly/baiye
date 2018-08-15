@@ -1,11 +1,11 @@
 <template>
   <footer class="trolley" ref="footer">
-    <section class="trolley-icon" @click="handleClickTrolley">
+    <section :class="{'trolley-icon':true, gray:total<=0}" @click="handleClickTrolley">
       <span><i class="iconfont icon-iconfontgouwuche"></i></span>
       <div v-if="total>=1" class="corner">{{total}}</div>
     </section>
     <div class="count">总计 <span><i>￥</i>{{totalPrice}}</span> 元 <em>{{minimumtxt}}</em></div>
-    <div class="btn" @click="handleClickBtn">{{lable}}</div>
+    <div :class="{btn:true, gray:total<=0}" @click="handleClickBtn">{{lable}}</div>
   </footer>
 </template>
 <script>
@@ -55,7 +55,6 @@ export default {
     }
   },
   mounted() {
-    // console.log(this.$parent.);
     this.initTrolleyPos();
   }
 };

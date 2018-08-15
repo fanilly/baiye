@@ -173,9 +173,13 @@ const REQUESTS = {
   getMyEvaluateLists(data){
     return HTTPS.fetchGet(HOST + '/api/5b093b1c16e36', data)
   },
-
-  searchShop(data) {
-    return HTTPS.fetchGet(HOST + '/api/5b49ae292625a', data)
+  //注册业务员
+  registerSalesman(data) {
+    return HTTPS.fetchGet(HOST + '/api/5b4065c6487ab', data)
+  },
+  //获取关注二维码页面数据
+  getFollowData() {
+    return HTTPS.fetchPost(HOST + '/api/5b738c5c8bfd8')
   },
 
   //获取虚拟店店主信息
@@ -327,6 +331,22 @@ const REQUESTS = {
   goBuyVipCard(data){
     return HTTPS.fetchPost(HOST + '/api/5b0e95b83a9fd', data)
   },
+  //获取首页展示店铺分类
+  getIndexMenu(data){
+    return HTTPS.fetchPost(HOST + '/api/5b729a26d309c', data)
+  },
+  //活动图片接口
+  getIndexHot(data){
+    return HTTPS.fetchPost(HOST + '/api/5b72b56ddcdc0', data)
+  },
+  //首页推荐商品数据
+  getIndexCommand(data){
+    return HTTPS.fetchPost(HOST + '/api/5b72c3a33a5ce', data)
+  },
+  //新版首页商铺列表 5b72c7eb82b3f
+  getIndexNearShop(data){
+    return HTTPS.fetchGet(HOST + '/api/5b72c7eb82b3f', data)
+  },
 
   // //获取商品列表
   // getGoosList() {
@@ -382,6 +402,8 @@ export const buyCouponPayment = REQUESTS.buyCouponPayment;
 export const getBuyCouponList = REQUESTS.getBuyCouponList;
 export const getShopCenterData = REQUESTS.getShopCenterData;
 export const getMyEvaluateLists = REQUESTS.getMyEvaluateLists;
+export const registerSalesman = REQUESTS.registerSalesman;
+export const getFollowData = REQUESTS.getFollowData;
 
 
 export const getShopList = REQUESTS.getShopList
@@ -423,7 +445,11 @@ export const getMyVipCard = REQUESTS.getMyVipCard
 export const getVipCardList = REQUESTS.getVipCardList
 export const getVipCardDetail = REQUESTS.getVipCardDetail
 export const goBuyVipCard = REQUESTS.goBuyVipCard
+export const getIndexMenu = REQUESTS.getIndexMenu
+export const getIndexHot = REQUESTS.getIndexHot
+export const getIndexCommand = REQUESTS.getIndexCommand
+export const getIndexNearShop = REQUESTS.getIndexNearShop
 
- 
+
 
 
