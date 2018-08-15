@@ -36,7 +36,7 @@ export default {
       let diff = (this.minimum - this.totalMoney).toFixed(2);
       if(this.minimum == 0){
         return '(0元起送)'
-      }else if(this.minimum - this.totalMoney > 0){
+      }else if((this.minimum - this.totalMoney)*1 > 0){
         return `(还差${diff}元起送)`
       }else{
         return '';

@@ -8,30 +8,38 @@
 .child-view{ position: static; }
 .support{ font-size: .22rem; position: fixed; left: 0; bottom: 0; padding: .30rem .40rem; height: 1.00rem; width: 100%; text-align: center; color: #5e5e63; }
 
-.user{ padding: .30rem .50rem; height: 1.8rem; background-color: #1b1b1f; position: fixed; left: 0; top: 0; width: 100%; z-index: 22; }
-.user .info{ position: relative; padding-left: 1.50rem; min-height: 1.20rem;}
-.user .info .tx{ display: block; width: 1.24rem; height: 1.24rem; position: absolute; background-color: #eee; left: 0; top: 0; border-radius: 50%; overflow: hidden; border: 0.02rem solid #555;}
-.user .info .tx img{ display: block; width: 1.20rem; height: 1.20rem; border-radius: 50%; overflow: hidden;}
-.user .info .come{ position: relative; padding-top: .20rem; min-height: 1.20rem; font-size: .30rem; line-height: 1.2rem; text-align: left; color: #fff; }
-.user .info .name{ display: block; font-size: .30rem; line-height: 1.20rem; color: #fff; overflow: hidden;}
-.user .info .name span{ display:block; float: left; margin-right: .10rem; }
-.user .info .name span.bg{ font-size: .22rem; color: #fff; height: .36rem; background-color: rgba(255,255,255,0.2); line-height: .36rem; text-align: center; margin: .42rem 0; min-width: .10rem; padding: 0 .10rem; border-radius: .30rem;}
-.user .ma{ position: absolute; right: 0; top:.60rem; display: block; width: .88rem; height: .62rem; }
+.user{ padding: .30rem .50rem; height: 1.8rem; background-color: #1b1b1f; position: fixed; left: 0; top: 0; width: 100%; z-index: 22; 
+	.info{ position: relative; padding-left: 1.50rem; min-height: 1.20rem;
+		.tx{ display: block; width: 1.24rem; height: 1.24rem; position: absolute; background-color: #eee; left: 0; top: 0; border-radius: 50%; overflow: hidden; border: 0.02rem solid #555;
+			img{ display: block; width: 1.20rem; height: 1.20rem; border-radius: 50%; overflow: hidden;}
+		}
+		.come{ position: relative; padding-top: .20rem; min-height: 1.20rem; font-size: .30rem; line-height: 1.2rem; text-align: left; color: #fff; }
+		.name{ display: block; font-size: .30rem; line-height: 1.20rem; color: #fff; overflow: hidden;
+			span{ display:block; float: left; margin-right: .10rem; }
+			span.bg{ font-size: .22rem; color: #fff; height: .36rem; background-color: rgba(255,255,255,0.2); line-height: .36rem; text-align: center; margin: .42rem 0; min-width: .10rem; padding: 0 .10rem; border-radius: .30rem;}
+		}
+	}
+	.ma{ position: absolute; right: 0; top:.60rem; display: block; width: .88rem; height: .62rem; }
+}
 
-.numbox{ overflow: hidden; background-color: #fff; margin-bottom: .20rem; padding: 0 .30rem;}
-.numbox .nsg{ display: block; padding: .45rem 0; width: 33.33%; float: left; text-align: center; }
-.numbox .nsg .tit1{ font-size: .36rem; color: #1c1c20; line-height: .40rem; height: .40rem; overflow: hidden; margin-bottom: .24rem; }
-.numbox .nsg .tit2{ font-size: .26rem; color: #444; line-height: .30rem; }
+.numbox{ overflow: hidden; background-color: #fff; margin-bottom: .20rem; padding: 0 .30rem;
+	.nsg{ display: block; padding: .45rem 0; width: 33.33%; float: left; text-align: center; 
+		.tit1{ font-size: .36rem; color: #1c1c20; line-height: .40rem; height: .40rem; overflow: hidden; margin-bottom: .24rem; }
+		.tit2{ font-size: .26rem; color: #444; line-height: .30rem; }
+	}
+}
 
-.comelist{ background-color: #fff; padding-left: .30rem; margin-bottom: .20rem;}
-.comelist .link{  padding-left: .86rem; position: relative ; display: block;}
-.comelist .link .limg{ display: block; width:.60rem; height: .60rem; position: absolute; left: 0; top: 50%; margin-top: -.30rem; }
-.comelist .link .all{ overflow: hidden; border-bottom: 0.02rem solid #eee; padding-right:.50rem; position: relative; font-size: .32rem; line-height: 1.10rem;   }
-.comelist .link .all span{ color: #1c1c20; }
-.comelist .link .all .rimg{ display: block; width: .15rem; height: .26rem; position: absolute; right: .20rem; top: 50%; margin-top: -.13rem;}
-.comelist .link .all .red{ display: block; color: #f85a5a; float: right; }
-.comelist .link:last-child .all{ border-bottom: none;}
-
+.comelist{ background-color: #fff; padding-left: .30rem; margin-bottom: .20rem;
+	.link{  padding-left: .86rem; position: relative ; display: block;
+		.limg{ display: block; width:.60rem; height: .60rem; position: absolute; left: 0; top: 50%; margin-top: -.30rem; }
+		.all{ overflow: hidden; border-bottom: 0.02rem solid #eee; padding-right:.50rem; position: relative; font-size: .32rem; line-height: 1.10rem;  
+			span{ color: #1c1c20; }
+			.rimg{ display: block; width: .15rem; height: .26rem; position: absolute; right: .20rem; top: 50%; margin-top: -.13rem;}
+			.red{ display: block; color: #f85a5a; float: right; }
+		 }
+	}
+	.link:last-child .all{ border-bottom: none;}
+}
 
 .goout{ display: block; line-height: 1.10rem; height: 1.10rem; font-size: .32rem; color: #1c1c20; text-align: center; margin-top: .60rem; background-color: #fff;}
 button::after{ border: none;}

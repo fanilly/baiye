@@ -27,13 +27,14 @@
                 </div>
             </div>
         </div>
-        <div class="part" v-if="cardlist.length>0">
+        <div class="part">
             <div class='tit3'>
                 <img class='timg' src='../../assets/icon02.png' /> 购买会员卡
             </div>
             <img class='bimg' src='../../assets/hhhh_09.png' />
+            <div class="nomore">暂无可购买的会员卡，敬请期待！</div>
            <!-- bindtap='godetail' data-cardid="{{item.aid}}" -->
-            <div class='list' v-for="item in cardlist"  @click='goDetail(item.aid,0)'>
+            <div class='list' v-for="item in cardlist"  @click='goDetail(item.aid,0)'  v-if="cardlist.length>0">
                 <img class='card-bg' :src='item.surface' />
                 <div class="card-surface">
                     <div class="card-surface-title">

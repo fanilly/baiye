@@ -14,7 +14,6 @@
           </div>
         </section>
         <div class="textarea-wapper">
-
           <textarea class="textarea" v-model="evaluateText" name="textarea" placeholder="请输入评价内容"></textarea>
           <p class="evaluate-total">{{evaluateText.length}}/300</p>
         </div>

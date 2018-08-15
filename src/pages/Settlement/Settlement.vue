@@ -348,7 +348,7 @@
       getWxSettings().then(res => {
         let data = res.data.data;
         this.wx.config({
-          debug: true,
+          debug: global.isDev,
           appId: data.appid,
           timestamp: data.timestamp,
           nonceStr: data.nonceStr,

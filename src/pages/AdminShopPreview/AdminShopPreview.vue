@@ -65,24 +65,29 @@ export default {
             listData:[],
             shopid:'',
             showCode:false,
-            shopInfo:{}
+            shopInfo:{},
+            userid:'',
         };
     },
     beforeCreate() {
     },
     created(){
+        console.log(this.$route.params.shopid,this.$route.params.userid)
         this.shopid = this.$route.params.shopid
+        this.userid = this.$route.params.userid
     },
     mounted() {
+        this.feedback.Loading.open('加载中');
         this.getAdminIndexInfo();
         this.getShopList();
     },
     methods:{
         getAdminIndexInfo() {
             getAdminIndexInfo({
-                user_id: this.$store.state.user.userid,
+                user_id: this.userid,
             }).then(res => {
-                console.log('虚拟店信息',res)
+                this.feedback.Loading.close()
+                //console.log('虚拟店信息',res)
                 if (res.data.code == 1) {
                     this.shopInfo = res.data.data;
                 }
@@ -117,7 +122,7 @@ export default {
                 shop_id:this.shopid,
                 order:this.navsIndex+1,
             }).then(res=>{
-                console.log('我的店铺', res);
+                //console.log('我的店铺', res);
                 if (res.data.data.length < 20) this.commentLoadedAll = true;
                 if (res.data.data.length == 0 && this.listData.length == 0) this.noCommentLists = true;
                 this.listData.push(...res.data.data);
@@ -133,7 +138,7 @@ export default {
                 goods_id:id,
                 shop_id: this.shopid,
             }).then(res=>{
-                console.log('下架商品',res)
+                //console.log('下架商品',res)
                 this.feedback.Loading.close();
                 if(res.data.code==1){
                     let lists = this.listData;

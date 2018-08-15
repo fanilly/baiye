@@ -12,13 +12,14 @@
 
     <scroller class='scrollBox' @getData="getIndexNearShop">
     <!-- banner -->
+    <div class='swiperbox'>
     <swiper dots-position="center"
       dots-class="dots"
       :aspect-ratio="0.394"
       :show-desc-mask="false"
       :list="banners"
       class="swiper"></swiper>
-
+    </div>
     <!-- shop list -->
     <!-- <h1 class="title">附近的店</h1>
     <section class="shop-list">

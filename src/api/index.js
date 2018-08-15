@@ -117,6 +117,10 @@ const REQUESTS = {
   getPhysicalOrderLists(data) {
     return HTTPS.fetchGet(HOST + '/api/5b35f142f0537', data)
   },
+  //获取虚拟店订单列表
+  getFictitiousOrderLists(data) {
+    return HTTPS.fetchGet(HOST + '/api/5b50333e6ea05', data)
+  },
   //取消或删除掉订单
   cancelOrDelOrder(data) {
     return HTTPS.fetchPost(HOST + '/api/5b35f8754c4b4', data)
@@ -180,6 +184,10 @@ const REQUESTS = {
   //获取关注二维码页面数据
   getFollowData() {
     return HTTPS.fetchPost(HOST + '/api/5b738c5c8bfd8')
+  },
+  //注册虚拟店
+  registerFictitious(data) {
+    return HTTPS.fetchGet(HOST + '/api/5b4d982344aa2',data)
   },
 
   //获取虚拟店店主信息
@@ -404,6 +412,8 @@ export const getShopCenterData = REQUESTS.getShopCenterData;
 export const getMyEvaluateLists = REQUESTS.getMyEvaluateLists;
 export const registerSalesman = REQUESTS.registerSalesman;
 export const getFollowData = REQUESTS.getFollowData;
+export const getFictitiousOrderLists = REQUESTS.getFictitiousOrderLists;
+export const registerFictitious = REQUESTS.registerFictitious;
 
 
 export const getShopList = REQUESTS.getShopList

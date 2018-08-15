@@ -1,0 +1,177 @@
+@import '../../styles/variable.less';
+.scroller-container {
+  position: fixed;
+  left: 0;
+  top: 1rem;
+  bottom: 0;
+  right: 0;
+  background-color: #f7f7f7;
+}
+
+.order {
+  text-align: left;
+}
+
+.order-item {
+  background-color: #fff;
+  margin-bottom: .2rem;
+}
+
+.order-item-header {
+  display: flex;
+  font-size: .3rem;
+  align-items: center;
+  padding: .3rem;
+  border-bottom: 1px solid #f7f7f7;
+}
+
+.order-item-header>div:first-child {
+  flex: 1;
+}
+
+.order-item-header>div:first-child div {
+  padding-top: .1rem;
+  font-size: .24rem;
+  color: #999;
+}
+
+.order-item-main {
+  display: flex;
+  padding: .3rem;
+}
+
+.order-item-main .lside {
+  padding-right: .2rem;
+}
+
+.order-item-main .lside img {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.order-item-main .rside {
+  flex: 1;
+  height: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.order-item-main .rside .goods-title {
+  font-size: .3rem;
+  line-height: .38rem;
+  height: .76rem;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+
+.order-item-main .rside .goods-spec {
+  font-size: .26rem;
+  line-height: .38rem;
+  color: #666666;
+}
+
+.order-item-main .rside .goods-price {
+  font-size: .28rem;
+  line-height: .38rem;
+  color: #000000;
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+}
+
+.order-item-main .rside .goods-spec span {
+  font-size: .22rem;
+}
+
+.order-item-main .rside .goods-price span {
+  font-size: .22rem;
+}
+
+.order-item-footer {
+  height: 1.34rem;
+  border-top: 1px solid #f7f7f7;
+  display: flex;
+  padding: 0 .3rem;
+  align-items: center;
+}
+
+.order-item-footer .lside {}
+
+.order-item-footer .lside>div:first-child {
+  font-size: .26rem;
+}
+
+.order-item-footer .lside>div:first-child span {
+  font-size: .32rem;
+}
+
+.order-item-footer .lside>div:last-child {
+  color: #999;
+  font-size: .26rem;
+}
+
+.order-item-footer .rside {
+  flex: 1;
+  text-align: right;
+}
+
+.order-item-footer .rside .btn {
+  display: inline-block;
+  font-size: .3rem;
+  padding: .13rem .3rem;
+  text-align: center;
+  border-radius: .04rem;
+  margin-left: .2rem;
+}
+
+.order-item-footer .rside .btn:first-child {
+  margin-left: 0;
+}
+
+.order-item-footer .rside .btn-line {
+  border: 1px solid #ccc;
+}
+
+.order-item-footer .rside .btn-fill {
+  background-color: rgb(255, 168, 0);
+  border: 1px solid rgb(255, 168, 0);
+  color: #fff;
+}
+
+.order-item-footer .rside .btn-txt {
+  font-size: .24rem;
+  color: #999;
+}
+
+.order-item-footer .rside .btn-txt span.unit {
+  font-size: .2rem;
+  color: #df443b;
+}
+
+.order-item-footer .rside .btn-txt span.price {
+  font-size: .32rem;
+  color: #df443b;
+}
+
+.empty-status {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background-color: #fff;
+  padding: 2rem .5rem 0 .5rem;
+  z-index: 10;
+}
+
+.empty-status>img {
+  width: 2.4rem;
+}
+
+.empty-status .desc {
+  color: #999;
+  font-size: .28rem;
+  padding: .5rem 0;
+}

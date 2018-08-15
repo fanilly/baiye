@@ -41,7 +41,7 @@ export default {
     data() {
         return {
             nav: [
-                { name: '虚拟店订单', url: '/PhysicalOrder', words: '', src: require('../../assets/takeout04.png') },
+                { name: '虚拟店订单', url: '/FictitiousOrder', words: '', src: require('../../assets/takeout04.png') },
                 { name: '我的收藏', url: '/Collection', words: '', src: require('../../assets/sc.png') },
             ],
             nav2: [

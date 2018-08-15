@@ -1,6 +1,6 @@
 <template>
 <div class="container">
-    
+
     <!-- header -->
     <div class="header">
         <div class="lside">
@@ -99,7 +99,7 @@ export default {
             getAdminIndexInfo({
                 user_id: this.$store.state.user.userid,
             }).then(res => {
-                console.log('虚拟店信息',res)
+                //console.log('虚拟店信息',res)
                 if (res.data.code == 1) {
                     this.detail = res.data.data;
                     this.navLink[0].src = `AdminShop/${this.detail.id}`

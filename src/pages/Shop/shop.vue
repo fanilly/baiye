@@ -573,15 +573,15 @@ export default {
     hanldeControlScroll(flag){
       const mo = function(e){ e.preventDefault() };
       if(flag == 'stop'){
-        pageScroll.handle()
-        // document.body.style.overflow = 'hidden';
-        // document.body.style.overflow='hidden';
-        // document.addEventListener("touchmove",mo,false);
+        pageScroll.handle(window)
+        document.body.style.overflow = 'hidden';
+        document.body.style.overflow='hidden';
+        document.addEventListener("touchmove",mo,false);
       }else{
-        pageScroll.unhandle();
-        // document.body.style.overflow = 'auto';
-        // document.body.style.overflow='';
-        // document.removeEventListener("touchmove",mo,false);
+        pageScroll.unhandle(window);
+        document.body.style.overflow = 'auto';
+        document.body.style.overflow='';
+        document.removeEventListener("touchmove",mo,false);
       }
     },
 
@@ -633,7 +633,28 @@ export default {
           this.surroundings = res.data.data.surroundings.map(item=>({
             msrc:item,
             src:item
-          }))
+          }));
+
+
+          //设置分享
+          let self = this;
+          this.wx.ready(function() {
+            wx.onMenuShareTimeline({
+                title: self.shopDetail.name,
+                link: location.href,
+                imgUrl: self.shopDetail.avatar,
+                success: () => {}
+            });
+            this.wx.onMenuShareAppMessage({
+              title: self.shopDetail.name, // 分享标题
+              desc: self.shopDetail.description, // 分享描述
+              link: location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+              imgUrl: self.shopDetail.avatar, // 分享图标
+              success: () => {}
+            });
+          });
+
+
         }
       });
     },
@@ -690,7 +711,7 @@ export default {
     //打开地图查看店铺地址
     handleGoMapCoordinate(coordinate){
       coordinate = coordinate.split(',');
-      wx.openLocation({
+      this.wx.openLocation({
         latitude: parseFloat(coordinate[1]), // 纬度，浮点数，范围为90 ~ -90
         longitude: parseFloat(coordinate[0]), // 经度，浮点数，范围为180 ~ -180。
         name: this.shopDetail.coordinate_address, // 位置名
@@ -710,7 +731,7 @@ export default {
         timestamp: data.timestamp,
         nonceStr: data.nonceStr,
         signature: data.signature,
-        jsApiList: ['openLocation']
+        jsApiList: ['openLocation','onMenuShareTimeline','onMenuShareAppMessage']
       });
     });
 

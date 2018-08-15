@@ -5,7 +5,7 @@
         <div class='tit1'>当前余额</div>
         <div class='tit2'>{{income.money}}</div>
         <!-- :to="{name:'Shop',params:{shopid:myShop.id}}" -->
-        <router-link :to="{name:'MoneyWithdraw',params:{money:income.money}}"  class='gopay JB' v-if='isWaiter==0'>购卡充值</router-link>
+        <!-- <router-link :to="{name:'MoneyWithdraw',params:{money:income.money}}"  class='gopay JB' v-if='isWaiter==0'>购卡充值</router-link> -->
         <router-link :to="{name:'MoneyWithdraw',params:{money:income.money}}" class='gopay JB' v-if='isWaiter==1'>提现</router-link>
     </div>
 

@@ -42,18 +42,16 @@
 
 
     <!-- statistics -->
-    <div class="footer">
-        <!--  bindtap="handleToggleShowQRCode" data-flag="1" -->
+    <div class="footer" v-if='isOff'>
         <div class="sin" @click='showCode = true'>
             <img src="../../assets/baiye/c24@2x.png" />
             <span>店铺二维码</span>
         </div>
-        <!-- bindtap="handleJump" data-url="../adminShopPreview/adminShopPreview?shopid={{fictitiousShopId}}&userid={{userid}}" -->
-        <router-link class="sin" :to='{name:"AdminShopPreview"}' >
+        <!-- bindtap="handleJump" data-url="../adminShopPreview/adminShopPreview?shopid={{fictitiousShopId}}&userid={{userid}}"  @click='goPreview' -->
+        <router-link class="sin"  :to='{name:"AdminShopPreview",params:{shopid:shopid,userid:userid}}'>
             <img src="../../assets/baiye/c25@2x.png" />
             <span>店铺预览</span>
         </router-link>
-         <!-- bindtap="handleJump" data-url="../adminShelf/adminShelf" -->
         <router-link  class="sin" :to='{name:"AdminShelf",params:{shopid:shopid}}'>
             <img src="../../assets/baiye/c26@2x.png" />
             <span>添加商品</span>
@@ -98,22 +96,26 @@ export default {
             listData:[],
             shopid:'',
             showCode:false,
-            shopInfo:{}
+            shopInfo:{},
+            userid:0,
+            isOff:false
         };
     },
     beforeCreate() {
     },
     created(){
         this.shopid = this.$route.params.shopid
+        this.userid = this.$store.state.user.userid
     },
     mounted() {
+        this.isOff = true
         this.getShopList();
         this.getAdminIndexInfo();
     },
     methods:{
         getAdminIndexInfo() {
             getAdminIndexInfo({
-                user_id: this.$store.state.user.userid,
+                user_id: this.userid,
             }).then(res => {
                 //console.log('虚拟店信息',res)
                 if (res.data.code == 1) {
@@ -150,7 +152,7 @@ export default {
                 shop_id:this.shopid,
                 order:this.navsIndex+1,
             }).then(res=>{
-                console.log('我的店铺', res);
+                //console.log('我的店铺', res);
                 if (res.data.data.length < 20) this.commentLoadedAll = true;
                 if (res.data.data.length == 0 && this.listData.length == 0) this.noCommentLists = true;
                 this.listData.push(...res.data.data);
@@ -178,8 +180,8 @@ export default {
         },
 
         //店铺二维码
-        showShopCode(){
-
+        goPreview(){
+             this.$router.push({name:'AdminShopPreview',params:{shopid:this.shopid,userid:this.userid}});
         }
 
     },

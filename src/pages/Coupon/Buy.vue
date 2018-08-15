@@ -83,6 +83,12 @@
         <span></span>
       </footer>
     </main>
+
+    <!-- empty page -->
+    <div class="empty-status" v-if="loaded && lists.length == 0">
+      <img :src="emptyIcon" />
+      <div class="desc">该店铺暂未发布优惠券</div>
+    </div>
   </div>
 </template>
 <script>
@@ -105,6 +111,7 @@
         showDetail: false,
         lists: [],
         loaded: false,
+        emptyIcon: require('../../assets/baiye/empty005.png'),
         headIcon: require('../../assets/package.png'),
       };
     },
@@ -190,6 +197,8 @@
         this.feedback.Loading.close();
         if (res.data.code == 1) {
           this.lists = res.data.data;
+          this.loaded = true;
+          console.log();
         } else {
           this.feedback.Toast({
             msg: res.data.info,

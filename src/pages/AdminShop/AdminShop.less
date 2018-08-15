@@ -1,19 +1,21 @@
 .container{ padding: 1.1rem 0 1rem; text-align: left;}
 .child-view{ position: static; }
-.header { width: 100%; display: flex; align-items: center; height: 1.1rem; position: fixed; left: 0; top: 0; background-color: #fff; border-bottom: 1px solid #f7f7f7; z-index: 10; }
-.header div { display: flex; flex: 1; align-items: center; justify-content: center; }
-.header div span { font-size: 0.28rem; color: #666; padding-right: 0.1rem; }
-.header div span.active { color: rgb(255,168,0) }
-.header div img { width: 0.12rem; height: 0.2rem; position: relative; top: 4rpx; }
+.header { width: 100%; display: flex; align-items: center; height: 1.1rem; position: fixed; left: 0; top: 0; background-color: #fff; border-bottom: 1px solid #f7f7f7; z-index: 10; 
+	div { display: flex; flex: 1; align-items: center; justify-content: center; }
+		span { font-size: 0.28rem; color: #666; padding-right: 0.1rem; 
+		span.active { color: rgb(255,168,0) }
+		img { width: 0.12rem; height: 0.2rem; position: relative; top: 4rpx; }
+	}
+}
 
-
-.footer { width: 100%; display: flex; align-items: center; height: 1rem; position: fixed; left: 0; bottom: 0; background-color: #fff; border-bottom: 1px solid #f7f7f7; z-index: 10; }
-.footer .sin { display: flex; flex: 1; align-items: center; justify-content: center; position: relative; }
-.footer .sin:after { content: ''; display: block; height: 0.4rem; width: 1px; background-color: #f7f7f7; position: absolute; right: 0; top: 0; bottom: 0; margin: auto; }
-.footer .sin:last-child:after { display: none; }
-.footer .sin span { font-size: 0.28rem; color: #666; padding-left: 0.1rem; }
-.footer .sin img { width: 0.33rem; height: 0.33rem; position: relative; }
-
+.footer { width: 100%; display: flex; align-items: center; height: 1rem; position: fixed; left: 0; bottom: 0; background-color: #fff; border-bottom: 1px solid #f7f7f7; z-index: 10; 
+	.sin{ display: flex; flex: 1; align-items: center; justify-content: center; position: relative; 
+			span { font-size: 0.28rem; color: #666; padding-left: 0.1rem; }
+			img { width: 0.33rem; height: 0.33rem; position: relative; }
+	}
+	.sin:after { content: ''; display: block; height: 0.4rem; width: 1px; background-color: #f7f7f7; position: absolute; right: 0; top: 0; bottom: 0; margin: auto; }
+	.sin:last-child:after { display: none; }
+}
 
 .goods-list-wapper {background-color: #f7f7f7;
 	.goods-list-item-wapper { padding-left: 0.3rem; background-color: #fff; margin-bottom: 0.2rem; 

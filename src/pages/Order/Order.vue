@@ -22,7 +22,7 @@
             <div class="food zhuse" @click="goOrderDetail(item.order_no)">{{item.goods_detail}}</div>
             <div class="sum zhuse" @click="goOrderDetail(item.order_no)">
               <span class="small">共{{item.goods_count}}件，合计 ¥</span>{{item.total_money}}</div>
-            <div class="btn">
+            <div class="btn" v-if="item.status == 0 || item.status == 3 || item.status == 4">
               <div class="zhuangtai" v-if="item.status==3">
                 <span>{{item.shipping_type}}</span>
               </div>
@@ -40,7 +40,7 @@
     <!-- empty page -->
     <div class="empty-status" v-if="noLists">
       <img :src="emptyIcon" />
-      <div class="desc">暂无订单此类订单</div>
+      <div class="desc">暂无此类订单</div>
     </div>
 
 

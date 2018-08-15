@@ -4,7 +4,7 @@ import Index from '@/pages/Index/Index';
 import login from '../api/login.js';
 import store from '../store/index.js';
 import { SET_USER_INFO } from '../store/mutation-type.js';
-import Alert from '@/components/feedback/src/alert';
+
 const Shop = () => import ('@/pages/Shop/Shop');
 const Settlement = () => import ('@/pages/Settlement/Settlement');
 const Payment = () => import ('@/pages/Payment/Payment');
@@ -13,9 +13,10 @@ const Evaluate = () => import ('@/pages/Evaluate/Evaluate');
 const Search = () => import ('@/pages/Search/Search');
 const SearchResult = () => import ('@/pages/SearchResult/SearchResult');
 const Order = () => import ('@/pages/Order/Order');
-const PhysicalOrder = () => import ('@/pages/PhysicalOrder/PhysicalOrder');
+const FictitiousOrder = () => import ('@/pages/FictitiousOrder/FictitiousOrder');
 const RegisterSalesman = () => import ('@/pages/RegisterSalesman/RegisterSalesman');
 const Follow = () => import ('@/pages/Other/Follow');
+const RegisterFictitious = () => import ('@/pages/Other/RegisterFictitious');
 const OrderDetail = () => import ('@/pages/OrderDetail/OrderDetail');
 const Collection = () => import ('@/pages/Collection/Collection');
 const Center = () => import ('@/pages/Center/Center');
@@ -88,12 +89,22 @@ const router = new Router({
       }
     },
     {
-      path: '/PhysicalOrder',
-      name: 'PhysicalOrder',
-      component: PhysicalOrder,
+      path: '/FictitiousOrder',
+      name: 'FictitiousOrder',
+      component: FictitiousOrder,
       meta: {
         keepAlive: false,
         title: '虚拟店订单'
+      }
+    },
+    {
+      path: '/RegisterFictitious/:salesmanid/:shopid',
+      name: 'RegisterFictitious',
+      component: RegisterFictitious,
+      props:true,
+      meta: {
+        keepAlive: false,
+        title: '注册虚拟店'
       }
     },
     {
@@ -203,7 +214,7 @@ const router = new Router({
       name: 'Trolley',
       props: true,
       component: Trolley,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '购物车'
       }
@@ -212,7 +223,7 @@ const router = new Router({
       name: 'Evaluate',
       props: true,
       component: Evaluate,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '评价'
       }
@@ -220,7 +231,7 @@ const router = new Router({
       path: '/Issue',
       name: 'IssueIndex',
       component: IssueIndex,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '帮助中心'
       },
@@ -246,7 +257,7 @@ const router = new Router({
       path: '/Coupon',
       name: 'CouponIndex',
       component: CouponIndex,
-      mate: {
+      meta: {
         keepAlive: false,
         title: ''
       },
@@ -275,7 +286,7 @@ const router = new Router({
       props:true,
       name: 'MyEvaluate',
       component: MyEvaluate,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '我的评价'
       }
@@ -283,7 +294,7 @@ const router = new Router({
       path: '/adminIndex',
       name: 'AdminIndex',
       component: AdminIndex,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '我的店铺'
       }
@@ -291,7 +302,7 @@ const router = new Router({
       path: '/adminShop/:shopid',
       name: 'AdminShop',
       component: AdminShop,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '我的店铺'
       }
@@ -299,7 +310,7 @@ const router = new Router({
       path: '/adminShelf/:shopid',
       name: 'AdminShelf',
       component: AdminShelf,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '选品上架'
       }
@@ -307,7 +318,7 @@ const router = new Router({
       path: '/shopOrder/:shopid',
       name: 'ShopOrder',
       component: ShopOrder,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '订单管理'
       }
@@ -315,7 +326,7 @@ const router = new Router({
       path: '/wealth/:shopid',
       name: 'Wealth',
       component: Wealth,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '我的财富'
       }
@@ -323,7 +334,7 @@ const router = new Router({
       path: '/codeMine',
       name: 'CodeMine',
       component: CodeMine,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '我的二维码'
       }
@@ -331,7 +342,7 @@ const router = new Router({
       path: '/codeExtend',
       name: 'CodeExtend',
       component: CodeExtend,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '我的拓客码'
       }
@@ -339,7 +350,7 @@ const router = new Router({
       path: '/moneyRest/:waitid',
       name: 'MoneyRest',
       component: MoneyRest,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '我的收益'
       }
@@ -347,7 +358,7 @@ const router = new Router({
       path: '/moneyWithdraw/:money',
       name: 'MoneyWithdraw',
       component: MoneyWithdraw,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '提现'
       }
@@ -355,7 +366,7 @@ const router = new Router({
       path: '/moneyStream',
       name: 'MoneyStream',
       component: MoneyStream,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '交易明细'
       }
@@ -363,7 +374,7 @@ const router = new Router({
       path: '/userInfo',
       name: 'UserInfo',
       component: UserInfo,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '个人资料'
       }
@@ -371,7 +382,7 @@ const router = new Router({
       path: '/userPhoneSet',
       name: 'UserPhoneSet',
       component: UserPhoneSet,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '手机号设置'
       }
@@ -379,7 +390,7 @@ const router = new Router({
       path: '/adminShopCard',
       name: 'AdminShopCard',
       component: AdminShopCard,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '我的名片'
       }
@@ -387,7 +398,7 @@ const router = new Router({
       path: '/adminCustomer/:shopid',
       name: 'AdminCustomer',
       component: AdminCustomer,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '我的客户'
       }
@@ -395,7 +406,7 @@ const router = new Router({
       path: '/adminSetting/:shopid',
       name: 'AdminSetting',
       component: AdminSetting,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '店铺设置'
       }
@@ -403,7 +414,7 @@ const router = new Router({
       path: '/wealthStream/:shopid/:money/:cash',
       name: 'WealthStream',
       component: WealthStream,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '账单明细'
       }
@@ -411,7 +422,7 @@ const router = new Router({
       path: '/wealthPassword/:shopid/:haspassword',
       name: 'WealthPassword',
       component: WealthPassword,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '提现密码设置'
       }
@@ -419,7 +430,7 @@ const router = new Router({
       path: '/wealthDetail/:shopid/:index',
       name: 'WealthDetail',
       component: WealthDetail,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '钱包明细'
       }
@@ -427,15 +438,15 @@ const router = new Router({
       path: '/wealthWithdraw/:money/:shopid',
       name: 'WealthWithdraw',
       component: WealthWithdraw,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '提现'
       }
     }, {
-      path: '/adminShopPreview/:shopid',
+      path: '/adminShopPreview/:shopid/:userid',
       name: 'AdminShopPreview',
       component: AdminShopPreview,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '店铺预览'
       }
@@ -443,7 +454,7 @@ const router = new Router({
       path: '/adminShopDetail/:shopid/:goodid',
       name: 'AdminShopDetail',
       component: AdminShopDetail,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '商品详情'
       }
@@ -451,7 +462,7 @@ const router = new Router({
       path: '/adminShopSettlement/:name/:img/:num/:attr/:price/:goodid/:shopid/:virtualshopid/attrid',
       name: 'AdminShopSettlement',
       component: AdminShopSettlement,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '确认订单'
       }
@@ -459,7 +470,7 @@ const router = new Router({
       path: '/myWallet/:storeid',
       name: 'MyWallet',
       component: MyWallet,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '我的钱包'
       }
@@ -467,7 +478,7 @@ const router = new Router({
       path: '/myWalletStream/:storeid',
       name: 'MyWalletStream',
       component: MyWalletStream,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '钱包明细'
       }
@@ -475,7 +486,7 @@ const router = new Router({
       path: '/buyVipCard/:storeid',
       name: 'BuyVipCard',
       component: BuyVipCard,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '会员卡'
       }
@@ -483,7 +494,7 @@ const router = new Router({
       path: '/buyVipDetail/:storeid/:goodid/:status',
       name: 'BuyVipDetail',
       component: BuyVipDetail,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '会员卡'
       }
@@ -491,7 +502,7 @@ const router = new Router({
       path: '/shopList/:cateid',
       name: 'ShopList',
       component: ShopList,
-      mate: {
+      meta: {
         keepAlive: false,
         title: '附近店铺'
       }
@@ -536,16 +547,5 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-//如果未关注公众号 去关注
-router.afterEach((to,from)=>{
-  if(!store.state.user.subscribe && to.name != 'Follow'){
-    Alert({
-      msg:'检测到您未关注公众号，请先关注公众号',
-      callback:()=>{
-        location.href = location.origin + '/Follow';
-      }
-    })
-  }
-})
 
 export default router;
