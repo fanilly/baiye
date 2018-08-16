@@ -452,9 +452,10 @@ export default {
 
     //购物车添加
     plus(options, e) {
-      this.goodsLists[options.parentIndex][options.currentIndex].num ++;
-      this.choosedTotalNum ++;
-      if(this.goodsDetailData) this.goodsDetailData.num ++;
+
+      this.relationSameGoods(options,'plus')
+
+
       let attr = '';
       if(options.isNoAttr){
         this.choosedTotalPrice = this.choosedTotalPrice*1 + this.goodsLists[options.parentIndex][options.currentIndex].shop_price*1;
@@ -463,6 +464,7 @@ export default {
         let choosedAttr = this.chooseAttrPopData.choosedAttr;
         attr = this.chooseAttrPopData.attr.map((item,index)=>item.specs[choosedAttr[index]]['id']).join(',');
       }
+
       //抛物线动画
       let circleRadius = this.$refs.parabolaPoint.offsetWidth / 2,
         x = e.clientX,
@@ -482,6 +484,7 @@ export default {
         }
       });
 
+      //改变服务端数据
       clearTimeout(this.timer);
       this.timer = setTimeout(()=>{
         addCart({
@@ -510,9 +513,7 @@ export default {
 
     //购物车减少
     reduce(options) {
-      if(this.goodsDetailData) this.goodsDetailData.num --;
-      this.goodsLists[options.parentIndex][options.currentIndex].num --;
-      this.choosedTotalNum --;
+      this.relationSameGoods(options,'reduce')
       this.choosedTotalPrice = this.choosedTotalPrice*1 - this.goodsLists[options.parentIndex][options.currentIndex].shop_price*1;
       clearTimeout(this.reduceTimer);
       this.reduceTimer = setTimeout(()=>{
@@ -534,6 +535,30 @@ export default {
           }
         });
       },300);
+    },
+
+    //关联相同的商品
+    relationSameGoods(options,type){
+      let goodsId = this.goodsLists[options.parentIndex][options.currentIndex].id,
+        changeItems = [];
+      this.goodsLists.forEach((item,index)=>{
+        item.forEach((iitem,iindex)=>{
+          if(iitem.id == goodsId) changeItems.push({parentIndex:index,currentIndex:iindex});
+        });
+      });
+      changeItems.forEach((item,index)=>{
+        if(type == 'plus')
+          this.goodsLists[item.parentIndex][item.currentIndex].num++;
+        else
+          this.goodsLists[item.parentIndex][item.currentIndex].num--;
+      });
+      if(type == 'plus'){
+        this.choosedTotalNum ++;
+        if(this.goodsDetailData) this.goodsDetailData.num ++;
+      }else{
+        if(this.goodsDetailData) this.goodsDetailData.num --;
+        this.choosedTotalNum --;
+      }
     },
 
     //有属性商品添加购物车
@@ -637,7 +662,6 @@ export default {
             src:item
           }));
 
-
           //设置分享
           let self = this;
           this.wx.ready(function() {
@@ -655,7 +679,6 @@ export default {
               success: () => {}
             });
           });
-
 
         }
       });

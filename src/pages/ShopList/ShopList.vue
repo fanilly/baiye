@@ -2,19 +2,49 @@
   <div class="container mj-vux-box">
 
     <header class="header-search">
-      <section class="header-search-lside">
+      <!-- <section class="header-search-lside">
         <img :src="icon">
       </section>
-      <section class="header-search-center">{{coordinateName}}</section>
+      <section class="header-search-center">{{coordinateName}}</section> -->
       <section class="header-search-rside" @click="jumpSearch">请输入商品名称</section>
     </header>
     <section class="header-palceholder"></section>
 
-
+  
     <!-- near -->
     <div class="nearshop">
+      
       <scroller @getData="getIndexNearShop">
-        <div class="list">
+
+        <!-- indexMenu -->
+        <div class="indexMenu" v-if='indexMenu.length>0'>
+          <div class="item" v-for="(item,index) in indexMenu" :key='index' @click='goRefash(item.aid)'>
+            <!-- <img :src="item.img_url" alt=""> -->
+            <!-- aid -->
+            <span :class='{"on":cateId == item.aid}'>{{item.group_name}}</span>
+          </div>
+        </div>
+        <!-- indexMenu -->
+
+        <!-- hotcommend -->
+        <div class="hotcommend" v-if='hotList.length>0'>
+          <h3>人气推荐</h3>
+          <div class="list">
+            <div class="item" v-for="(item,index) in hotList" :key='index' @click='goShopIndex(item.shop_id,item.cate_id,item.goods_id,)'>
+              <img :src="item.img_url" alt="" class="pic">
+              <img src="../../assets/icon1.1.8@2x.png" alt="" v-if='index==0' class="icon">
+              <img src="../../assets/icon1.1.9@2x.png" alt="" v-if='index==1' class="icon">
+              <img src="../../assets/icon1.1.10@2x.png" alt="" v-if='index==2' class="icon">
+              <span>{{item.title}}</span>
+              <i>¥<b>{{item.waimai_fee}}</b></i>
+            </div>
+          </div>
+        </div>
+        <!-- hotcommend -->
+
+
+        <div class="lists">
+          <h3>附近好店</h3>
           <router-link class="item  scroll-item" v-for="(item,index) in nearshop" :key='index' :to="{name:'Shop',params:{shopid:item.id}}">
             <div class="pic"><img :src="item.shop_avatar" alt=""></div>
             <div class="info">
@@ -81,12 +111,19 @@
         commentLoadedAll:false,
         noCommentLists:false,
         allowLoadMore: true,
+
+        indexMenu:[],
+        hotList:[],
+
       };
     },
     created(){
       this.cateId = this.$route.params.cateid
     },
     async mounted() {
+
+      this.getIndexMenu()
+      this.getIndexCommand()
 
       if(!this.$store.state.coordinate.latitude) await this.getCoordinate();
       //this.getNearStore();
@@ -165,8 +202,40 @@
 
         });
       },
+      //获取首页菜单
+      getIndexMenu(){
+        getIndexMenu().then(res=>{
+          //console.log('首页菜单数据',res)
+          if(res.data.code==1){
+            this.indexMenu = res.data.data
+          }
+        })
+      },
+      //人气推荐
+      getIndexCommand(){
+        getIndexCommand({
+          cate_id:this.cateId
+        }).then(res=>{
+          //console.log('人气推荐',res)
+          if(res.data.code==1){
+            this.hotList = res.data.data
+          }else{
 
-
+          }
+        })
+      },
+      goRefash(id){
+        console.log('aid',id)
+        this.cateId = id
+        this.page = 1
+        this.commentLoadedAll = false
+        this.noCommentLists = false
+        this.allowLoadMore = true
+        this.nearshop = []
+        console.log('cateId',this.cate_id)
+        this.getIndexCommand()
+        this.getIndexNearShop()
+      }
 
 
     },

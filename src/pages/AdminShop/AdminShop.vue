@@ -1,6 +1,6 @@
 <template>
 <div class="container">
-    
+
     <!-- header -->
     <div class="header">
         <div v-for='(item,index) in navs' >
@@ -31,7 +31,7 @@
                     </div>
                     <div class="goods-item-controls">
                         <div class="btn line" @click='delFromShop(item.id,index)'>下架</div>
-                        <div class="btn fill">分享<button open-type="share" ></button></div>
+                        <!-- <div class="btn fill">分享<button open-type="share" ></button></div> -->
                     </div>
                 </div>
             </div>
@@ -58,16 +58,18 @@
         </router-link>
     </div>
 
-    
-    <!-- wx:if="{{showQRCode}}" bindtap="handleToggleShowQRCode" data-flag="0" -->
-    <div class="pop-qrcode" v-if='showCode' @click='showCode = false' >
-        <div class="qrcode-content">
-            <div class="title">{{shopInfo.shop_name}}</div>
-            <img :src="shopInfo.qrcode" />
-        </div>
-    </div>
 
-   
+    <!-- wx:if="{{showQRCode}}" bindtap="handleToggleShowQRCode" data-flag="0" -->
+    <transition name="fade">
+      <div class="pop-qrcode" v-if='showCode' @click='showCode = false' >
+          <div class="qrcode-content">
+              <div class="title">{{shopInfo.shop_name}}</div>
+              <img :src="shopInfo.qrcode_public" />
+          </div>
+      </div>
+    </transition>
+
+
 </div>
 </template>
 
@@ -75,7 +77,7 @@
 import { LoadMore } from 'vux';
 import scroller from '@/components/scroller/scroller.vue';
 
-import { getShopList,delFromShop,getAdminIndexInfo } from '@/api/index.js';
+import { getShopList,delFromShop,getAdminIndexInfo, getWxSettings } from '@/api/index.js';
 const wx = require('weixin-js-sdk');
 
 export default {
@@ -111,15 +113,43 @@ export default {
         this.isOff = true
         this.getShopList();
         this.getAdminIndexInfo();
+        getWxSettings().then(res => {
+          let data = res.data.data;
+          this.wx.config({
+            debug: global.isDev,
+            appId: data.appid,
+            timestamp: data.timestamp,
+            nonceStr: data.nonceStr,
+            signature: data.signature,
+            jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage']
+          });
+        });
     },
     methods:{
         getAdminIndexInfo() {
             getAdminIndexInfo({
                 user_id: this.userid,
             }).then(res => {
-                //console.log('虚拟店信息',res)
                 if (res.data.code == 1) {
                     this.shopInfo = res.data.data;
+
+                    let self = this;
+                    this.wx.ready(function() {
+                      self.wx.onMenuShareTimeline({
+                          title: self.shopInfo.shop_name,
+                          link: location.href,
+                          imgUrl: self.shopInfo.avatar,
+                          success: () => {}
+                      });
+                      self.wx.onMenuShareAppMessage({
+                        title: self.shopInfo.shop_name,
+                        desc: '',
+                        link: location.href,
+                        imgUrl: self.shopInfo.avatar,
+                        success: () => {}
+                      });
+                    });
+
                 }
             });
         },

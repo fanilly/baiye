@@ -14,15 +14,15 @@
     <main class="main">
       <div class='tit1'>
         <!-- <image src='../images/banyuan.png'></image> -->
-        请仔细确认您的订单 
+        请仔细确认您的订单
       </div>
       <div class="order bn">
         <!-- <div class="dwt JB">{{goodInfo.cate_name}}</div> -->
         <div class="item">
           <img :src="goodInfo.img" class="pic" />
-          <div class="name" v-if="goodInfo.attr==''">{{goodInfo.name}}</div>
-          <div class="nameb" v-if="goodInfo.attr!=''">
-            <span class="tone">{{goodInfo.name}}</span>
+          <div class="name" v-if="goodInfo.attr=='暂无规格'">{{goodInfo.names}}</div>
+          <div class="nameb" v-if="goodInfo.attr!='暂无规格'">
+            <span class="tone">{{goodInfo.names}}</span>
             <span class="two">{{goodInfo.attr}}</span>
           </div>
           <div class="num">×{{goodInfo.num}}</div>
@@ -133,12 +133,14 @@
         gifes: [],
 
         orderTotalMoney:0,
-        total_price:0
+        total_price:0,
+        userid:''
       };
     },
     created(){
       this.goodInfo = this.$route.params
-      console.log(this.goodInfo)
+      this.userid = this.$route.params.userid
+      //console.log(this.goodInfo)
       this.total_price = this.$route.params.price * this.$route.params.num
     },
     computed:{
@@ -149,7 +151,7 @@
       }*/
     },
     watch:{
-      
+
     },
     methods: {
       selectCouponChange(current){
@@ -173,7 +175,7 @@
               user_city: res.cityName || '',
               user_country: res.countryName || '',
               zip_code: res.postalCode || '',
-              user_id: this.$store.state.user.userid
+              user_id: this.userid //this.$store.state.user.userid
             }).then(resData=>{
               if(resData.data.code == 1){
                 this.address.aid = resData.data.data.address_id;
@@ -261,8 +263,8 @@
               canUse: res.data.data.can_use,
               orderNo: res.data.data.order_no,
               totalMoney: res.data.data.total_money,
-              orderType: 'OD',
-              kind: 2,
+              orderType: 'VO',
+              kind: 3,
             })
             this.$router.replace({
               name:'Payment'
@@ -318,8 +320,8 @@
               type:''
             })
           }
-          
-          
+
+
         })
       },
 
@@ -352,6 +354,7 @@
           address_id:this.address.aid,
           order_no: '',
           order_price:this.total_price,
+          type: 2,
           remark:this.remark || '无'
         }).then(res=>{
           if(res.data.code == 1){
@@ -381,16 +384,16 @@
           this.address = res.data.data[0];
           console.log(this.address);
           this.getShippingFee();
-          
+
         }else{
           this.feedback.Toast({
             msg:res.data.info
           });
-          
+
         }
       });
 
-      
+
       //this.getGife();
 
 
@@ -420,12 +423,12 @@
 </style>
 
 
-<!-- order_no String[字符串] 必填     订单编号 
-shop_id Integer[整数] 必填   1  商品所属实体店ID 
-goods_id Integer[整数] 必填   1  商品ID 
-virtual_id Integer[整数] 必填   1  虚拟店ID 
-shipping_fee Float[浮点数] 必填   0.00  运费 
-remark String[字符串] 选填     备注 
-attr String[字符串] 选填     所选商品属性ID 35,36 
-num Integer[整数] 必填   1  所选商品数量 
+<!-- order_no String[字符串] 必填     订单编号
+shop_id Integer[整数] 必填   1  商品所属实体店ID
+goods_id Integer[整数] 必填   1  商品ID
+virtual_id Integer[整数] 必填   1  虚拟店ID
+shipping_fee Float[浮点数] 必填   0.00  运费
+remark String[字符串] 选填     备注
+attr String[字符串] 选填     所选商品属性ID 35,36
+num Integer[整数] 必填   1  所选商品数量
 user_id Integer[整数] 必填   1  下单用户ID  -->

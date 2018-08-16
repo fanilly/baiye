@@ -3,7 +3,9 @@ import Router from 'vue-router';
 import Index from '@/pages/Index/Index';
 import login from '../api/login.js';
 import store from '../store/index.js';
+import { getWxSettings } from '@/api/index.js';
 import { SET_USER_INFO } from '../store/mutation-type.js';
+const wx = require('weixin-js-sdk');
 
 const Shop = () => import ('@/pages/Shop/Shop');
 const Settlement = () => import ('@/pages/Settlement/Settlement');
@@ -448,18 +450,20 @@ const router = new Router({
       component: AdminShopPreview,
       meta: {
         keepAlive: false,
-        title: '店铺预览'
+        title: '店铺预览',
+        locationAssign: true
       }
     }, {
-      path: '/adminShopDetail/:shopid/:goodid',
+      path: '/adminShopDetail/:shopid/:goodid/:userid',
       name: 'AdminShopDetail',
       component: AdminShopDetail,
       meta: {
         keepAlive: false,
-        title: '商品详情'
+        title: '商品详情',
+        locationAssign: true
       }
     }, {
-      path: '/adminShopSettlement/:name/:img/:num/:attr/:price/:goodid/:shopid/:virtualshopid/attrid',
+      path: '/adminShopSettlement/:names/:img/:num/:attr/:price/:goodid/:shopid/:virtualshopid/:attrid/:userid',
       name: 'AdminShopSettlement',
       component: AdminShopSettlement,
       meta: {
@@ -547,5 +551,39 @@ router.beforeEach((to, from, next) => {
   }
 });
 
+
+router.afterEach((to, from)=>{
+  if(!to.meta.locationAssign){
+    getWxSettings().then(res=>{
+      let data = res.data.data;
+      wx.config({
+        debug: false,
+        appId: data.appid,
+        timestamp: data.timestamp,
+        nonceStr: data.nonceStr,
+        signature: data.signature,
+        jsApiList: ['hideMenuItems','onMenuShareTimeline','onMenuShareAppMessage']
+      });
+      wx.ready(function(){
+        wx.hideMenuItems({
+          menuList: ['menuItem:share:qq','menuItem:share:weiboApp','menuItem:share:facebook','menuItem:share:QZone','menuItem:copyUrl','menuItem:originPage','menuItem:readMode','menuItem:openWithQQBrowser','menuItem:openWithSafari','menuItem:share:email','menuItem:share:brand']
+        });
+        wx.onMenuShareTimeline({
+            title: global.websiteName,
+            link: location.href,
+            imgUrl: global.logoUrl,
+            success: () => {}
+        });
+        wx.onMenuShareAppMessage({
+          title: global.websiteName,
+          desc: global.websiteDesc,
+          link: location.href,
+          imgUrl: global.logoUrl,
+          success: () => {}
+        });
+      });
+    })
+  }
+});
 
 export default router;

@@ -1,22 +1,23 @@
 <template>
 <div class="container">
-    
+
 
     <div class="container">
         <div class="header">
-            <img :src="viewImgs != '' ? viewImgs : '../images/poster.jpg' " />
-            <div class="btn"><input type="file" class="upload" :accept="accept" @change="handleChooseImg" >更换</div>
+            <img :src="viewImgs != '' ? viewImgs : require('../../assets/poster.jpg') " />
+            <!-- :accept="accept" -->
+            <div class="btn"><input type="file" class="upload"   accept="image/*" capture="camera"  @change="handleChooseImg" >更换</div>
         </div>
         <div class="main">
             <div class="content">
                 <div class="title">{{shopInfo.shop_name}}</div>
-                <img :src="shopInfo.qrcode" />
+                <img :src="shopInfo.qrcode_public" />
                 <div class="remark">扫码进店</div>
             </div>
         </div>
     </div>
 
-   
+
 </div>
 </template>
 
@@ -43,7 +44,7 @@ export default {
     beforeCreate() {
     },
     created(){
-        
+
     },
     mounted() {
         this.getAdminIndexInfo();
@@ -73,11 +74,12 @@ export default {
                  });
                 return;
             }
-            //this.feedback.Loading.open('操作中');
             // 将选择的图片显示到页面中
             let index = e.target.dataset.index * 1;
             this.viewImgs = getFileUrl(e.srcElement)
-            
+
+
+            this.feedback.Loading.open('图片上传中');
             //上传图片
             let file = e.target.files[0]
             let param = new FormData()  // 创建form对象
@@ -102,6 +104,7 @@ export default {
                 shop_id: this.shopInfo.id,
                 background: id
             }).then(res=>{
+                this.feedback.Loading.close()
                 this.feedback.Toast({  msg:res.data.info,  timeout:1500 });
                 this.getAdminIndexInfo();
                 console.log('更换门店名片背景图',res)

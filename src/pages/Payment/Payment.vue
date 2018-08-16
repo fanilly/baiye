@@ -59,13 +59,9 @@
             });
             setTimeout(() => {
               var str = ''
-              if (this.$store.state.payment.kind == 1) {
-
-              } else {
-                this.$router.replace({
-                  name:'Order'
-                })
-              }
+              this.$router.replace({
+                name:'Order'
+              });
             }, 1000)
           } else {
             this.feedback.Toast({
@@ -90,13 +86,25 @@
             signType: res.data.data.signType,
             paySign: res.data.data.paySign,
             success: res=> {
+              let msg = this.$store.state.payment.kind == 1
+                ? '付款成功，现在为你跳转会员卡页面'
+                : this.$store.state.payment.kind == 3
+                ? '付款成功，现在为你跳转虚拟店页面'
+                : '付款成功，现在为你跳转订单页面';
               this.feedback.Alert({
                 msg:'付款成功，现在为你跳转订单页面',
                 callback:()=>{
                   if (this.$store.state.payment.kind == 1) {
-
+                    this.$router.replace({
+                      name:'buyVipCard',
+                      params: {
+                        storeid: this.$store.state.payment.shopid
+                      }
+                    });
                   } else if (this.$store.state.payment.kind == 3) {
-
+                    this.$router.replace({
+                      name:'FictitiousOrder'
+                    });
                   } else {
                     this.$router.replace({
                       name:'Order'

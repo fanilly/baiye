@@ -1,6 +1,6 @@
 <template>
 <div class="container">
-    
+
     <div class="wapper">
         <!-- 导航 -->
         <div class="nav-bar">
@@ -35,10 +35,6 @@
                         <span>￥</span>{{detail.shop_price}}
                     </div>
                     {{detail.title || '--'}}
-                </div>
-                <div class="rside" v-if="isVirtual">
-                    <img src="../../assets/shopicon12.png" />
-                    <button open-type="share"></button>
                 </div>
             </div>
         </div>
@@ -106,14 +102,14 @@
     </div>
 
 
-   
+
 </div>
 </template>
 
 <script>
 import { Swiper } from 'vux';
 
-import { getShopItemDetail } from '@/api/index.js';
+import { getShopItemDetail, getWxSettings } from '@/api/index.js';
 const wx = require('weixin-js-sdk');
 
 export default {
@@ -122,6 +118,7 @@ export default {
         return {
             goodid:'',
             shopid:'',
+            userid:'',
             isVirtual:true,
             curIndexs:'',
             isBuy: true,
@@ -151,9 +148,21 @@ export default {
     created(){
         this.shopid = this.$route.params.shopid
         this.goodid = this.$route.params.goodid
+        this.userid = this.$route.params.userid
     },
     mounted() {
         this.getShopItemDetail();
+        getWxSettings().then(res => {
+          let data = res.data.data;
+          this.wx.config({
+            debug: global.isDev,
+            appId: data.appid,
+            timestamp: data.timestamp,
+            nonceStr: data.nonceStr,
+            signature: data.signature,
+            jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage']
+          });
+        });
     },
     methods:{
         getShopItemDetail(){
@@ -166,13 +175,29 @@ export default {
 
                 this.detail = resData,
                 this.curIndexs = resData.attr.length == 0 ? [0] : resData.attr.map(item => 0)
-                
+
                 this.banners = resData.atlas.map(item => ({
                     img: item,
                     url: item
                 }));
 
-                
+                let self = this;
+                this.wx.ready(function() {
+                  self.wx.onMenuShareTimeline({
+                      title: self.detail.title,
+                      link: location.href,
+                      imgUrl: self.detail.attachment_path,
+                      success: () => {}
+                  });
+                  self.wx.onMenuShareAppMessage({
+                    title: self.detail.title,
+                    desc: `价格：${self.detail.price}`,
+                    link: location.href,
+                    imgUrl: self.detail.attachment_path,
+                    success: () => {}
+                  });
+                });
+
                 this.calculateCurPrice();
             })
         },
@@ -264,21 +289,23 @@ export default {
                 //     url: '../adminConfirm/adminConfirm'
                 // });
                 // /:name/:img/:num/:attr/:price/:goodid',
-                
+
 
             }*/
             let curIndexs = this.curIndexs
             this.attr =  this.detail.attr.length == 0 ? '' : this.detail.attr.map((item, index) => item.specs[curIndexs[index]].name).join(',')
             var datas  = {}
-            datas.name = this.detail.title
+            // /:name/:img/:num/:attr/:price/:goodid/:shopid/:virtualshopid/:attrid/:userid',
+            datas.names = this.detail.title
             datas.img = this.detail.attachment_path
             datas.num = this.choosedNum
-            datas.attr = this.attr
+            datas.attr = this.attr ? this.attr : '暂无规格'
             datas.price = this.curPrice
             datas.goodid = this.detail.aid
             datas.shopid = this.detail.goods_shop_id
             datas.virtualshopid = this.detail.virtual_id
-            datas.attrid = this.skuId
+            datas.attrid = this.skuId ? this.skuId : 0
+            datas.userid = this.userid
             console.log(datas)
             //跳转
             this.$router.push({name:'AdminShopSettlement',params:datas })

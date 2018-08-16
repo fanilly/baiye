@@ -36,25 +36,13 @@
     </div>
     <div class='fbottom' v-if="status==0">
         <!--  bindtap='gopay' data-cardid="{{cardinfo.aid}}" -->
-        <div class='submit JB' @click='showpop=true'>立即购买</div>
+        <div class='submit JB' @click='goBuyVipCard'>立即购买</div>
     </div>
     <div class='fbottom' v-if="status==2">
         <div class='submit JC'>已充值</div>
     </div>
 
 
-    <div class='popbgs' v-if='showpop' @click='showpop=false'></div>
-    <div class='popboxs' v-if='showpop'>
-        <div class='close' @click='showpop=false'>×</div>
-        <div class='tishi'>请输入服务员工号</div>
-        <div class='shu'>
-            <input type='number' v-model='waitid'  placeholder='请输入服务员工号，没有请直接确定！' />
-            <div class='ok' @click='goBuyVipCard'>确定</div>
-        </div>
-    </div>
-
-    
-   
 </div>
 </template>
 
@@ -98,7 +86,7 @@ export default {
         getPhysicalShopDetail(){
             getPhysicalShopDetail({
                 user_id: this.$store.state.user.userid,
-                id: this.storeid 
+                id: this.storeid
             }).then(res=>{
                 console.log('获取店铺信息',res)
                 if (res.data.code == 1) {
@@ -122,7 +110,7 @@ export default {
                 }
             })
         },
-        //购买会员卡 5b0e95b83a9fd 
+        //购买会员卡 5b0e95b83a9fd
         //订单预支付 5b06dcf02625a
         goBuyVipCard(){
             this.showpop = false
@@ -130,9 +118,8 @@ export default {
             goBuyVipCard({
                 uid: this.$store.state.user.userid,
                 aid: this.goodid,
-                store_id: this.storeid ,
+                store_id: this.storeid,
                 waiter_id: this.waitid,
-                //table_id: app.globalData.tableid
             }).then(res=>{
                 console.log('生成会员卡订单',res)
                 if(res.data.code==1){
@@ -148,20 +135,21 @@ export default {
                 canUse: false,
                 orderNo: this.orderNo,
                 totalMoney: this.total_money,
+                shopid: this.storeid,
                 orderType: 'CD',
-                kind: 2,
+                kind: 1,
             });
 
             this.feedback.Toast({  msg:'操作成功,现在跳转到支付页面',  timeout:1500 });
             setTimeout(()=>{
                 this.$router.push({name:'Payment'});
             },1500)
-            
+
         }
-        
+
     },
     components: {
-      
+
     }
 };
 

@@ -72,7 +72,7 @@
     </section> -->
 
     <!-- indexMenu -->
-    <div class="indexMenu" v-if='smallBanner.length>0'>
+    <div class="indexMenu" v-if='indexMenu.length>0'>
       <router-link class="item" v-for="(item,index) in indexMenu" :key='index' :to="{name:'ShopList',params:{cateid:item.aid}}">
         <img :src="item.img_url" alt="">
         <!-- aid -->
@@ -114,13 +114,7 @@
             <div class="info">
               <h4>{{item.name}}</h4>
               <div class='one'>
-                <div class="star">
-                  <i :class="{'on':item.grade>0}"></i>
-                  <i :class="{'on':item.grade>1}"></i>
-                  <i :class="{'on':item.grade>2}"></i>
-                  <i :class="{'on':item.grade>3}"></i>
-                  <i :class="{'on':item.grade>4}"></i>
-                </div>
+                <rate slot="left" v-model="item.grade" size="12px"></rate>
                 <div class="sales">月销{{item.month_sell}}</div>
               </div>
               <div class="two">
@@ -152,7 +146,7 @@
   import { LoadMore } from 'vux';
   import scroller from '@/components/scroller/scroller.vue';
   import { SET_SEARCH_RESULT } from '@/store/mutation-type.js';
-
+  import rate from '@/components/rate/rate.vue';
 
   import footerNav from '@/components/footerNav/footerNav.vue';
   import { Swiper } from 'vux';
@@ -192,6 +186,36 @@
             url: item.url
           }));
         }
+      });
+
+
+      getWxSettings().then(res => {
+        let data = res.data.data;
+        this.wx.config({
+          debug: global.isDev,
+          appId: data.appid,
+          timestamp: data.timestamp,
+          nonceStr: data.nonceStr,
+          signature: data.signature,
+          jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage']
+        });
+      });
+
+      let self = this;
+      this.wx.ready(function() {
+        self.wx.onMenuShareTimeline({
+            title: global.websiteName,
+            link: location.href,
+            imgUrl: global.logoUrl,
+            success: () => {}
+        });
+        self.wx.onMenuShareAppMessage({
+          title: global.websiteName,
+          desc: global.websiteDesc,
+          link: location.href,
+          imgUrl: global.logoUrl,
+          success: () => {}
+        });
       });
 
       this.getIndexMenu()
@@ -323,7 +347,8 @@
       footerNav,
       Swiper,
       scroller,
-      LoadMore
+      LoadMore,
+      rate
     }
   };
 

@@ -14,7 +14,7 @@
               <img :src="item.shop_avatar" alt="" />
             </div>
             <div class="center">
-              <div class="title">{{item.shop_name}}</div>
+              <div class="title">{{item.shop_name}}达达配送达达配送达达配送</div>
               <div class="sale">月销 {{item.month_sell}} 笔</div>
               <div class="badge">
                 <span class="badge-item">{{item.is_dada ? '达达配送' : '商家自配'}}</span>

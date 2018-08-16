@@ -6,6 +6,7 @@ export default {
     totalMoney: null,
     orderNo: null,
     orderType:null,
+    shopid:null,
     kind:null
   },
 
@@ -13,6 +14,7 @@ export default {
 
   mutations: {
     [SET_PAYMENT_OPTIONS](state, payload) {
+      if(payload.shopid) state.shopid = payload.shopid;
       state.canUse = payload.canUse;
       state.totalMoney = payload.totalMoney;
       state.orderNo = payload.orderNo;

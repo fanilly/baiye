@@ -27,7 +27,7 @@
                 <div class="lside">店铺主图</div>
                 <div class="center">建议上传750*350</div>
                 <!-- <div class="rside" bindtap="handleChooseImage">上传</div> -->
-                <div class="rside"><input type="file" class="upload" :accept="accept" @change="handleChooseImg" >上传</div>
+                <div class="rside"><input type="file" class="upload" accept="image/*" capture="camera"  @change="handleChooseImg" >上传</div>
             </div>
             <img class="img" :src="banner" />
             <!--  ? banner : require('../../assets/baiye/c23@2x.png')  -->
@@ -65,7 +65,7 @@ export default {
             accept: 'image/gif,image/jpeg,image/png,image/jpg',
             banner: '',
             filedata:Object,
-            ImdID:''
+            ImdID:'',
         };
     },
     beforeCreate() {
@@ -89,7 +89,7 @@ export default {
                 this.real_name = res.data.data.real_name ? res.data.data.real_name : ''
                 this.phone = res.data.data.phone ? res.data.data.phone : ''
                 this.alipay_no = res.data.data.alipay_no ? res.data.data.alipay_no : ''
-                this.banner = res.data.data.banner ? res.data.data.banner : "require('../../assets/baiye/c23@2x.png')"
+                this.banner = res.data.data.banner ? res.data.data.banner : require('../../assets/baiye/c23@2x.png')
                 this.ImdID = res.data.data.banner_id ? res.data.data.banner_id : ''
             })
         },
@@ -106,7 +106,7 @@ export default {
                  });
                 return;
             }
-            this.feedback.Loading.open('操作中');
+            this.feedback.Loading.open('上传图片中');
             // 将选择的图片显示到页面中
             let index = e.target.dataset.index * 1;
             this.banner = getFileUrl(e.srcElement)
@@ -168,6 +168,9 @@ export default {
 
 
 
+    },
+    beforeDestroy(){
+        this.feedback.Loading.close();
     },
     components: {
       

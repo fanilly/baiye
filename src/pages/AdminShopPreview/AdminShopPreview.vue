@@ -152,7 +152,7 @@ export default {
 
         //去详情页
         goItemDetail(id){
-            this.$router.push({name:'AdminShopDetail',params:{shopid:this.shopid,goodid:id}})
+            this.$router.push({name:'AdminShopDetail',params:{shopid:this.shopid,goodid:id,userid:this.userid}})
         }
 
     },
