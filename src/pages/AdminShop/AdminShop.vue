@@ -77,7 +77,7 @@
 import { LoadMore } from 'vux';
 import scroller from '@/components/scroller/scroller.vue';
 
-import { getShopList,delFromShop,getAdminIndexInfo, getWxSettings } from '@/api/index.js';
+import { getShopList,delFromShop,getAdminIndexInfo } from '@/api/index.js';
 const wx = require('weixin-js-sdk');
 
 export default {
@@ -113,17 +113,6 @@ export default {
         this.isOff = true
         this.getShopList();
         this.getAdminIndexInfo();
-        getWxSettings().then(res => {
-          let data = res.data.data;
-          this.wx.config({
-            debug: global.isDev,
-            appId: data.appid,
-            timestamp: data.timestamp,
-            nonceStr: data.nonceStr,
-            signature: data.signature,
-            jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage']
-          });
-        });
     },
     methods:{
         getAdminIndexInfo() {
@@ -132,24 +121,6 @@ export default {
             }).then(res => {
                 if (res.data.code == 1) {
                     this.shopInfo = res.data.data;
-
-                    let self = this;
-                    this.wx.ready(function() {
-                      self.wx.onMenuShareTimeline({
-                          title: self.shopInfo.shop_name,
-                          link: location.href,
-                          imgUrl: self.shopInfo.avatar,
-                          success: () => {}
-                      });
-                      self.wx.onMenuShareAppMessage({
-                        title: self.shopInfo.shop_name,
-                        desc: '',
-                        link: location.href,
-                        imgUrl: self.shopInfo.avatar,
-                        success: () => {}
-                      });
-                    });
-
                 }
             });
         },

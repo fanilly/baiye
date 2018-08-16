@@ -12,11 +12,11 @@ console.log(typeof HOST);
 
 const REQUESTS = {
   //获取微信JS-SDK配置信息
-  getWxSettings() {
+  getWxSettings(pathname = '') {
     console.log(encodeURIComponent(location.href))
     console.log(location.href)
     return HTTPS.fetchPost(HOST + '/api/5b69400bc5674', {
-      jump_url: encodeURIComponent(location.href)
+      jump_url: pathname == '' ? encodeURIComponent(location.href) : encodeURIComponent(location.origin + pathname)
     })
   },
   //获取首页banner数据
@@ -277,11 +277,11 @@ const REQUESTS = {
   },
   //提交密码修改
   submitPasswordChange(data){
-    return HTTPS.fetchPost(HOST + '/api/5b4ee53fc65d4', data)
+    return HTTPS.fetchPost(HOST + '/api/5b4ee593dd40a', data)
   },
   //提交密码设置
   submitPasswordSet(data){
-    return HTTPS.fetchPost(HOST + '/api/5b4ee593dd40a', data)
+    return HTTPS.fetchPost(HOST + '/api/5b4ee53fc65d4', data)
   },
   //获取商户验证码
   sendAdminCode(data){

@@ -1,13 +1,16 @@
 <template>
 <div class="container">
 
-    <div class="wapper">
+    <div class="wapper" id='wapper'>
         <!-- 导航 -->
-        <div class="nav-bar">
-            <div class="nav-bar-item" v-for="(item,index) in navsData.lists" :data-origin="item.origin" bindtap="handleToggleNavs">
+        <div class="nav-bar" id="navbar" style='display:none;'>
+            <!-- <a class="nav-bar-item" v-for="(item,index) in navsData.lists" href="{'wapper':}" bindtap="handleToggleNavs">
                 <span>{{item.name}}</span>
                 <div class="nav-line" :style="{opacity: navsData.index == index ? 1 : 0}"></div>
-            </div>
+            </a> -->
+            <a class="nav-bar-item" href="#wapper" @click="handleToggleNavs(0,'wapper')"><span>商品</span><div :class="{'on':navIndex == 0}" ></div> </a>
+            <a class="nav-bar-item" href="#detail" @click="handleToggleNavs(1,'detail')"><span>详情</span><div :class="{'on':navIndex == 1}" ></div> </a>
+
         </div>
         <!-- 海报 -->
         <!-- <div class="carousel-wapper" id="goods">
@@ -119,6 +122,7 @@ export default {
             goodid:'',
             shopid:'',
             userid:'',
+            navIndex:0,
             isVirtual:true,
             curIndexs:'',
             isBuy: true,
@@ -191,7 +195,7 @@ export default {
                   });
                   self.wx.onMenuShareAppMessage({
                     title: self.detail.title,
-                    desc: `价格：${self.detail.price}`,
+                    desc: `价格：${self.detail.shop_price}`,
                     link: location.href,
                     imgUrl: self.detail.attachment_path,
                     success: () => {}
@@ -266,32 +270,6 @@ export default {
 
         //立即购买
         handleGoBuyOrCar(e) {
-            /*let detail = this.detail,
-                curIndexs = this.curIndexs,
-                choosedGoodsData = {
-                    num: this.choosedNum,
-                    skuId: this.curSkuId,
-                    goodsId: detail.goodsId,
-                    goods_shop_id: detail.goods_shop_id,
-                    aid: detail.aid,
-                    attachment_path: detail.attachment_path,
-                    virtual_id: detail.virtual_id,
-                    sku_id: this.skuId,
-                    title: detail.title,
-                    price: this.curOncePrice,
-                    totalPrice: this.curPrice,
-                    attr: detail.attr.length == 0 ? '' : detail.attr.map((item, index) => item.specs[curIndexs[index]].name).join(',')
-                };
-            if (this.isBuy) {
-
-                //app.globalData.settlementGoods = choosedGoodsData;
-                // wx.navigateTo({
-                //     url: '../adminConfirm/adminConfirm'
-                // });
-                // /:name/:img/:num/:attr/:price/:goodid',
-
-
-            }*/
             let curIndexs = this.curIndexs
             this.attr =  this.detail.attr.length == 0 ? '' : this.detail.attr.map((item, index) => item.specs[curIndexs[index]].name).join(',')
             var datas  = {}
@@ -309,7 +287,42 @@ export default {
             console.log(datas)
             //跳转
             this.$router.push({name:'AdminShopSettlement',params:datas })
-         },
+        },
+        //导航条点击事件
+        handleToggleNavs(n,str) {
+            this.navIndex = n
+            var oSkip = document.getElementById("navbar");
+            var oTarget = document.getElementById(str);
+            var oTarget_Top = oTarget.offsetTop;
+            oSkip.onclick=function(){
+                starmove(oTarget_Top);
+            }
+            /*function starmove(top){
+                var timer = '';
+                var speed =1;
+                document.animate({
+                    scrollTop: targetOffset
+                },1000);
+                return false;
+            }*/
+            function starmove(top){
+                var timer = '';
+                var speed = 1;
+                timer = setInterval(function(){
+                    var t = document.documentElement.scrollTop || document.body.scrollTop;
+                    if(t < top){
+                        if(document.documentElement.scrollTop){
+                            document.documentElement.scrollTop = speed;
+                        }else {
+                            document.body.scrollTop = speed;
+                        }
+                        speed += 2;
+                    }else{
+                        clearInterval(timer);
+                    }
+                },1);
+            }
+        },
     },
     components: {
         Swiper,

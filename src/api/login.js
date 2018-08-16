@@ -5,7 +5,7 @@ export default function(userToken) {
     const isDev = process.env.NODE_ENV === 'development';
     if (isDev) {
       let userInfo = {
-        userid: 67,
+        userid: 169,
         nickName: '发光的闪闪闪',
         userType: 2,
         subscribe: true,

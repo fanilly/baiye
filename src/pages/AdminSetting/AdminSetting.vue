@@ -1,9 +1,9 @@
 <template>
 <div class="container">
-    
+
     <!--pages/shopPwd/shopPwd.wxml-->
     <div class="wapper">
-        
+
         <div class="input-box-wapper">
             <div class="input-box-type1">
                 <div class="lside">店铺名称:</div>
@@ -27,7 +27,7 @@
                 <div class="lside">店铺主图</div>
                 <div class="center">建议上传750*350</div>
                 <!-- <div class="rside" bindtap="handleChooseImage">上传</div> -->
-                <div class="rside"><input type="file" class="upload" accept="image/*" capture="camera"  @change="handleChooseImg" >上传</div>
+                <div class="rside"><input type="file" class="upload" accept="image/*"  @change="handleChooseImg" >上传</div>
             </div>
             <img class="img" :src="banner" />
             <!--  ? banner : require('../../assets/baiye/c23@2x.png')  -->
@@ -36,11 +36,11 @@
         <div class="footer">
             <div form-type="submit" class="btn" @click = 'changeShopSetting'>确认</div>
         </div>
-        
+
     </div>
 
 
-   
+
 </div>
 </template>
 
@@ -110,7 +110,7 @@ export default {
             // 将选择的图片显示到页面中
             let index = e.target.dataset.index * 1;
             this.banner = getFileUrl(e.srcElement)
-            
+
             //上传图片
             let file = e.target.files[0]
             let param = new FormData()  // 创建form对象
@@ -134,7 +134,7 @@ export default {
         },
 
 
-        
+
         //提交
         changeShopSetting(){
             if(this.shop_name==''){ this.feedback.Toast({  msg:'店铺名称不能为空',  timeout:1500 });}
@@ -163,7 +163,7 @@ export default {
                     }
                 })
             }
-            
+
         }
 
 
@@ -173,7 +173,7 @@ export default {
         this.feedback.Loading.close();
     },
     components: {
-      
+
     }
 };
 

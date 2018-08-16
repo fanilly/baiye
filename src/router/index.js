@@ -554,7 +554,7 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach((to, from)=>{
   if(!to.meta.locationAssign){
-    getWxSettings().then(res=>{
+    getWxSettings(to.fullPath).then(res=>{
       let data = res.data.data;
       wx.config({
         debug: false,

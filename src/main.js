@@ -15,8 +15,8 @@ import './iconfont/iconfont.css';
 global.host = 'https://food.zzebz.com';
 global.isDev = process.env.NODE_ENV === 'development';
 global.logoUrl = 'https://food.zzebz.com/static/index/assets/website_logo.png';
-global.websiteName = '有来客了';
-global.websiteDesc = '测试描述';
+global.websiteName = '又来客了';
+global.websiteDesc = '缺客就用又来客了';
 
 Vue.use(FeedBack);
 Vue.use(lazyLoad, {

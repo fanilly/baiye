@@ -604,10 +604,14 @@ export default {
     //控制body是否允许滚动
     hanldeControlScroll(flag){
       if(flag == 'stop'){
+        document.body.style.position = 'fixed';
         document.body.style.height = '100vh';
+        document.body.style.width = '100%';
         document.body.style['overflow-y'] = 'hidden';
       }else{
+        document.body.style.position = 'static';
         document.body.style.height = 'unset';
+        document.body.style.width = 'unset';
         document.body.style['overflow-y'] = 'auto';
       }
     },

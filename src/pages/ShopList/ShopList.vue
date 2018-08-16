@@ -10,10 +10,10 @@
     </header>
     <section class="header-palceholder"></section>
 
-  
+
     <!-- near -->
     <div class="nearshop">
-      
+
       <scroller @getData="getIndexNearShop">
 
         <!-- indexMenu -->
@@ -86,6 +86,7 @@
   import scroller from '@/components/scroller/scroller.vue';
 
   import footerNav from '@/components/footerNav/footerNav.vue';
+  import { SET_SEARCH_RESULT } from '@/store/mutation-type.js';
   import { Swiper } from 'vux';
   import { mapActions } from 'vuex';
   import { getIndexBanner, getWxSettings, getNearStore, getMyShop, getCoorDinateName, getIndexMenu,getIndexHot, getIndexCommand, getIndexNearShop } from '@/api/index.js';
@@ -128,7 +129,7 @@
       if(!this.$store.state.coordinate.latitude) await this.getCoordinate();
       //this.getNearStore();
       this.getIndexNearShop()
-      
+
       getCoorDinateName({
         lat: this.$store.state.coordinate.latitude,
         lng: this.$store.state.coordinate.longitude,
@@ -235,7 +236,22 @@
         console.log('cateId',this.cate_id)
         this.getIndexCommand()
         this.getIndexNearShop()
-      }
+      },
+
+      goShopIndex(shopId,cateId,goodsId){
+        if(cateId && goodsId){
+          this.$store.commit(SET_SEARCH_RESULT, {
+            cateId,
+            goodsId
+          });
+        }
+        this.$router.push({
+          name:'Shop',
+          params:{
+            shopid:shopId
+          }
+        })
+      },
 
 
     },

@@ -1,7 +1,7 @@
 <template>
 <div class="container">
-    
-    
+
+
     <div class="input-box-wapper">
         <div class="input-box-type1">
             <input type="number" v-model='shopPhone' bindinput="recordPhoneNumber" placeholder="" disabled />
@@ -23,12 +23,12 @@
         </div>
     </div>
     <div class="footer">
-        <button form-type="submit" class="btn" @click='goSubmit'>确认修改</button>
+        <button form-type="submit" class="btn" @click='goSubmit'>确定</button>
         <!-- <button form-type="submit" v-if="!is_password" class="btn" @click='submitPasswordSet'>确认</button> v-if="is_password" -->
     </div>
-    
 
-   
+
+
 </div>
 </template>
 
@@ -54,9 +54,9 @@ export default {
         };
     },
     created(){
-        this.routeData = this.$route.params
-        console.log(this.routeData)
-        this.is_password = this.routeData.haspassword
+        this.routeData = this.$route.params;
+        this.is_password = this.routeData.haspassword == "true" || this.routeData.haspassword == true;
+        document.title = this.is_password ? '提现密码修改' : '提现密码设置';
     },
     mounted() {
         this.checkShopSetting();
@@ -145,14 +145,14 @@ export default {
                 this.feedback.Loading.open('发送中');
                 sendAdminCode({
                     mobile: this.shopPhone,
-                    name: this.is_password ? 'set_transaction_password' : 'change_transaction_password'
+                    name: this.is_password ? 'change_transaction_password' : 'set_transaction_password'
                 }).then(res=>{
                     this.feedback.Loading.close()
                     console.log('发送验证码',res)
                     if(res.data.code==1){
                         //显示倒计时
                         this.beginning =  true
-                        
+
                         //开始倒计时
                         this.timer = setInterval(()=>{
                             let tempTime = this.time;
@@ -170,7 +170,7 @@ export default {
         }
     },
     components: {
-        
+
     }
 };
 

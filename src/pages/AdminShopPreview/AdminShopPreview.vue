@@ -1,6 +1,6 @@
 <template>
 <div class="container">
-    
+
     <div class='page-wapper'>
         <!-- shopInfo -->
         <div class="shop-header">
@@ -36,7 +36,7 @@
         </div>
     </div>
 
-   
+
 </div>
 </template>
 
@@ -44,7 +44,7 @@
 import { LoadMore } from 'vux';
 import scroller from '@/components/scroller/scroller.vue';
 
-import { getShopList,getAdminIndexInfo } from '@/api/index.js';
+import { getShopList,getAdminIndexInfo,getWxSettings } from '@/api/index.js';
 const wx = require('weixin-js-sdk');
 
 export default {
@@ -80,6 +80,17 @@ export default {
         this.feedback.Loading.open('加载中');
         this.getAdminIndexInfo();
         this.getShopList();
+        getWxSettings().then(res => {
+          let data = res.data.data;
+          this.wx.config({
+            debug: global.isDev,
+            appId: data.appid,
+            timestamp: data.timestamp,
+            nonceStr: data.nonceStr,
+            signature: data.signature,
+            jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage']
+          });
+        });
     },
     methods:{
         getAdminIndexInfo() {
@@ -90,6 +101,22 @@ export default {
                 //console.log('虚拟店信息',res)
                 if (res.data.code == 1) {
                     this.shopInfo = res.data.data;
+                    let self = this;
+                    this.wx.ready(function() {
+                      self.wx.onMenuShareTimeline({
+                          title: self.shopInfo.shop_name,
+                          link: location.href,
+                          imgUrl: self.shopInfo.avatar,
+                          success: () => {}
+                      });
+                      self.wx.onMenuShareAppMessage({
+                        title: self.shopInfo.shop_name,
+                        desc: global.websiteName,
+                        link: location.href,
+                        imgUrl: self.shopInfo.avatar,
+                        success: () => {}
+                      });
+                    });
                 }
             });
         },

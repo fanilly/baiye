@@ -6,7 +6,7 @@
         <div class="header">
             <img :src="viewImgs != '' ? viewImgs : require('../../assets/poster.jpg') " />
             <!-- :accept="accept" -->
-            <div class="btn"><input type="file" class="upload"   accept="image/*" capture="camera"  @change="handleChooseImg" >更换</div>
+            <div class="btn"><input type="file" class="upload"   accept="image/*"  @change="handleChooseImg" >更换</div>
         </div>
         <div class="main">
             <div class="content">
