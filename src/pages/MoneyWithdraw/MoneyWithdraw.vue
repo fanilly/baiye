@@ -82,6 +82,8 @@ export default {
                         setTimeout(()=>{
                              this.$router.back(-1)
                         },1500)
+                    }else{
+                        this.feedback.Toast({  msg:res.data.info,  timeout:1500 });
                     }
                 });
             }

@@ -25,7 +25,7 @@ export default function() {
           };
           sessionStorage.setItem('USER_COORDINATE', JSON.stringify(coordinate));
           resolve(coordinate);
-        }, 2000);
+        }, 1000);
       }
     } else {
       if (sessionStorage.getItem('USER_COORDINATE')) {

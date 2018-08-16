@@ -29,7 +29,7 @@ export default function(userToken) {
             subscribe: resData.subscribe
           };
           sessionStorage.setItem('USER_INFO', JSON.stringify(userInfo));
-          resolve(res);
+          resolve(userInfo);
         }
       }).catch(err => {
         reject(err);

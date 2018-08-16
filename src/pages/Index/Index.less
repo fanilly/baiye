@@ -44,9 +44,12 @@
     background: #f2f2f2 url(../../assets/baiye/icon02@2x.png) no-repeat .2rem center;
     background-size: .22rem;
     font-size: .28rem;
+    display: table-cell;
+    vertical-align: middle;
   }
 }
 
+.vux-swiper-item{ border-radius: 0.08rem; overflow: hidden; }
 .swiperbox{ padding:0 0.2rem; }
 .swiper {
   width: 100%;
@@ -137,7 +140,7 @@
 }
 
 
-.indexMenu{ overflow: hidden;  padding-top: 0.1rem; padding-bottom: 0.2rem;
+.indexMenu{ overflow: hidden;  padding-top: 0.15rem; padding-bottom: 0.2rem;
   .item{ display: block; float: left; width: 20%;
     img{ display: block; width:1.18rem; margin: 0 auto;  }
     span{ display: block; text-align: center; font-size: 0.24rem; color:#333; }
@@ -146,7 +149,7 @@
 
 .smallBanner{ overflow: hidden;  padding: 0.1rem 0.2rem 0.2rem 0.2rem;
   .one{ position: relative; width: 50%; padding-right: 0.05rem; float: left;
-    .item{ display: block; width: 100%; height: 0; position: relative; padding-bottom: 62.85%; 
+    .item{ display: block; width: 100%; height: 0; position: relative; padding-bottom: 62.85%;
       img{ display: block; width: 100%; height: 100%; position: absolute; left:0; top: 0; border-radius: 0.08rem; overflow: hidden; }
     }
   }
@@ -155,38 +158,40 @@
 
 .hotcommend{ padding: 0.1rem 0.2rem 0.2rem 0.2rem; border-bottom: 0.15rem solid #f7f7f7; text-align: left;
   h3{ font-size: 0.36rem; color:#333; font-weight:700; margin-bottom: 0.25rem; }
-  .list{ overflow-y:auto; white-space:nowrap;  }
+  .list{ overflow:hidden; overflow-x:auto; white-space:nowrap; -webkit-overflow-scrolling: touch;  }
   .list .item{ display: inline-block; position: relative;  margin-right: 0.1rem;
     .pic{ display: block; width: 1.5rem; height: 1.5rem; border-radius: 0.08rem; overflow: hidden;  }
     .icon{ display: block; width: 0.36rem; height: 0.42rem; position: absolute; left:0.12rem; top: 0; }
     span{ display: block; font-size: 0.24rem; color:#333; margin:0.12rem auto 0.08rem auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 1.4rem; text-align: center; }
-    i{ display: block; text-align: center; color:#ff5a5a; width: 100%; line-height: 0.3rem; font-size: 0.2rem; 
+    i{ display: block; text-align: center; color:#ff5a5a; width: 100%; line-height: 0.3rem; font-size: 0.2rem;
       b{ font-size: 0.28rem; padding-left: 0.06rem; }
     }
   }
 
 }
 
-.nearshop{padding: 0.25rem 0rem 0rem 0rem; text-align: left; /*position: absolute; bottom: 0.98rem; left:0; right: 0;*/
+.nearshop{padding: 0.25rem 0rem 0rem 0rem; text-align: left; background-color: #fff; /*position: absolute; bottom: 0.98rem; left:0; right: 0;*/
   h3{ font-size: 0.36rem; color:#333; font-weight:700; padding: 0.25rem 0;  padding: 0 0.2rem;}
   .list{
-    .item{ position: relative; border-bottom: 0.02rem solid #f2f2f2; padding:0.3rem 0.2rem; padding-left: 1.6rem; display: block;
-      .pic{ display: block; width: 1.18rem; height: 1.18rem; border-radius: 0.06rem; overflow: hidden; position: absolute; left:0.2rem; top: 0.3rem; 
+    .item{ position: relative; border-bottom: 0.02rem solid #f2f2f2; background-color: #fff; padding:0.3rem 0.2rem; padding-left: 1.6rem; display: block;
+      .pic{ display: block; width: 1.18rem; height: 1.18rem; border-radius: 0.06rem; overflow: hidden; position: absolute; left:0.2rem; top: 0.3rem;
         img{ display: block; width: 1.18rem; height: 1.18rem; }
       }
       .info{
-        h4{ font-size: 0.36rem; color:#333333; }
-        .one{ overflow: hidden; margin:0.14rem 0 0.1rem 0;
+        h4{ font-size: 0.32rem; color:#333333; }
+        .one{ overflow: hidden; margin:0.1rem 0 0.06rem 0;
           .star{ overflow: hidden; height: 0.26rem; float: left;
             i{ display: block; width: 0.22rem; height: 0.22rem; margin: 0.01rem 0.04rem 0.01rem 0; float:left; background-image: url('../../assets/icon1.1.12@2x.png');
             background-size:100% 100%;  }
             i.on{background-image: url('../../assets/icon1.1.11@2x.png'); }
           }
-          .sales{ float:left; margin-left: 0.3rem; font-size: 0.22rem; color:#999999;  }
+          .sales{ float:left; margin-left: 0.3rem; font-size: 0.22rem; line-height: 0.26rem; height: 0.26rem; color:#999999;  }
         }
         .two{ overflow: hidden;
-          i{ display: block; padding:0 0.1rem; height: 0.38rem; line-height: 0.34rem; border:0.02rem solid #ffa800; font-size:0.2rem; color:#ffa800; text-align: center; border-radius: 0.08rem; float:right; }
-          span{ font-size: 0.22rem; color:#999; line-height: 0.38rem; float: left; }
+          i{ display: table-cell; vertical-align: middle; padding:0 0.1rem; line-height: 0.34rem; border:0.02rem solid #ffa800; font-size:0.2rem; color:#ffa800; text-align: center; border-radius: 0.08rem; float:right; }
+          span{ font-size: 0.22rem; color:#999; line-height: 0.38rem; float: left;}
+          .dis{ margin-left: 0.15rem; position: relative; padding-left: 0.17rem; }
+          .dis::before{ position: absolute; left:0; top: 50%; width: 1px; height: 0.2rem; margin-top: -0.1rem; background-color: #f2f2f2; content:''; };
           b{ display: block; float:left; width: 1px; height: 0.2rem; margin:0.09rem 0.15rem; background-color: #f2f2f2; }
         }
         .tips{ font-size: 0.24rem; color:#666; line-height: 0.3rem;  margin-top: 0.05rem;

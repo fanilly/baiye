@@ -126,8 +126,8 @@
               <div class="two">
                 <i>{{item.is_dada?"达达专送":"商家自配"}}</i>
                 <span>{{item.minimum}}元起送</span>
-                <b></b>
-                <span>{{item.distance}}</span>
+                <!-- <b></b> -->
+                <span class="dis">{{item.distance}}</span>
               </div>
               <!-- <div class="tips">
                 <p><i class='color1'>满赠</i>进入指定专区，购买满赠产品就可以获得赠品</p>

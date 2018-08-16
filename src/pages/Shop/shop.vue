@@ -219,7 +219,6 @@ import rate from '@/components/rate/rate.vue';
 
 import goodsItem from '@/components/goodsItem/goodsItem.vue';
 import footerTrolley from '@/components/footerTrolley/footerTrolley.vue';
-import pageScroll from '@/utils/pageScroll.js';
 
 import parabola from '@/utils/parabola.js';
 import ScrollTo from '@/utils/scrollTo.js';
@@ -376,17 +375,23 @@ export default {
     },
 
     //点击选好了
-    handleGoSettlement() {
-      if (this.choosedTotalNum >= 1) {
+    handleGoSettlement(allowSellement) {
+      if(this.choosedTotalNum == 0){
+        this.feedback.Toast({
+          msg:'至少选择一件商品',
+          timeout: 1000
+        });
+      }else if(!allowSellement) {
+        this.feedback.Toast({
+          msg:'所选商品金额不足',
+          timeout: 1000
+        });
+      } else {
         this.$router.push({
           name: 'Settlement',
           params: {
             shopid: this.shopid
           }
-        });
-      } else {
-        this.feedback.Toast({
-          msg:'请至少选择一件商品'
         });
       }
     },
@@ -573,17 +578,12 @@ export default {
 
     //控制body是否允许滚动
     hanldeControlScroll(flag){
-      const mo = function(e){ e.preventDefault() };
       if(flag == 'stop'){
-        // pageScroll.handle(window)
-        document.body.style.overflow = 'hidden';
-        // document.body.style.overflow='hidden';
-        // document.addEventListener("touchmove",mo,false);
+        document.body.style.height = '100vh';
+        document.body.style['overflow-y'] = 'hidden';
       }else{
-        // pageScroll.unhandle(window);
-        document.body.style.overflow = 'auto';
-        // document.body.style.overflow='';
-        // document.removeEventListener("touchmove",mo,false);
+        document.body.style.height = 'unset';
+        document.body.style['overflow-y'] = 'auto';
       }
     },
 
@@ -718,7 +718,7 @@ export default {
         longitude: parseFloat(coordinate[0]), // 经度，浮点数，范围为180 ~ -180。
         name: this.shopDetail.coordinate_address, // 位置名
         address: this.shopDetail.name, // 地址详情说明
-        scale: 1, // 地图缩放级别,整形值,范围从1~28。默认为最大
+        scale: 28, // 地图缩放级别,整形值,范围从1~28。默认为最大
         infoUrl: '' // 在查看位置界面底部显示的超链接,可点击跳转
       });
     }

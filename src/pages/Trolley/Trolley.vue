@@ -25,8 +25,10 @@
     </main>
     <footer-trolley
       lable="去结算"
+      v-if="loaded"
       :totalMoney="totalMoney"
       :total="trolleysTotal"
+      :minimum="minimum"
       @handleClickBtn="handleGoSettlement"
     ></footer-trolley>
   </section>
@@ -45,8 +47,10 @@
     },
     data() {
       return {
+        loaded:false,
         trolleys: [],
         trolleysTotal: 0,
+        minimum: 0,
         totalMoney: 0
       };
     },
@@ -89,11 +93,26 @@
         });
       },
 
-      // 去结算
-      handleGoSettlement() {
-        this.$router.push({
-          name: 'Settlement'
-        });
+      //去结算
+      handleGoSettlement(allowSellement) {
+        if(this.choosedTotalNum == 0){
+          this.feedback.Toast({
+            msg:'至少选择一件商品',
+            timeout: 1000
+          });
+        }else if(!allowSellement) {
+          this.feedback.Toast({
+            msg:'所选商品金额不足',
+            timeout: 1000
+          });
+        } else {
+          this.$router.push({
+            name: 'Settlement',
+            params: {
+              shopid: this.shopid
+            }
+          });
+        }
       },
 
       //获取购物车数据
@@ -105,8 +124,10 @@
         }).then(res => {
           console.log(res);
           if (res.data.code == 1) {
+            this.loaded = true;
             this.trolleysTotal = res.data.data.total_num;
             this.totalMoney = res.data.data.total_price;
+            this.minimum = res.data.data.minimum;
             this.trolleys = res.data.data.data;
           }
         })
@@ -155,8 +176,7 @@
   };
 
 </script>
-<style lang="less"
-  scoped>
+<style lang="less" scoped>
   @import './Trolley.less';
 
 </style>

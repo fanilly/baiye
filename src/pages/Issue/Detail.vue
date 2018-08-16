@@ -48,6 +48,8 @@
 
   .detail {
     text-align: left;
+    font-size: 0.28rem;
+    line-height:0.44rem;
     img {
       max-width: 100%;
     }
