@@ -54,7 +54,7 @@ export default {
     mounted() {
         if(this.uerInfo.userType==2){
             let nav = this.nav;
-            nav.push({ name: '我的虚拟店', url: 'AdminIndex', words: '', src: require('../../assets/icon02.png') })
+            nav.push({ name: '我的虚拟店', url: '/AdminIndex', words: '', src: require('../../assets/icon02.png') })
             this.nav = nav
         }
         if(this.uerInfo.userType==1){

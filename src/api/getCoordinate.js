@@ -31,16 +31,24 @@ export default function() {
       if (sessionStorage.getItem('USER_COORDINATE')) {
         resolve(JSON.parse(sessionStorage.getItem('USER_COORDINATE')));
       } else {
-        wx.ready(function() {
-          wx.getLocation({
-            type: 'wgs84',
-            success: function(res) {
-              const coordinate = { latitude: res.latitude, longitude: res.longitude };
-              sessionStorage.setItem('USER_COORDINATE', JSON.stringify(coordinate));
-              resolve(coordinate);
-            }
+        if (global.browserIsWeChat) {
+          wx.ready(function() {
+            wx.getLocation({
+              type: 'wgs84',
+              success: function(res) {
+                const coordinate = { latitude: res.latitude, longitude: res.longitude };
+                sessionStorage.setItem('USER_COORDINATE', JSON.stringify(coordinate));
+                resolve(coordinate);
+              }
+            });
           });
-        });
+        } else {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            const coordinate = { latitude: position.coords.latitude, longitude: position.coords.longitude };
+            sessionStorage.setItem('USER_COORDINATE', JSON.stringify(coordinate));
+            resolve(coordinate);
+          });
+        }
       }
     }
   });

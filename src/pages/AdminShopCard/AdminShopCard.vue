@@ -64,8 +64,6 @@ export default {
         //选择图片
         handleChooseImg(e) {
             let fileType = e.target.files[0].type;
-            console.log(this.filedata)
-            // 匹配文件类型
             if (this.accept.indexOf(fileType) == -1 || fileType == '') {
                 this.feedback.Toast({
                     msg: '请选择正确的文件类型',
@@ -74,18 +72,13 @@ export default {
                  });
                 return;
             }
-            // 将选择的图片显示到页面中
-            let index = e.target.dataset.index * 1;
+
             this.viewImgs = getFileUrl(e.srcElement)
-
-
             this.feedback.Loading.open('图片上传中');
             //上传图片
             let file = e.target.files[0]
             let param = new FormData()  // 创建form对象
             param.append('file', file, file.name)  // 通过append向form对象添加数据
-            //param.append('chunk', '0') // 添加form表单中其他数据
-            console.log(param.get('file')) // FormData私有类对象，访问不到，可以通过get判断值是否传进去
             let config = {
               headers: {'Content-Type': 'multipart/form-data'}
             }
@@ -96,6 +89,8 @@ export default {
                     this.changeShopBanner(response.data.data.id)
                 }
                 console.log(response.data)
+            }).catch(err=>{
+              this.feedback.Alert({  msg:JSON.stringify(err)+'::::--------::::'+JSON.stringify(param) });
             })
         },
         //更换店铺背景图

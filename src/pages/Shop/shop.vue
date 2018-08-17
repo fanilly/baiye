@@ -29,6 +29,34 @@
       <img class="search-box-coupon" :src="couponIcons" @click="goShopCenter" alt="">
     </section>
 
+    <!-- 我常吃 -->
+    <section class="love" v-if="loveLists.length!=0">
+      <h2 class="love-title"><span>经常买</span></h2>
+      <section class="love-list">
+        <section class="love-list-container">
+          <section class="love-item-wapper" v-for="item,index in loveLists" :key="index">
+            <section class="love-item" @click="loveEvent('detail',item.id,$event)">
+              <img class="love-item-img" :src="item.img_url" alt="">
+              <div class="rside">
+                <h3 class="goods-item-rside-title">{{ item.title }}</h3>
+                <div class="goods-item-rside-control-box">
+                  <h4><span>￥</span>{{item.shop_price}}</h4>
+                  <template v-if="item.attr.length == 0">
+                    <template v-if="item.num>=1">
+                      <span class="icon-box reduce" @click.stop="loveEvent('reduce',item.id,$event)"><i class="iconfont icon-iconjian"></i></span>
+                      <span class="count-box">{{item.num}}</span>
+                    </template>
+                    <span class="icon-box plus" @click.stop="loveEvent('plus',item.id,$event)"><i class="iconfont icon-iconjia"></i></span>
+                  </template>
+                  <span class="choose" @click.stop="loveEvent('choose',item.id,$event)" v-if="item.attr.length > 0">选规格</span>
+                </div>
+              </div>
+            </section>
+          </section>
+        </section>
+      </section>
+    </section>
+
     <!-- 商品详情 -->
     <section class="goods-detail">
       <transition name="fade">
@@ -235,6 +263,7 @@ import {
   getCartLists,
   getWxSettings,
   getPhysicalGoodsDetail,
+  getPhysicalLoveLists,
 } from '@/api/index.js';
 
 let pageHeight = document.body.offsetHeight, //页面实际高度
@@ -258,6 +287,7 @@ export default {
       showShopDetailPop:false, //显示弹出层
       shopDetail:null, //店铺详情
       goodsLists:null, //商品列表
+      loveLists:[], //我常吃
       goodsCate:null, //商品分类
       surroundings: [], //商家环境图片
       options: { //商家环境图片预览
@@ -537,27 +567,35 @@ export default {
       },300);
     },
 
-    //关联相同的商品
+    //关联今日推荐商品列表常吃列表中相同的商品
     relationSameGoods(options,type){
       let goodsId = this.goodsLists[options.parentIndex][options.currentIndex].id,
-        changeItems = [];
+        changeItems = [],
+        changeLovesIndex = this.loveLists.findIndex((item,index)=>item.id == goodsId);
       this.goodsLists.forEach((item,index)=>{
         item.forEach((iitem,iindex)=>{
           if(iitem.id == goodsId) changeItems.push({parentIndex:index,currentIndex:iindex});
         });
       });
+
       changeItems.forEach((item,index)=>{
         if(type == 'plus')
           this.goodsLists[item.parentIndex][item.currentIndex].num++;
         else
           this.goodsLists[item.parentIndex][item.currentIndex].num--;
       });
-      if(type == 'plus'){
-        this.choosedTotalNum ++;
-        if(this.goodsDetailData) this.goodsDetailData.num ++;
-      }else{
-        if(this.goodsDetailData) this.goodsDetailData.num --;
-        this.choosedTotalNum --;
+
+      switch (type) {
+        case 'plus':
+          this.choosedTotalNum ++;
+          if(this.goodsDetailData) this.goodsDetailData.num ++;
+          if(changeLovesIndex != -1) this.loveLists[changeLovesIndex].num++;
+          break;
+        default:
+          this.choosedTotalNum --;
+          if(this.goodsDetailData) this.goodsDetailData.num --;
+          if(changeLovesIndex != -1) this.loveLists[changeLovesIndex].num--;
+          break;
       }
     },
 
@@ -646,11 +684,55 @@ export default {
               return sub;
             })
           });
+          this.getPhysicalLoveLists();
           setTimeout(()=>{
             this.testingEntryIsSearch();
           },500);
         }
       });
+    },
+
+    //获取我常吃列表
+    getPhysicalLoveLists(){
+      getPhysicalLoveLists({
+        is_waimai: 1,
+        shop_id: this.shopid,
+        user_id: this.$store.state.user.userid
+      }).then(res=>{
+        if(res.data.code == 1){
+          console.log('love',res.data.data);
+          this.loveLists = res.data.data;
+        }
+      })
+    },
+
+    //我常吃商品列表点击事件
+    loveEvent(type,goodsId,e){
+      let options = { goodsId };
+      for(let i=0;i<this.goodsLists.length;i++){
+        let tempIndex = this.goodsLists[i].findIndex((item,index)=> item.id == goodsId );
+        if(tempIndex != -1){
+          options.parentIndex = i;
+          options.currentIndex = tempIndex;
+          break;
+        }
+      }
+
+      switch (type) {
+        case 'plus':
+          options.isNoAttr = true;
+          this.plus(options,e);
+          break;
+        case 'reduce':
+          this.reduce(options,e);
+          break;
+        case 'choose':
+          this.choose(options,e);
+          break;
+        default:
+          this.handleShowGoodsDetail(options.parentIndex,options.currentIndex,goodsId);
+          break;
+      }
     },
 
     //获取店铺详情

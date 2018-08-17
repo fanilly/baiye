@@ -95,6 +95,9 @@ export default {
         },
         //选择图片
         handleChooseImg(e) {
+            console.log('------------------')
+            console.log(e)
+            console.log('------------------')
             let fileType = e.target.files[0].type;
             console.log(this.filedata)
             // 匹配文件类型
@@ -125,11 +128,11 @@ export default {
                 this.feedback.Loading.close();
                 if (response.data.code == 1) {
                     this.feedback.Toast({  msg:'上传成功',  timeout:1500 });
-                    console.log(response.data.data.id)
-                    // this.changeShopBanner(response.data.data.id)
                     this.ImdID = response.data.data.id
                 }
                 console.log(response.data)
+            }).catch(err=>{
+              this.feedback.Alert({  msg:JSON.stringify(err)+'::::--------::::'+JSON.stringify(param) });
             })
         },
 

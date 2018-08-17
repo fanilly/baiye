@@ -117,7 +117,7 @@
       },
       //提交
       makeShopWithdraw() {
-        console.log('dfdjs', this.myMoney, this.inputvalue)
+        //console.log('dfdjs', this.myMoney, this.inputvalue)
         if (this.password.length == '') {
           this.feedback.Toast({ msg: '请输入提现密码', timeout: 1500 });
         } else if (this.password.length != 6) {
@@ -130,7 +130,7 @@
             type: this.type,
             password: this.password
           }).then(res => {
-            console.log('提现', res)
+            //console.log('提现', res)
             this.feedback.Loading.close();
             this.feedback.Toast({ msg: res.data.info, timeout: 1500 });
             if (res.data.code == 1) {

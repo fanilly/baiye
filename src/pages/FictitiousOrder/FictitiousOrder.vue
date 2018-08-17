@@ -43,7 +43,7 @@
                   <div>含运费：{{item.shipping_money}}元</div>
                 </div>
                 <div class="rside">
-                  <div class="btn btn-fill" v-if="item.status == 0" @click="goPayment">去付款</div>
+                  <div class="btn btn-fill" v-if="item.status == 0" @click="goPayment(item.order_no,item.total_money)">去付款</div>
                 </div>
               </div>
             </div>
@@ -80,8 +80,11 @@
         noLists: false,
         emptyIcon: require('../../assets/baiye/empty001.png'),
 
-        status: 0,
+        status: 4,
         navs: [{
+          name: '待支付',
+          status: 4,
+        },{
           name: '待接单',
           status: 0,
         }, {
@@ -123,6 +126,19 @@
           this.allowLoadMore = true;
           this.page++;
         })
+      },
+
+      goPayment(orderNo,totalMoney){
+        this.$store.commit(SET_PAYMENT_OPTIONS, {
+          canUse: false,
+          orderNo: orderNo,
+          totalMoney: totalMoney,
+          orderType: 'VO',
+          kind: 3,
+        });
+        this.$router.push({
+          name:'Payment'
+        });
       }
     },
     mounted() {

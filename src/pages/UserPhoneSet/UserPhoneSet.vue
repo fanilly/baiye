@@ -1,6 +1,6 @@
 <template>
 <div class="container">
-    
+
     <div class='step'>
         <div class="info">
             <div class='fsg'>
@@ -40,11 +40,11 @@ export default {
 
     },
     created(){
-        
+
     },
     mounted() {
         console.log(this.userInfo)
-        
+
     },
     methods:{
         sendPhoneCode(){
@@ -54,15 +54,16 @@ export default {
                 this.feedback.Toast({  msg:'手机号长度有误，请重新输入',  timeout:1500 });
             }else if(this.onflg){
                 sendPhoneCode({
-                     name: 'bind_phone', 
-                     user_id: this.user_id, 
-                     mobile: this.phone 
+                     name: 'bind_phone',
+                     user_id: this.user_id,
+                     mobile: this.phone
                 }).then(res => {
                     console.log('发送验证码',res)
+                    this.feedback.Toast({  msg:res.data.info,  timeout:1500 });
                     if (res.data.code == 1) {
                         this.onflg = false
                         setTimeout(function () {
-                            this.onflg = true 
+                            this.onflg = true
                         }, 60000)
                     }
                 });
@@ -77,9 +78,9 @@ export default {
                 this.feedback.Toast({  msg:'验证码不能为空',  timeout:1500 });
             }else{
                 changePhone({
-                     code: this.codes, 
-                     user_id: this.user_id, 
-                     phone: this.phone 
+                     code: this.codes,
+                     user_id: this.user_id,
+                     phone: this.phone
                 }).then(res => {
                     console.log('修改手机号',res)
                     if (res.data.code == 1) {

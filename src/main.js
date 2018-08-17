@@ -17,6 +17,7 @@ global.isDev = process.env.NODE_ENV === 'development';
 global.logoUrl = 'https://food.zzebz.com/static/index/assets/website_logo.png';
 global.websiteName = '又来客了';
 global.websiteDesc = '缺客就用又来客了';
+global.browserIsWeChat = navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1;
 
 Vue.use(FeedBack);
 Vue.use(lazyLoad, {

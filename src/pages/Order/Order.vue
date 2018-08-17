@@ -26,7 +26,7 @@
               <div class="zhuangtai" v-if="item.status==3">
                 <span>{{item.shipping_type}}</span>
               </div>
-              <div class="paya" v-if="item.status==0" @click.stop="goPayment(item.order_no, item.total_money)">立即支付</div>
+              <div class="paya" v-if="item.status==0" @click.stop="goPayment(item.order_no, item.total_money, item.can_use)">立即支付</div>
               <div class="paya" v-if="item.status==4" @click.stop="goEvaluate(item.order_no)">去评价</div>
               <div class="xqa ml" v-if="item.status==0" @click.stop="cancelOrDelOrder(item.order_no,false)">取消订单</div>
               <div class="xqa ml" v-if="item.status>3" @click.stop="cancelOrDelOrder(item.order_no,true)">删除订单</div>
@@ -135,7 +135,7 @@
       //立即支付
       goPayment(orderNo, totalMoney){
         this.$store.commit(SET_PAYMENT_OPTIONS, {
-          canUse: false,
+          canUse: canUse,
           orderNo: orderNo,
           totalMoney: totalMoney,
           orderType: 'OD',

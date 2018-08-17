@@ -143,13 +143,6 @@
       //console.log(this.goodInfo)
       this.total_price = this.$route.params.price * this.$route.params.num
     },
-    computed:{
-      /*orderTotalMoney(){
-        // if(!this.carlist) return '';
-        if(!this.orderData) return '';
-        return this.actuallyMoney ? ((this.actuallyMoney * 1 + this.orderData.shipping_fee * 1).toFixed(2)) : ((this.total_price * 1 + this.orderData.shipping_fee * 1).toFixed(2));
-      }*/
-    },
     watch:{
 
     },
@@ -202,47 +195,6 @@
         });
       },
 
-      //提交订单
-      /*handleSubmit(){
-        this.feedback.Loading.open('提交中');
-        let goods = [];
-        this.carlist.data.forEach(item=>{
-          goods.push(...item.goods.map(sub=>({id:sub.id,num:sub.number,attr:sub.attr_id})))
-        });
-        submitOrder({
-          goods,
-          shop_id: this.goodInfo.shopid,
-          member:1,
-          remark:this.remark,
-          user_id:this.$store.state.user.userid,
-          coupon_id: this.selectedCouponId,
-          coupon_type: this.selectedCouponType,
-          is_waimai: 1,
-          shipping_fee:this.orderData.shipping_fee,
-          order_no:this.orderData.order_no,
-          gift_id:this.selectedGifeId
-        }).then(res=>{
-          console.log(res);
-          this.feedback.Loading.close();
-          if(res.data.code == 1){
-            this.$store.commit(SET_PAYMENT_OPTIONS, {
-              canUse: res.data.data.can_use,
-              orderNo: res.data.data.order_no,
-              totalMoney: res.data.data.total_money,
-              orderType: 'OD',
-              kind: 2,
-            })
-            this.$router.replace({
-              name:'Payment'
-            })
-          }else{
-            this.feedback.Toast({
-              msg:res.data.info,
-              timeout: 1200,
-            })
-          }
-        })
-      },*/
       makeVirtualOrder(){
         this.feedback.Loading.open('提交中');
         makeVirtualOrder({
@@ -260,7 +212,7 @@
           this.feedback.Loading.close();
           if(res.data.code == 1){
             this.$store.commit(SET_PAYMENT_OPTIONS, {
-              canUse: res.data.data.can_use,
+              canUse: false,
               orderNo: res.data.data.order_no,
               totalMoney: res.data.data.total_money,
               orderType: 'VO',
@@ -277,7 +229,6 @@
           }
         })
       },
-
 
       //获取购物车数据
       getCartLists() {
@@ -416,19 +367,7 @@
   };
 
 </script>
-<style lang="less"
-  scoped>
+<style lang="less" scoped>
   @import './AdminShopSettlement.less';
 
 </style>
-
-
-<!-- order_no String[字符串] 必填     订单编号
-shop_id Integer[整数] 必填   1  商品所属实体店ID
-goods_id Integer[整数] 必填   1  商品ID
-virtual_id Integer[整数] 必填   1  虚拟店ID
-shipping_fee Float[浮点数] 必填   0.00  运费
-remark String[字符串] 选填     备注
-attr String[字符串] 选填     所选商品属性ID 35,36
-num Integer[整数] 必填   1  所选商品数量
-user_id Integer[整数] 必填   1  下单用户ID  -->

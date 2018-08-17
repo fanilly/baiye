@@ -3,6 +3,7 @@
     <section class="mask" @click="maskHandle"></section>
     <section class="content">
       <section class="content-wapper">
+        <img :src="closeIcon" alt="" class="close" @click="maskHandle">
         <img class="goods-poster" v-lazy="goodsData.attachment_path" alt="">
         <h1>{{goodsData.title}}</h1>
         <div class="title-box">
@@ -39,7 +40,9 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      closeIcon: require('../../assets/baiye/close.png')
+    };
   },
   methods: {
     plus(e) {

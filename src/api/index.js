@@ -189,6 +189,10 @@ const REQUESTS = {
   registerFictitious(data) {
     return HTTPS.fetchGet(HOST + '/api/5b4d982344aa2',data)
   },
+  //获取实体店我常吃列表
+  getPhysicalLoveLists(data) {
+    return HTTPS.fetchGet(HOST + '/api/5b33333b0f424',data)
+  },
 
   //获取虚拟店店主信息
   getAdminIndexInfo(data) {
@@ -414,6 +418,7 @@ export const registerSalesman = REQUESTS.registerSalesman;
 export const getFollowData = REQUESTS.getFollowData;
 export const getFictitiousOrderLists = REQUESTS.getFictitiousOrderLists;
 export const registerFictitious = REQUESTS.registerFictitious;
+export const getPhysicalLoveLists = REQUESTS.getPhysicalLoveLists;
 
 
 export const getShopList = REQUESTS.getShopList
