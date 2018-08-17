@@ -17,10 +17,10 @@ export default {
       state.userType = payload.userType
     },
     [SET_USER_INFO](state, payload) {
-      if(!payload.subscribe && location.pathname != '/Follow'){
+      if (!payload.subscribe && location.pathname != '/Follow') {
         Alert({
-          msg:'检测到您未关注公众号，请先关注公众号',
-          callback:function(){
+          msg: '检测到您未关注公众号，请先关注公众号',
+          callback: function() {
             location.assign('/Follow');
           }
         });
@@ -30,6 +30,8 @@ export default {
       state.userType = payload.userType;
       state.avatar = payload.avatar;
       state.subscribe = payload.subscribe;
+      state.waiter_id = payload.waiter_id,
+      state.virtual_id = payload.virtual_id
     }
   },
 

@@ -30,8 +30,8 @@
          <!-- bindtap='gopay' -->
     </div>
 
-    
-   
+
+
 </div>
 </template>
 
@@ -51,11 +51,11 @@ export default {
     beforeCreate() {
     },
     created(){
-       console.log('created',this.$route.params.money) 
+       console.log('created',this.$route.params.money)
        this.myMoney = this.$route.params.money
     },
     mounted(){
-        
+
     },
     methods:{
         MoneyWithdraw(){
@@ -72,18 +72,16 @@ export default {
                 this.inputvalue = ''
             }else{
                 getMoneyWithdraw({
-                    waiter_id: this.$store.state.user.userid,
+                    waiter_id: this.$store.state.user.waiter_id,
                     money: this.inputvalue
                 }).then(res => {
                     console.log('提现',res)
                     this.inputvalue = ''
+                    this.feedback.Toast({  msg:res.data.info,  timeout:1500 });
                     if (res.data.code == 1) {
-                        this.feedback.Toast({  msg:'提现成功！',  timeout:1500 });
                         setTimeout(()=>{
                              this.$router.back(-1)
                         },1500)
-                    }else{
-                        this.feedback.Toast({  msg:res.data.info,  timeout:1500 });
                     }
                 });
             }
@@ -91,10 +89,10 @@ export default {
         getAll(){
             this.inputvalue = this.myMoney
         }
-        
+
     },
     components: {
-      
+
     }
 };
 

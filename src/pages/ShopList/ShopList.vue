@@ -226,14 +226,12 @@
         })
       },
       goRefash(id){
-        console.log('aid',id)
         this.cateId = id
         this.page = 1
         this.commentLoadedAll = false
         this.noCommentLists = false
         this.allowLoadMore = true
         this.nearshop = []
-        console.log('cateId',this.cate_id)
         this.getIndexCommand()
         this.getIndexNearShop()
       },
