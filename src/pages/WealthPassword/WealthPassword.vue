@@ -159,6 +159,7 @@ export default {
                             if (tempTime == 0) {
                                 //倒计时结束
                                 clearInterval(this.timer);
+                                this.time = 180;
                                 this.beginning =  false
                                 return;
                             }

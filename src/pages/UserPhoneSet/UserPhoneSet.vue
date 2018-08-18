@@ -9,7 +9,7 @@
             <div class='fsg'>
                 <div class='fr pr'>
                     <input placeholder='请输入验证码'  v-model='codes' type='number' />
-                    <div :class='{"off": !onflg}' @click='sendPhoneCode' >获取验证码</div>
+                    <div :class='{"off": beginning}' @click='sendPhoneCode' >{{beginning ? '倒计时' + time + 's' : '发送验证码'}}</div>
                 </div>
             </div>
         </div>
@@ -33,6 +33,9 @@ export default {
             onflg:true,
             user_id:this.$store.state.user.userid,
             phone:'',
+            time: 180,
+            beginning: false,
+            timer: null,
             codes:''
         };
     },
@@ -52,7 +55,7 @@ export default {
                 this.feedback.Toast({  msg:'手机号不能为空',  timeout:1500 });
             }else if(this.phone.length!=11){
                 this.feedback.Toast({  msg:'手机号长度有误，请重新输入',  timeout:1500 });
-            }else if(this.onflg){
+            }else if(!this.beginning){
                 sendPhoneCode({
                      name: 'bind_phone',
                      user_id: this.user_id,
@@ -62,9 +65,21 @@ export default {
                     this.feedback.Toast({  msg:res.data.info,  timeout:1500 });
                     if (res.data.code == 1) {
                         this.onflg = false
-                        setTimeout(function () {
-                            this.onflg = true
-                        }, 60000)
+
+                        //显示倒计时
+                        this.beginning =  true;
+                        //开始倒计时
+                        this.timer = setInterval(()=>{
+                            let tempTime = this.time;
+                            if (tempTime == 0) {
+                                //倒计时结束
+                                clearInterval(this.timer);
+                                this.time = 180;
+                                this.beginning =  false
+                                return;
+                            }
+                            this.time = tempTime - 1
+                        }, 1000);
                     }
                 });
             }

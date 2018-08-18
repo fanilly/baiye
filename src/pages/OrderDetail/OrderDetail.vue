@@ -162,7 +162,7 @@
       //立即支付
       goPayment(orderNo, totalMoney) {
         this.$store.commit(SET_PAYMENT_OPTIONS, {
-          canUse: false,
+          canUse: this.order.can_use !== undefined ? this.order.can_use : false,
           orderNo: orderNo,
           totalMoney: totalMoney,
           orderType: 'OD',

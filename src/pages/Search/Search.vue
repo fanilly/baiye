@@ -1,14 +1,17 @@
 <template>
   <section class="container">
-    <header class="header-search">
-      <input class="header-search-input"
-        type="search"
-        autofocus="autofocus"
-        placeholder="请输入商品名称"
-        v-model="searchKeyWord"
-        @keyup.enter="handleSearch" />
-      <button class="start-search" @click="handleSearch">搜索</button>
-    </header>
+    <form @submit.stop.prevent="handleSearch">
+      <header class="header-search">
+        <input class="header-search-input"
+          ref="searchBox"
+          type="search"
+          autofocus="autofocus"
+          placeholder="请输入商品名称"
+          v-model="searchKeyWord"
+          @keyup.enter="handleSearch" />
+        <button class="start-search" @click="handleSearch">搜索</button>
+      </header>
+    </form>
     <section class="header-palceholder"></section>
 
 
@@ -110,6 +113,7 @@
     },
     mounted() {
       this.getHistory();
+      this.$refs.searchBox.focus()
       //获取热搜关键词
       getHotSearchKeyword().then(res=>{
         if(res.data.code == 1){

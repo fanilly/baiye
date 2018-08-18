@@ -133,7 +133,7 @@
       },
 
       //立即支付
-      goPayment(orderNo, totalMoney){
+      goPayment(orderNo, totalMoney, canUse){
         this.$store.commit(SET_PAYMENT_OPTIONS, {
           canUse: canUse,
           orderNo: orderNo,
