@@ -109,17 +109,18 @@ export default {
                  });
                 return;
             }
-            this.feedback.Loading.open('上传图片中');
+            //this.feedback.Loading.open('上传图片中');
             // 将选择的图片显示到页面中
             let index = e.target.dataset.index * 1;
             this.banner = getFileUrl(e.srcElement)
-
+            this.feedback.Toast({  msg:'上传中',  timeout:1500 });
             //上传图片
             let file = e.target.files[0]
             let param = new FormData()  // 创建form对象
             param.append('file', file, file.name)  // 通过append向form对象添加数据
             //param.append('chunk', '0') // 添加form表单中其他数据
             console.log(param.get('file')) // FormData私有类对象，访问不到，可以通过get判断值是否传进去
+            
             let config = {
               headers: {'Content-Type': 'multipart/form-data'}
             }

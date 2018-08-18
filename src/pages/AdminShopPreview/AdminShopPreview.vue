@@ -4,7 +4,7 @@
     <div class='page-wapper'>
         <!-- shopInfo -->
         <div class="shop-header">
-            <img class="bg" :src="shopInfo.banner" />
+            <div class="bg" :style="'background-image:url('+shopInfo.banner+')'"></div>
             <img class="bg1" src="../../assets/baiye/imgmask.png" />
             <div class="show-header-content">
                 <img class="head-img" :src="shopInfo.avatar" />
@@ -101,6 +101,7 @@ export default {
                 //console.log('虚拟店信息',res)
                 if (res.data.code == 1) {
                     this.shopInfo = res.data.data;
+                    document.title = this.shopInfo.shop_name;
                     let self = this;
                     this.wx.ready(function() {
                       self.wx.onMenuShareTimeline({

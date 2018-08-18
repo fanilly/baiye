@@ -171,6 +171,7 @@
               user_id: this.userid //this.$store.state.user.userid
             }).then(resData=>{
               if(resData.data.code == 1){
+                if(!this.address) this.address = {};
                 this.address.aid = resData.data.data.address_id;
                 this.address.user_name = res.userName;
                 this.address.user_address = res.detailInfo;

@@ -4,7 +4,8 @@
 
     <div class="container">
         <div class="header">
-            <img :src="viewImgs != '' ? viewImgs : require('../../assets/poster.jpg') " />
+            <div class="img" :style="'background-image:url('+(viewImgs != '' ? viewImgs : require('../../assets/poster.jpg'))+')'"></div>
+            <!-- <img :src="viewImgs != '' ? viewImgs : require('../../assets/poster.jpg') " /> -->
             <!-- :accept="accept" -->
             <div class="btn"><input type="file" class="upload"   accept="image/*"  @change="handleChooseImg" >更换</div>
         </div>

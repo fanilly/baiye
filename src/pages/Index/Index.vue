@@ -114,7 +114,7 @@
             <div class="info">
               <h4>{{item.name}}</h4>
               <div class='one'>
-                <rate slot="left" v-model="item.grade" size="12px"></rate>
+                <rate slot="left" v-model="item.grade" size="12px" :readonly="true"></rate>
                 <div class="sales">月销{{item.month_sell}}</div>
               </div>
               <div class="two">

@@ -7,6 +7,7 @@
         placeholder="请输入商品名称"
         v-model="searchKeyWord"
         @keyup.enter="handleSearch" />
+      <button class="start-search" @click="handleSearch">搜索</button>
     </header>
     <section class="header-palceholder"></section>
 

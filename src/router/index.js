@@ -200,7 +200,7 @@ const router = new Router({
       component: Collection,
       meta: {
         keepAlive: false,
-        title:'我的收藏'
+        title:'我的关注'
       }
     }, {
       path: '/SearchResult/:word',
@@ -468,7 +468,8 @@ const router = new Router({
       component: AdminShopSettlement,
       meta: {
         keepAlive: false,
-        title: '确认订单'
+        title: '确认订单',
+        locationAssign: true
       }
     }, {
       path: '/myWallet/:storeid',
@@ -500,7 +501,8 @@ const router = new Router({
       component: BuyVipDetail,
       meta: {
         keepAlive: false,
-        title: '会员卡'
+        title: '会员卡',
+        locationAssign: true
       }
     }, {
       path: '/shopList/:cateid',
