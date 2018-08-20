@@ -94,7 +94,7 @@
       <h3>人气推荐</h3>
       <div class="list">
         <div class="item" v-for="(item,index) in hotList" :key='index' @click='goShopIndex(item.shop_id,item.cate_id,item.goods_id,)'>
-          <img :src="item.img_url" alt="" class="pic">
+          <img v-lazy="item.img_url" alt="" class="pic">
           <img src="../../assets/icon1.1.8@2x.png" alt="" v-if='index==0' class="icon">
           <img src="../../assets/icon1.1.9@2x.png" alt="" v-if='index==1' class="icon">
           <img src="../../assets/icon1.1.10@2x.png" alt="" v-if='index==2' class="icon">
@@ -110,7 +110,7 @@
         <h3>附近好店</h3>
         <div class="list">
           <router-link class="item" v-for="(item,index) in nearshop" :key='index' :to="{name:'Shop',params:{shopid:item.id}}">
-            <div class="pic"><img :src="item.shop_avatar" alt=""></div>
+            <div class="pic"><img v-lazy="item.shop_avatar" alt=""></div>
             <div class="info">
               <h4>{{item.name}}</h4>
               <div class='one'>

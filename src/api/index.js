@@ -19,6 +19,12 @@ const REQUESTS = {
       jump_url: pathname == '' ? encodeURIComponent(location.href) : encodeURIComponent(location.origin + pathname)
     })
   },
+  //退出登陆
+  loginOut() {
+    return HTTPS.fetchPost(HOST + '/api/5b7a79f039a1e', {
+      user_token: sessionStorage.getItem('USER_TOKEN')
+    })
+  },
   //获取首页banner数据
   getIndexBanner() {
     return HTTPS.fetchGet(HOST + '/api/5b46c0219c671', {
@@ -419,6 +425,7 @@ export const getFollowData = REQUESTS.getFollowData;
 export const getFictitiousOrderLists = REQUESTS.getFictitiousOrderLists;
 export const registerFictitious = REQUESTS.registerFictitious;
 export const getPhysicalLoveLists = REQUESTS.getPhysicalLoveLists;
+export const loginOut = REQUESTS.loginOut;
 
 
 export const getShopList = REQUESTS.getShopList

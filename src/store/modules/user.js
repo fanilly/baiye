@@ -7,7 +7,9 @@ export default {
     nickName: '',
     userType: '',
     avatar: '',
-    subscribe: true
+    subscribe: true,
+    waiter_id:0,
+    virtual_id:0
   },
 
   getters: {},
@@ -17,7 +19,7 @@ export default {
       state.userType = payload.userType
     },
     [SET_USER_INFO](state, payload) {
-      if (!payload.subscribe && location.pathname != '/Follow') {
+      if (!payload.subscribe && global.ignoreMap.findIndex(item=>(item == payload.pathname)) == -1) {
         Alert({
           msg: '检测到您未关注公众号，请先关注公众号',
           callback: function() {
@@ -30,8 +32,8 @@ export default {
       state.userType = payload.userType;
       state.avatar = payload.avatar;
       state.subscribe = payload.subscribe;
-      state.waiter_id = payload.waiter_id,
-      state.virtual_id = payload.virtual_id
+      state.waiter_id = payload.waiter_id;
+      state.virtual_id = payload.virtual_id;
     }
   },
 

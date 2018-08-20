@@ -27,6 +27,15 @@
                 </div>
             </router-link>
         </div>
+        <div class='comelist' v-if="!browserIsWeChat" @click="loginOut">
+            <div class='link'>
+                <img class='limg' :src='exitIcon' />
+                <div class='all'>
+                    <span>退出登录</span>
+                    <img src='../../assets/return.png' class='rimg' />
+                </div>
+            </div>
+        </div>
         <div class='support' style="position: static">易倍增科技提供技术支持</div>
 
 
@@ -35,11 +44,14 @@
 </template>
 <script>
 import footerNav from '@/components/footerNav/footerNav.vue';
+import { loginOut } from '@/api/index.js';
+import { SET_USER_INFO } from '@/store/mutation-type.js';
 
 export default {
     name: 'Center',
     data() {
         return {
+            exitIcon: require('../../assets/exit.png'),
             nav: [
                 { name: '虚拟店订单', url: '/FictitiousOrder', words: '', src: require('../../assets/takeout04.png') },
                 { name: '我的关注', url: '/Collection', words: '', src: require('../../assets/sc.png') },
@@ -51,7 +63,40 @@ export default {
             uerInfo:this.$store.state.user,
         };
     },
+    methods:{
+      loginOut(){
+        this.feedback.Confirm({
+          title: '提示',
+          msg: '您确定要退出登陆吗？',
+          options: [{
+            txt: '取消',
+            color: '#999'
+          }, {
+            txt: '确定',
+            color: '#0bb20c',
+            callback: () => {
+              loginOut().then(res=>{
+                if(res.data.code == 1){
+                  this.$store.commit(SET_USER_INFO, {
+                    userid: resData.user_id,
+                    userType: resData.usertype,
+                    nickName: resData.nickname,
+                    avatar: resData.headimgurl,
+                    subscribe: resData.subscribe,
+                    waiter_id: resData.waiter_id,
+                    virtual_id: resData.virtual_id,
+                    pathname: ''
+                  });
+                  location.href = 'app://baiye/loginout';
+                }
+              })
+            }
+          }]
+        });
+      }
+    },
     mounted() {
+        this.browserIsWeChat = global.browserIsWeChat;
         if(this.uerInfo.userType==2){
             let nav = this.nav;
             nav.push({ name: '我的虚拟店', url: '/AdminIndex', words: '', src: require('../../assets/icon02.png') })

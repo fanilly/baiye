@@ -26,6 +26,10 @@ const IssueIndex = () => import ('@/pages/Issue/Index');
 const IssueList = () => import ('@/pages/Issue/Issue');
 const IssueDetail = () => import ('@/pages/Issue/Detail');
 
+const AddressIndex = () => import ('@/pages/Address/Index');
+const AddressAdd = () => import ('@/pages/Address/Add');
+const AddressList = () => import ('@/pages/Address/List');
+
 const CouponIndex = () => import ('@/pages/Coupon/Index');
 const AdminIndex = () => import ('@/pages/AdminIndex/AdminIndex');
 const CouponBuy = () => import ('@/pages/Coupon/Buy');
@@ -246,13 +250,39 @@ const router = new Router({
           title: '帮助中心'
         }
       }, {
-        path: '/Issue/List/:id',
+        path: '/Issue/Detail/:id',
         name: 'IssueDetail',
         props: true,
         component: IssueDetail,
         meta:{
           keepAlive: false,
           title: ''
+        }
+      }]
+    }, {
+      path: '/AddressIndex',
+      name: 'AddressIndex',
+      component: AddressIndex,
+      meta: {
+        keepAlive: false,
+        title: '地址管理'
+      },
+      children:[{
+        path: '/Address/List',
+        name: 'AddressList',
+        component: AddressList,
+        meta:{
+          keepAlive: false,
+          title: '地址管理'
+        }
+      }, {
+        path: '/Address/Add/:id',
+        name: 'AddressAdd',
+        props: true,
+        component: AddressAdd,
+        meta:{
+          keepAlive: false,
+          title: '添加地址'
         }
       }]
     }, {
@@ -521,6 +551,8 @@ router.beforeEach((to, from, next) => {
   if(to.meta.title) document.title = to.meta.title;
   const userAgent = navigator.userAgent;
 
+  console.log(global.ignoreMap.findIndex(item=>(item == to.fullPath)),to,location.pathname)
+
   if(to.meta.locationAssign && /iPhone|iPad|iPod/i.test(userAgent) && to.path != location.pathname){
     location.assign(to.fullPath);
     return;
@@ -528,8 +560,8 @@ router.beforeEach((to, from, next) => {
 
   if (!sessionStorage.getItem('USER_INFO')) {
     if(to.query.user_token){
-
       login(to.query.user_token).then(res => {
+        res.pathname = to.fullPath;
         store.commit(SET_USER_INFO, res);
         location.href = location.origin + location.pathname;
         next();
@@ -543,11 +575,19 @@ router.beforeEach((to, from, next) => {
           next();
         });
       }else{
-        location.href = 'https://food.zzebz.com/index/login/login?jump_url=' + to.path.replace(/\//g, '^');
+        if(global.browserIsWeChat){
+          location.href = 'https://food.zzebz.com/index/login/login?jump_url=' + to.path.replace(/\//g, '^');
+        }else{
+          if(global.ignoreMap.findIndex(item=>(item == to.fullPath)) == -1)
+            location.href = 'https://food.zzebz.com/index/login/login?jump_url=' + to.path.replace(/\//g, '^');
+          else
+            next();
+        }
       }
     }
   } else {
     let userInfo = JSON.parse(sessionStorage.getItem('USER_INFO'));
+    userInfo.pathname = to.fullPath;
     store.commit(SET_USER_INFO, userInfo);
     next();
   }

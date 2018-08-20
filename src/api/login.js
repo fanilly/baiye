@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export default function(userToken) {
+export default function(userToken,goLogin) {
   return new Promise((resolve, reject) => {
     const isDev = process.env.NODE_ENV === 'development';
     if (isDev) {
@@ -16,6 +16,7 @@ export default function(userToken) {
       sessionStorage.setItem('USER_INFO', JSON.stringify(userInfo));
       resolve(userInfo)
     } else {
+      sessionStorage.setItem('USER_TOKEN',userToken);
       axios.post('https://food.zzebz.com/index/login/get_user_info',{
         user_token:userToken
       }).then(res => {
