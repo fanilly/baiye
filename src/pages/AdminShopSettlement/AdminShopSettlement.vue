@@ -158,34 +158,40 @@
         this.selectedGifeId = selectItem[0].id;
       },
       handleChooseAddress(){
-        this.wx.openAddress({
-          success: res => {
-            changeAddress({
-              user_phone: res.telNumber || '',
-              user_name: res.userName || '',
-              user_address: res.detailInfo || '',
-              user_province: res.provinceName || '',
-              user_city: res.cityName || '',
-              user_country: res.countryName || '',
-              zip_code: res.postalCode || '',
-              user_id: this.userid //this.$store.state.user.userid
-            }).then(resData=>{
-              if(resData.data.code == 1){
-                if(!this.address) this.address = {};
-                this.address.aid = resData.data.data.address_id;
-                this.address.user_name = res.userName;
-                this.address.user_address = res.detailInfo;
-                this.address.user_phone = res.telNumber;
-                this.getShippingFee();
-              }else{
-                this.feedback.Toast({
-                  msg:resData.data.info,
-                  timeout: 1200
-                })
-              }
-            });
-          }
-        });
+        if(global.browserIsWeChat){
+          this.wx.openAddress({
+            success: res => {
+              changeAddress({
+                user_phone: res.telNumber || '',
+                user_name: res.userName || '',
+                user_address: res.detailInfo || '',
+                user_province: res.provinceName || '',
+                user_city: res.cityName || '',
+                user_country: res.countryName || '',
+                zip_code: res.postalCode || '',
+                user_id: this.userid //this.$store.state.user.userid
+              }).then(resData=>{
+                if(resData.data.code == 1){
+                  if(!this.address) this.address = {};
+                  this.address.aid = resData.data.data.address_id;
+                  this.address.user_name = res.userName;
+                  this.address.user_address = res.detailInfo;
+                  this.address.user_phone = res.telNumber;
+                  this.getShippingFee();
+                }else{
+                  this.feedback.Toast({
+                    msg:resData.data.info,
+                    timeout: 1200
+                  })
+                }
+              });
+            }
+          });
+        }else{
+          this.$router.push({
+            name: 'AddressList'
+          })
+        }
       },
       handleGoPayment() {
         this.$router.push({

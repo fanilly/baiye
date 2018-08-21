@@ -19,7 +19,7 @@ export default {
       state.userType = payload.userType
     },
     [SET_USER_INFO](state, payload) {
-      if (!payload.subscribe && global.ignoreMap.findIndex(item=>(item == payload.pathname)) == -1) {
+      if (!payload.subscribe && global.browserIsWeChat && global.ignoreMap.findIndex(item=>(item == payload.pathname)) == -1) {
         Alert({
           msg: '检测到您未关注公众号，请先关注公众号',
           callback: function() {

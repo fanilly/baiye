@@ -561,12 +561,11 @@ router.beforeEach((to, from, next) => {
   if (!sessionStorage.getItem('USER_INFO')) {
     if(to.query.user_token){
       login(to.query.user_token).then(res => {
-        res.pathname = to.fullPath;
+        res.pathname = to.name;
         store.commit(SET_USER_INFO, res);
         location.href = location.origin + location.pathname;
         next();
       });
-
     }else{
       const isDev = process.env.NODE_ENV === 'development';
       if(isDev){
@@ -576,18 +575,21 @@ router.beforeEach((to, from, next) => {
         });
       }else{
         if(global.browserIsWeChat){
-          location.href = 'https://food.zzebz.com/index/login/login?jump_url=' + to.path.replace(/\//g, '^');
+          location.href = global.loginUrl + to.path.replace(/\//g, '^');
         }else{
-          if(global.ignoreMap.findIndex(item=>(item == to.fullPath)) == -1)
-            location.href = 'https://food.zzebz.com/index/login/login?jump_url=' + to.path.replace(/\//g, '^');
-          else
-            next();
+          if(global.ignoreMap.findIndex(item=>(item == to.name)) == -1){
+            location.href = global.loginIn + to.path.replace(/\//g, '^');
+            setTimeout(()=>{
+              location.href = global.loginUrl + to.path.replace(/\//g, '^');
+            },300)
+          }
+          next();
         }
       }
     }
   } else {
     let userInfo = JSON.parse(sessionStorage.getItem('USER_INFO'));
-    userInfo.pathname = to.fullPath;
+    userInfo.pathname = to.name;
     store.commit(SET_USER_INFO, userInfo);
     next();
   }

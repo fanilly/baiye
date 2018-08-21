@@ -388,8 +388,19 @@ export default {
       this.handleSearch(this.$store.getters.getSearchResultData.cateId,this.$store.getters.getSearchResultData.goodsId);
     },
 
+    //检测是否需要登录
+    testingNeedLogin(){
+      if(!global.browserIsWeChat && !this.$store.state.user.userid){
+        location.href = global.loginIn + location.pathname.replace(/\//g, '^');
+        setTimeout(()=>{
+          location.href = global.loginUrl + location.pathname.replace(/\//g, '^');
+        },1000)
+      }
+    },
+
     //点击底部购物车图标
     handleClickTrolley(){
+      this.testingNeedLogin();
       if(this.choosedTotalNum<=0) {
         this.feedback.Toast({
           msg:'您的购物车中还没有添加商品'
@@ -406,6 +417,7 @@ export default {
 
     //点击选好了
     handleGoSettlement(allowSellement) {
+      this.testingNeedLogin();
       if(this.choosedTotalNum == 0){
         this.feedback.Toast({
           msg:'至少选择一件商品',
@@ -482,7 +494,7 @@ export default {
 
     //购物车添加
     plus(options, e) {
-
+      this.testingNeedLogin();
       this.relationSameGoods(options,'plus')
 
 
@@ -543,6 +555,7 @@ export default {
 
     //购物车减少
     reduce(options) {
+      this.testingNeedLogin();
       this.relationSameGoods(options,'reduce')
       this.choosedTotalPrice = this.choosedTotalPrice*1 - this.goodsLists[options.parentIndex][options.currentIndex].shop_price*1;
       clearTimeout(this.reduceTimer);
@@ -672,7 +685,7 @@ export default {
       getGoodsLists({
         is_waimai:1,
         shop_id:this.shopid,
-        user_id:this.$store.state.user.userid
+        user_id:this.$store.state.user.userid ? this.$store.state.user.userid : 0
       }).then(res=>{
         if(res.data.code == 1){
           this.goodsLists = res.data.data.map((item,index)=>{
@@ -788,6 +801,7 @@ export default {
 
     //切换收藏状态
     handleToggleCollectionStatus() {
+      this.testingNeedLogin();
       this.feedback.Loading.open('操作中');
       toggleCollectionStatus({
         shop_id:this.shopid,

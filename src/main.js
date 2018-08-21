@@ -13,12 +13,15 @@ import './styles/variable.less';
 import './styles/vux-rewrite.less';
 import './iconfont/iconfont.css';
 global.host = 'https://food.zzebz.com';
+global.loginUrl = 'https://food.zzebz.com/index/login/login?jump_url=';
+global.loginIn = 'app://baiye/loginin?jump_url=';
+global.loginOut = 'app://baiye/loginout';
 global.isDev = process.env.NODE_ENV === 'development';
 global.logoUrl = 'https://food.zzebz.com/static/index/assets/website_logo.png';
 global.websiteName = '又来客了';
 global.websiteDesc = '缺客就用又来客了';
 global.browserIsWeChat = navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1;
-global.ignoreMap = ['/','/Follow'];
+global.ignoreMap = ['Index','Follow','Search','SearchResult','ShopList','Shop'];
 
 Vue.use(FeedBack);
 Vue.use(lazyLoad, {
