@@ -51,6 +51,7 @@ export default {
     name: 'Center',
     data() {
         return {
+            browserIsWeChat:false,
             exitIcon: require('../../assets/exit.png'),
             nav: [
                 { name: '虚拟店订单', url: '/FictitiousOrder', words: '', src: require('../../assets/takeout04.png') },
@@ -77,14 +78,16 @@ export default {
             callback: () => {
               loginOut().then(res=>{
                 if(res.data.code == 1){
+                  sessionStorage.setItem('USER_TOKEN','');
+                  sessionStorage.setItem('USER_INFO','');
                   this.$store.commit(SET_USER_INFO, {
-                    userid: resData.user_id,
-                    userType: resData.usertype,
-                    nickName: resData.nickname,
-                    avatar: resData.headimgurl,
-                    subscribe: resData.subscribe,
-                    waiter_id: resData.waiter_id,
-                    virtual_id: resData.virtual_id,
+                    userid: '',
+                    userType: '',
+                    nickName: '',
+                    avatar: '',
+                    subscribe: '',
+                    waiter_id: '',
+                    virtual_id: '',
                     pathname: ''
                   });
                   location.href = 'app://baiye/loginout';
@@ -97,6 +100,7 @@ export default {
     },
     mounted() {
         this.browserIsWeChat = global.browserIsWeChat;
+        console.log(global.browserIsWeChat)
         if(this.uerInfo.userType==2){
             let nav = this.nav;
             nav.push({ name: '我的虚拟店', url: '/AdminIndex', words: '', src: require('../../assets/icon02.png') })

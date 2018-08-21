@@ -1,55 +1,96 @@
 <template>
   <div class="container">
 
-    <div class="list">
-      <div class="item scroll-item" v-for="item,index in lists" :key="index" @click.stop="goIssueDetail(item.id)">
-        <img class="q-icon" :src="qIcon" alt="">
-        <h4 class="name">{{item.title}}</h4>
-        <img class="arrow" :src="arrowIcon" alt="">
+    <section class="address" v-for="item,index in lists" @click.stop="handleChooseAddress(item)">
+      <img class="coordinate" :src="coordinateIcon">
+      <div class="content">
+        <h2>{{item.user_name}} <span>{{item.user_phone}}</span></h2>
+        <p>{{item.user_address}}<span v-if="item.isdefault == 1">默认</span></p>
       </div>
-      <load-more v-if="!loaded" :show-loading="true" tip="加载中" background-color="#fbf9fe"></load-more>
-    </div>
+      <div class="rside">
+        <img class="edit" :src="editIcon" alt="" @click.stop="handleAddOrEditAddress(item.aid)">
+        <img class="del" :src="delIcon" alt="" @click.stop="handleDelAddress(item.aid)">
+      </div>
+    </section>
 
-    <!-- empty page -->
-    <div class="empty-status" v-if="loaded && lists.length == 0">
-      <img :src="emptyIcon" />
-      <div class="desc">暂无帮助信息</div>
-    </div>
+    <footer-submit @handleSubmit="handleAddOrEditAddress" btn-txt="点击添加新地址"></footer-submit>
   </div>
 </template>
 <script>
+  import footerSubmit from '@/components/footerSubmit/footerSubmit.vue';
   import { LoadMore } from 'vux';
-  import { getIssueLists } from '@/api/index.js';
+  import { getAddressLists, deleteAddress, changeAddress } from '@/api/index.js';
 
   export default {
     name: 'AddressList',
     data() {
       return {
         lists:[],
+        coordinateIcon: require('../../assets/takeout06.png'),
+        editIcon: require('../../assets/takeout08.png'),
+        delIcon: require('../../assets/delite.png'),
         loaded:false,
-        emptyIcon:require('../../assets/k2.png'),
-        arrowIcon:require('../../assets/return.png'),
-        qIcon:require('../../assets/q.png'),
       };
     },
     methods: {
-      goIssueDetail(id){
-        this.$router.push({
-          name:'IssueDetail',
+      //添加或编辑地址
+      handleAddOrEditAddress(id){
+        let options = {
+          name:'AddressAdd',
           params:{
-            id:id
+            id: id ? id : 'newaddress'
           }
+        };
+        this.$router.push(options)
+      },
+
+      //删除地址
+      handleDelAddress(id){
+        deleteAddress({
+          aid: id,
+          uid: this.$store.state.user.userid
+        }).then(res=>{
+          this.feedback.Toast({
+            msg: res.data.info,
+            timeout: 1200
+          });
+          if(res.data.code == 1) location.reload();
         })
+      },
+
+      //选择地址
+      handleChooseAddress(address){
+        this.feedback.Loading.open('选择中');
+        changeAddress({
+          user_phone: address.user_phone,
+          user_name: address.user_name,
+          user_address: address.user_address,
+          user_province: address.city.province.name,
+          user_city: address.city.city.name,
+          user_country: address.city.area.name,
+          zip_code: address.postalCode,
+          user_id: this.$store.state.user.userid
+        }).then(resData=>{
+          console.log(resData)
+          this.feedback.Loading.close();
+          if(resData.data.code == 1){
+            this.$router.go(-1);
+          }
+        });
       }
     },
     mounted() {
-      getIssueLists().then(res => {
-        this.lists.push(...res.data.data);
+      getAddressLists({
+        uid:this.$store.state.user.userid
+      }).then(res => {
+        console.log(res)
+        this.lists = res.data.data;
         this.loaded = true;
       });
     },
     components: {
-      LoadMore
+      LoadMore,
+      footerSubmit
     }
   };
 

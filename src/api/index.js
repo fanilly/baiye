@@ -21,6 +21,7 @@ const REQUESTS = {
   },
   //退出登陆
   loginOut() {
+    console.log(sessionStorage.getItem('USER_TOKEN'))
     return HTTPS.fetchPost(HOST + '/api/5b7a79f039a1e', {
       user_token: sessionStorage.getItem('USER_TOKEN')
     })
@@ -198,6 +199,18 @@ const REQUESTS = {
   //获取实体店我常吃列表
   getPhysicalLoveLists(data) {
     return HTTPS.fetchGet(HOST + '/api/5b33333b0f424',data)
+  },
+  //获取地址列表
+  getAddressLists(data) {
+    return HTTPS.fetchPost(HOST + '/api/5b1e2516f0e01',data)
+  },
+  //添加或修改地址
+  addOrChangeAddress(data) {
+    return HTTPS.fetchPost(HOST + '/api/5b1e253c8db17',data)
+  },
+  //删除地址
+  deleteAddress(data) {
+    return HTTPS.fetchPost(HOST + '/api/5b1e258b1b409',data)
   },
 
   //获取虚拟店店主信息
@@ -426,6 +439,9 @@ export const getFictitiousOrderLists = REQUESTS.getFictitiousOrderLists;
 export const registerFictitious = REQUESTS.registerFictitious;
 export const getPhysicalLoveLists = REQUESTS.getPhysicalLoveLists;
 export const loginOut = REQUESTS.loginOut;
+export const getAddressLists = REQUESTS.getAddressLists;
+export const addOrChangeAddress = REQUESTS.addOrChangeAddress;
+export const deleteAddress = REQUESTS.deleteAddress;
 
 
 export const getShopList = REQUESTS.getShopList
