@@ -6,6 +6,8 @@ import router from './router';
 import lazyLoad from 'vue-lazyload';
 import FeedBack from './components/feedback/index.js';
 import store from './store/index.js';
+import ArrayExpand from './utils/Array.expand.js';
+ArrayExpand();
 
 import './styles/common.less';
 import './styles/animate.less';

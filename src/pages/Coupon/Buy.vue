@@ -9,8 +9,7 @@
       v-if="lists.length!=0">
       <header class="main-header">
         <div class="lside">
-          <img src="http://foodstyle.zzebz.com/uploads/images/manage/0318548080e6021dfcd73e54cbb73384/444192de018fc66eb14e5eccc09c5b9c.jpg"
-            alt="">
+          <img :src="lists[0].shop_avatar">
         </div>
         <div class="rside">
           <h2>{{lists[currentIndex].title}}<i>x</i><span>{{lists[currentIndex].number}}</span></h2>
@@ -132,6 +131,7 @@
                 order_no: res.data.data.order_no,
                 user_id: this.$store.state.user.userid,
                 order_type: 'CO',
+                platform: sessionStorage.getItem('PLATFORM') || '',
                 type: 2
               }).then(res => {
                 if (res.data.code == 1) {

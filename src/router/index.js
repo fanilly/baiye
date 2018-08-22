@@ -5,6 +5,7 @@ import login from '../api/login.js';
 import store from '../store/index.js';
 import { getWxSettings } from '@/api/index.js';
 import { SET_USER_INFO } from '../store/mutation-type.js';
+import Toast from '@/components/feedback/src/toast';
 const wx = require('weixin-js-sdk');
 
 const Shop = () => import ('@/pages/Shop/Shop');
@@ -551,13 +552,12 @@ router.beforeEach((to, from, next) => {
   if(to.meta.title) document.title = to.meta.title;
   const userAgent = navigator.userAgent;
 
-  console.log(global.ignoreMap.findIndex(item=>(item == to.fullPath)),to,location.pathname)
-
   if(to.meta.locationAssign && /iPhone|iPad|iPod/i.test(userAgent) && to.path != location.pathname){
     location.assign(to.fullPath);
     return;
   }
 
+  if(to.query.platform) sessionStorage.setItem('PLATFORM', to.query.platform);
   if (!sessionStorage.getItem('USER_INFO')) {
     if(to.query.user_token){
       login(to.query.user_token).then(res => {

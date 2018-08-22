@@ -147,6 +147,7 @@
             order_no: res.order_no,
             user_id: this.$store.state.user.userid,
             order_type: 'CD',
+            platform: sessionStorage.getItem('PLATFORM') || '',
             type: 2
           }).then(res => {
             this.feedback.Loading.close();

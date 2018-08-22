@@ -77,6 +77,7 @@
           order_no: this.$store.state.payment.orderNo,
           user_id: this.$store.state.user.userid,
           order_type: this.$store.state.payment.orderType,
+          platform: sessionStorage.getItem('PLATFORM') || '',
           type: 2
         }).then(res=>{
           // 微信浏览器直接调用支付
