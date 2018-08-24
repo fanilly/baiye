@@ -46,17 +46,32 @@
 
       //删除地址
       handleDelAddress(id){
-        deleteAddress({
-          aid: id,
-          uid: this.$store.state.user.userid
-        }).then(res=>{
-          this.feedback.Toast({
-            msg: res.data.info,
-            timeout: 1200
-          });
-          if(res.data.code == 1) location.reload();
-        })
+        this.feedback.Confirm({
+          title: '',
+          msg: '确认删除？',
+          options: [{
+            txt: '取消',
+            color: '#999'
+          }, {
+            txt: '确定',
+            color: '#0bb20c',
+            callback: () => {
+              deleteAddress({
+                aid: id,
+                uid: this.$store.state.user.userid
+              }).then(res=>{
+                this.feedback.Toast({
+                  msg: res.data.info,
+                  timeout: 1200
+                });
+                if(res.data.code == 1) location.reload();
+              });
+            }
+          }]
+        });
       },
+
+
 
       //选择地址
       handleChooseAddress(address){

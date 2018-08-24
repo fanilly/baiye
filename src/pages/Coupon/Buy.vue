@@ -136,6 +136,9 @@
               }).then(res => {
                 if (res.data.code == 1) {
                   resolve(res);
+                }else if(res.data.code == 2){
+                  this.feedback.Loading.close();
+                  location.href = res.data.data.mweb_url;
                 } else {
                   this.feedback.Loading.close();
                   this.feedback.Toast({

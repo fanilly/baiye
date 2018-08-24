@@ -25,7 +25,7 @@
 </template>
 <script>
   import footerSubmit from '@/components/footerSubmit/footerSubmit.vue';
-  import { addOrChangeAddress } from '@/api/index.js';
+  import { addOrChangeAddress, getAddress } from '@/api/index.js';
   import { XAddress, ChinaAddressV4Data, InlineXSwitch } from 'vux'
 
   export default {
@@ -53,6 +53,7 @@
     methods: {
       //选择地址
       onShadowChange (ids, names) {
+        console.log(this.value)
         if(ids || names) {
           this.ids = ids;
           this.inlineDesc = names.join(' ');
@@ -87,6 +88,25 @@
     mounted() {
       if(this.id != 'newaddress'){
         document.title = '修改地址';
+        getAddress({
+          uid:this.$store.state.user.userid,
+          address_id: this.id
+        }).then(res=>{
+          if(res.data.code == 1){
+            let resData = res.data.data[0];
+            this.userName = resData.user_name;
+            this.userPhone = resData.user_phone;
+            this.addressInfo = resData.user_address;
+            this.addressTags = resData.detailInfo;
+            this.isDefault = resData.isdefault == 1;
+            this.value = [resData.city.province.id+"",resData.city.city.id+"",resData.city.area.id+""];
+          }else{
+            this.feedback.Toast({
+              msg: res.data.info,
+              timeout: 1200
+            })
+          }
+        })
       }
     },
     components:{
