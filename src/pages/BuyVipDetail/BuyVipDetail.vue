@@ -48,7 +48,7 @@
 
 <script>
   import { SET_PAYMENT_OPTIONS } from '../../store/mutation-type.js';
-  import { getVipCardDetail, getPhysicalShopDetail, goBuyVipCard, getWxSettings, wechatPayment } from '@/api/index.js';
+  import { getVipCardDetail, liveAppPayment, getPhysicalShopDetail, goBuyVipCard, getWxSettings, wechatPayment } from '@/api/index.js';
   const wx = require('weixin-js-sdk');
 
   export default {
@@ -142,46 +142,65 @@
             }
           })
         }).then(res=>{
-          //调起微信支付
-          wechatPayment({
-            order_no: res.order_no,
-            user_id: this.$store.state.user.userid,
-            order_type: 'CD',
-            platform: sessionStorage.getItem('PLATFORM') || '',
-            type: 2
-          }).then(res => {
-            this.feedback.Loading.close();
-            if(res.data.code == 1){
-              this.wx.chooseWXPay({
-                timestamp: res.data.data.timestamp.toString(),
-                nonceStr: res.data.data.nonceStr,
-                package: res.data.data.package,
-                signType: res.data.data.signType,
-                paySign: res.data.data.paySign,
-                success: res => {
-                  this.feedback.Toast({
-                    msg: '购买成功',
-                    timeout: 1200
-                  });
-                  this.$router.push({
-                    name: 'BuyVipCard',
-                    storeid: this.storeid
-                  })
-                },
-                fail: err => {
-                  this.feedback.Toast({
-                    msg: JSON.stringify(err),
-                    timeout: 1200
-                  })
-                }
-              });
-            }else if(res.data.code == 2){
+          const live_token = sessionStorage.getItem('LIVE_TOKEN');
+          if(!live_token){
+            //调起微信支付
+            wechatPayment({
+              order_no: res.order_no,
+              user_id: this.$store.state.user.userid,
+              order_type: 'CD',
+              platform: sessionStorage.getItem('PLATFORM') || '',
+              type: 2
+            }).then(res => {
               this.feedback.Loading.close();
-              location.href = res.data.data.mweb_url;
-            } else{
-              this.feedback.Toast({msg:res.data.info});
-            }
-          });
+              if(res.data.code == 1){
+                this.wx.chooseWXPay({
+                  timestamp: res.data.data.timestamp.toString(),
+                  nonceStr: res.data.data.nonceStr,
+                  package: res.data.data.package,
+                  signType: res.data.data.signType,
+                  paySign: res.data.data.paySign,
+                  success: res => {
+                    this.feedback.Toast({
+                      msg: '购买成功',
+                      timeout: 1200
+                    });
+                    this.$router.push({
+                      name: 'BuyVipCard',
+                      storeid: this.storeid
+                    })
+                  },
+                  fail: err => {
+                    this.feedback.Toast({
+                      msg: JSON.stringify(err),
+                      timeout: 1200
+                    })
+                  }
+                });
+              }else if(res.data.code == 2){
+                this.feedback.Loading.close();
+                location.href = res.data.data.mweb_url;
+              } else{
+                this.feedback.Toast({msg:res.data.info});
+              }
+            });
+          }else{ //星说直播中调起支付
+            liveAppPayment({
+              order_no: res.order_no,
+              user_id: this.$store.state.user.userid,
+              order_type: 'CD',
+              live_token: live_token
+            }).then(res=>{
+              if(res.data.code == 1){
+                location.href = 'app://payorder/' + res.data.data.order_no;
+              }else{
+                this.feedback.Toast({
+                  msg: res.data.info,
+                  timeout: 1200
+                })
+              }
+            });
+          }
         })
       }
     }

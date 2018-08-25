@@ -92,7 +92,7 @@
 </template>
 <script>
   import { LoadMore } from 'vux';
-  import { getAllowBuyCouponList, buyCoupon, buyCouponPayment, getWxSettings } from '@/api/index.js';
+  import { getAllowBuyCouponList, liveAppPayment, buyCoupon, buyCouponPayment, getWxSettings } from '@/api/index.js';
 
   export default {
     name: 'CouponBuy',
@@ -127,26 +127,46 @@
             table_id: 0
           }).then(res => {
             if (res.data.code == 1) {
-              buyCouponPayment({
-                order_no: res.data.data.order_no,
-                user_id: this.$store.state.user.userid,
-                order_type: 'CO',
-                platform: sessionStorage.getItem('PLATFORM') || '',
-                type: 2
-              }).then(res => {
-                if (res.data.code == 1) {
-                  resolve(res);
-                }else if(res.data.code == 2){
-                  this.feedback.Loading.close();
-                  location.href = res.data.data.mweb_url;
-                } else {
-                  this.feedback.Loading.close();
-                  this.feedback.Toast({
-                    msg: res.data.info,
-                    timeout: 1200
-                  })
-                }
-              });
+              const live_token = sessionStorage.getItem('LIVE_TOKEN');
+              if(!live_token){ //调起微信支付
+                buyCouponPayment({
+                  order_no: res.data.data.order_no,
+                  user_id: this.$store.state.user.userid,
+                  order_type: 'CO',
+                  platform: sessionStorage.getItem('PLATFORM') || '',
+                  type: 2
+                }).then(res => {
+                  if (res.data.code == 1) {
+                    resolve(res);
+                  }else if(res.data.code == 2){
+                    this.feedback.Loading.close();
+                    location.href = res.data.data.mweb_url;
+                  } else {
+                    this.feedback.Loading.close();
+                    this.feedback.Toast({
+                      msg: res.data.info,
+                      timeout: 1200
+                    })
+                  }
+                });
+              }else{ //星说直播中调起支付
+                liveAppPayment({
+                  order_no: res.data.data.order_no,
+                  user_id: this.$store.state.user.userid,
+                  order_type: 'CO',
+                  live_token: live_token
+                }).then(res=>{
+                  if(res.data.code == 1){
+                    location.href = 'app://payorder/' + res.data.data.order_no;
+                  }else{
+                    this.feedback.Toast({
+                      msg: res.data.info,
+                      timeout: 1200
+                    })
+                  }
+                });
+              }
+
             } else {
               this.feedback.Loading.close();
               this.feedback.Toast({

@@ -212,6 +212,10 @@ const REQUESTS = {
   deleteAddress(data) {
     return HTTPS.fetchPost(HOST + '/api/5b1e258b1b409',data)
   },
+  //星说直播中发起支付
+  liveAppPayment(data) {
+    return HTTPS.fetchPost(HOST + '/api/5b812366212f9',data)
+  },
 
   //获取虚拟店店主信息
   getAdminIndexInfo(data) {
@@ -442,6 +446,7 @@ export const loginOut = REQUESTS.loginOut;
 export const getAddressLists = REQUESTS.getAddressLists;
 export const addOrChangeAddress = REQUESTS.addOrChangeAddress;
 export const deleteAddress = REQUESTS.deleteAddress;
+export const liveAppPayment = REQUESTS.liveAppPayment;
 
 
 export const getShopList = REQUESTS.getShopList

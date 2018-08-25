@@ -1,6 +1,6 @@
 <template>
 <div class="container">
-    
+
     <div class='mine'>
         <div class='inside'>
             <img class='tx' :src='codedata.shop_avatar' />
@@ -13,14 +13,14 @@
 
     <div class='main'>
         <div class='tit1'>{{codedata.waiter_name}}</div>
-        <div class='tit2'>扫我领取店铺优惠券</div>
+        <div class='tit2'>扫码领取店铺优惠券</div>
         <div class='pic'>
             <img :src='host+codedata.qrcode' />
         </div>
     </div>
 
     <div class='support'>易倍增科技提供技术支持（注：所有解释权归平台所有）</div>
-   
+
 </div>
 </template>
 
@@ -54,10 +54,10 @@ export default {
                     this.codedata = res.data.data;
                 }
             });
-        }  
+        }
     },
     components: {
-      
+
     }
 };
 

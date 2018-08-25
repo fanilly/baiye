@@ -557,9 +557,10 @@ router.beforeEach((to, from, next) => {
     return;
   }
 
-  if(to.query.platform) sessionStorage.setItem('PLATFORM', to.query.platform);
   if (!sessionStorage.getItem('USER_INFO')) {
     if(to.query.user_token){
+      if(to.query.live_token) sessionStorage.setItem('LIVE_TOKEN', to.query.live_token);
+      if(to.query.platform) sessionStorage.setItem('PLATFORM', to.query.platform);
       login(to.query.user_token).then(res => {
         res.pathname = to.name;
         store.commit(SET_USER_INFO, res);

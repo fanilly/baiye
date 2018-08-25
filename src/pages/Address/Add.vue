@@ -4,7 +4,7 @@
       <input type="text" v-model="userName" placeholder="收货人姓名">
     </section>
     <section class="input-box">
-      <input type="text" v-model="userPhone" placeholder="手机号码">
+      <input type="number" v-model="userPhone" placeholder="手机号码">
     </section>
     <section class="input-box">
       <x-address title="" v-model="value" :list="addressData" @on-shadow-change="onShadowChange" :inline-desc="inlineDesc" :show.sync="showAddress"></x-address>
@@ -62,6 +62,27 @@
 
       //点击确定
       handleSubmit(){
+        if(!this.userName) {
+          this.feedback.Toast({
+            msg: '请输入用户名',
+            timeout: 1000
+          });
+          return false;
+        }
+        if(!this.userPhone) {
+          this.feedback.Toast({
+            msg: '请输入手机号',
+            timeout: 1000
+          });
+          return false;
+        }
+        if(!this.addressInfo) {
+          this.feedback.Toast({
+            msg: '请输入详细地址',
+            timeout: 1000
+          });
+          return false;
+        }
         let formData = {
           user_name: this.userName,
           user_phone: this.userPhone,
