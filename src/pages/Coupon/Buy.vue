@@ -156,6 +156,7 @@
                   order_type: 'CO',
                   live_token: live_token
                 }).then(res=>{
+                  this.feedback.Loading.close();
                   if(res.data.code == 1){
                     location.href = 'app://payorder/' + res.data.data.order_no;
                   }else{

@@ -552,7 +552,7 @@ router.beforeEach((to, from, next) => {
   if(to.meta.title) document.title = to.meta.title;
   const userAgent = navigator.userAgent;
 
-  if(to.meta.locationAssign && /iPhone|iPad|iPod/i.test(userAgent) && to.path != location.pathname){
+  if(to.meta.locationAssign && /iPhone|iPad|iPod/i.test(userAgent) && global.browserIsWeChat && to.path != location.pathname){
     location.assign(to.fullPath);
     return;
   }
@@ -564,7 +564,9 @@ router.beforeEach((to, from, next) => {
       login(to.query.user_token).then(res => {
         res.pathname = to.name;
         store.commit(SET_USER_INFO, res);
-        location.href = location.origin + location.pathname;
+        if(!to.query.live_token){
+          location.href = location.origin + location.pathname;
+        }
         next();
       });
     }else{

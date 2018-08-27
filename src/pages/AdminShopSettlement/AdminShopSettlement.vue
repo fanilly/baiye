@@ -203,6 +203,13 @@
       },
 
       makeVirtualOrder(){
+        if(!this.address){
+          this.feedback.Toast({
+            msg: '请选择收货地址',
+            timeout: 1000
+          });
+          return;
+        }
         this.feedback.Loading.open('提交中');
         makeVirtualOrder({
           order_no:this.orderData.order_no,
@@ -278,8 +285,6 @@
               type:''
             })
           }
-
-
         })
       },
 
