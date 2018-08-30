@@ -27,5 +27,5 @@
 ```
 # 退出登录          app://baiye/loginout
 # 登录              app://baiye/loginin?jumpurl=/shop
-mall.zzebz.com/shop
+mall.kkbli.com/shop
 ```

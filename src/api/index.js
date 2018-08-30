@@ -216,6 +216,10 @@ const REQUESTS = {
   liveAppPayment(data) {
     return HTTPS.fetchPost(HOST + '/api/5b812366212f9',data)
   },
+  //获取活动信息
+  getActivityDetail(data) {
+    return HTTPS.fetchPost(HOST + '/api/5b87a30b4fe94',data)
+  },
 
   //获取虚拟店店主信息
   getAdminIndexInfo(data) {
@@ -447,6 +451,7 @@ export const getAddressLists = REQUESTS.getAddressLists;
 export const addOrChangeAddress = REQUESTS.addOrChangeAddress;
 export const deleteAddress = REQUESTS.deleteAddress;
 export const liveAppPayment = REQUESTS.liveAppPayment;
+export const getActivityDetail = REQUESTS.getActivityDetail;
 
 
 export const getShopList = REQUESTS.getShopList

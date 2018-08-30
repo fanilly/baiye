@@ -27,6 +27,7 @@
     <section class="search-box">
       <input class="search-box-content" ref="searchBox" @blur="handleSearch" @keyup.enter="handleSearch" type="search" placeholder="请输入关键词搜索商品" name="">
       <img class="search-box-coupon" :src="couponIcons" @click="goShopCenter" alt="">
+      <img class="search-box-activity" v-if="shopDetail && shopDetail.activity != 0" :src="activityIcons" @click="goActivity" alt="">
     </section>
 
     <!-- 我常吃 -->
@@ -196,6 +197,7 @@
       </section>
     </transition>
 
+    <!-- 选择规格 -->
     <transition name="fade">
       <div class="popbox-wapper" v-if="showChooseAttrPop">
         <div class="popboxmask"></div>
@@ -284,6 +286,7 @@ export default {
       },
       closeIcon: require('../../assets/xxx.png'),
       couponIcons: require('../../assets/coupon.png'),
+      activityIcons: require('../../assets/baiye/activity.png'),
       showShopDetailPop:false, //显示弹出层
       shopDetail:null, //店铺详情
       goodsLists:null, //商品列表
@@ -443,6 +446,15 @@ export default {
         name:'ShopCenter',
         params:{
           shopid:this.shopid
+        }
+      })
+    },
+
+    goActivity(){
+      this.$router.push({
+        name:'Activity',
+        params:{
+          activityid:this.shopDetail.activity
         }
       })
     },

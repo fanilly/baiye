@@ -26,6 +26,7 @@ const Center = () => import ('@/pages/Center/Center');
 const IssueIndex = () => import ('@/pages/Issue/Index');
 const IssueList = () => import ('@/pages/Issue/Issue');
 const IssueDetail = () => import ('@/pages/Issue/Detail');
+const Activity = () => import ('@/pages/Other/Activity');
 
 const AddressIndex = () => import ('@/pages/Address/Index');
 const AddressAdd = () => import ('@/pages/Address/Add');
@@ -233,6 +234,15 @@ const router = new Router({
       meta: {
         keepAlive: false,
         title: '评价'
+      }
+    }, {
+      path: '/activity/:activityid',
+      name: 'Activity',
+      props: true,
+      component: Activity,
+      meta: {
+        keepAlive: false,
+        title: '店铺活动'
       }
     }, {
       path: '/Issue',
