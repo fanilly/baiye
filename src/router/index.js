@@ -10,6 +10,7 @@ const wx = require('weixin-js-sdk');
 
 const Shop = () => import ('@/pages/Shop/Shop');
 const Settlement = () => import ('@/pages/Settlement/Settlement');
+const ActivitySettlement = () => import ('@/pages/ActivitySettlement/ActivitySettlement');
 const Payment = () => import ('@/pages/Payment/Payment');
 const Trolley = () => import ('@/pages/Trolley/Trolley');
 const Evaluate = () => import ('@/pages/Evaluate/Evaluate');
@@ -179,6 +180,17 @@ const router = new Router({
       name: 'Settlement',
       props: true,
       component: Settlement,
+      meta: {
+        keepAlive: false,
+        title: '确认订单',
+        locationAssign: true
+      }
+    },
+    {
+      path: '/ActivitySettlement/:goodsid/:activityid/:type',
+      name: 'ActivitySettlement',
+      props: true,
+      component: ActivitySettlement,
       meta: {
         keepAlive: false,
         title: '确认订单',

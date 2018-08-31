@@ -377,7 +377,7 @@ export default {
         }else{  //未搜索的内容
           this.feedback.Toast({
             msg:'未搜索的内容',
-            timeout:1500
+            timeout:1000
           });
         }
       };

@@ -220,6 +220,14 @@ const REQUESTS = {
   getActivityDetail(data) {
     return HTTPS.fetchPost(HOST + '/api/5b87a30b4fe94',data)
   },
+  //获取活动下单数据
+  getActivityOrder(data) {
+    return HTTPS.fetchPost(HOST + '/api/5b889f8c238ea',data)
+  },
+  //获取活动下单数据
+  activityPlaceOrder(data) {
+    return HTTPS.fetchPost(HOST + '/api/5b88dbcb0c873',data)
+  },
 
   //获取虚拟店店主信息
   getAdminIndexInfo(data) {
@@ -452,6 +460,8 @@ export const addOrChangeAddress = REQUESTS.addOrChangeAddress;
 export const deleteAddress = REQUESTS.deleteAddress;
 export const liveAppPayment = REQUESTS.liveAppPayment;
 export const getActivityDetail = REQUESTS.getActivityDetail;
+export const getActivityOrder = REQUESTS.getActivityOrder;
+export const activityPlaceOrder = REQUESTS.activityPlaceOrder;
 
 
 export const getShopList = REQUESTS.getShopList

@@ -21,7 +21,7 @@
                   <p class="goods-price"><span>￥</span>{{item.act_price}}</p>
                 </div>
               </header>
-              <div class="goods-item-lside-buy">立即购买</div>
+              <div class="goods-item-lside-buy" @click.stop="handleGoSettlement(item.aid)">立即购买</div>
             </section>
             <section class="goods-item-rside">
               <img class="goods-img" :src="item.give_pic" :alt="item.give_name">
@@ -48,7 +48,7 @@
                 <p class="goods-old-price"><span>￥</span>{{item.cost_price}}</p>
                 <p class="goods-price"><span>￥</span>{{item.act_price}}</p>
                 <div>
-                  <div class="goods-buy">立即抢购</div>
+                  <div class="goods-buy" @click.stop="handleGoSettlement(item.aid)">立即抢购</div>
                 </div>
               </div>
             </section>
@@ -58,7 +58,7 @@
                 <p class="goods-old-price"><span>￥</span>{{item.cost_price}}</p>
                 <p class="goods-price"><span>￥</span>{{item.act_price}}</p>
                 <div>
-                  <div class="goods-buy">立即抢购</div>
+                  <div class="goods-buy" @click.stop="handleGoSettlement(item.aid)">立即抢购</div>
                 </div>
               </div>
               <img class="goods-img" :src="item.goods_pic" alt="">
@@ -87,6 +87,18 @@
       return {
         activityData: null
       };
+    },
+    methods: {
+      handleGoSettlement(goodsid) {
+        this.$router.push({
+          name: 'ActivitySettlement',
+          params:{
+            goodsid: goodsid,
+            activityid: this.activityid,
+            type: this.activityData.type_config
+          }
+        })
+      }
     },
     mounted() {
       getActivityDetail({
@@ -126,6 +138,9 @@
       font-size: .36rem;
       font-weight: bold;
       padding: .2rem;
+    }
+    .activity-time {
+      font-size: .24rem;
     }
     .activity-goods {
       font-size: .28rem;
