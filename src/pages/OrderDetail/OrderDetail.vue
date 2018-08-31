@@ -94,7 +94,7 @@
         </div>
         <div class='flist'>
           <div class='item' v-for="item,index in order.goods">
-            <div class='sl'>{{item.title}}
+            <div class='sl'><i class="mj-give" v-if="order.give_id == item.goods_id">赠: </i>{{item.title}}
               <span v-if="item.attr!=''">({{item.attr}})</span>
             </div>
             <div class='sm'>{{item.num}}份</div>

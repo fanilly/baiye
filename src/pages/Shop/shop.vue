@@ -26,8 +26,8 @@
     <!-- 搜索 -->
     <section class="search-box">
       <input class="search-box-content" ref="searchBox" @blur="handleSearch" @keyup.enter="handleSearch" type="search" placeholder="请输入关键词搜索商品" name="">
-      <img class="search-box-coupon" :src="couponIcons" @click="goShopCenter" alt="">
       <img class="search-box-activity" v-if="shopDetail && shopDetail.activity != 0" :src="activityIcons" @click="goActivity" alt="">
+      <img class="search-box-coupon" :src="couponIcons" @click="goShopCenter" alt="">
     </section>
 
     <!-- 我常吃 -->

@@ -188,10 +188,10 @@
           this.feedback.Loading.close();
           if(res.data.code == 1){
             this.$store.commit(SET_PAYMENT_OPTIONS, {
-              canUse: false,
+              canUse: res.data.data.can_use,
               orderNo: res.data.data.order_no,
               totalMoney: res.data.data.total_money,
-              orderType: 'AO',
+              orderType: 'OD',
               kind: 2,
             })
             this.$router.replace({

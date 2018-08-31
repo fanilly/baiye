@@ -85,7 +85,7 @@
           }).then(res => {
             if (res.data.code == 1) {
               this.feedback.Toast({
-                msg: '注册成功，为您跳转至首页',
+                msg: res.data.info,
                 timeout: 1200
               });
               setTimeout(() => {
