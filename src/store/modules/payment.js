@@ -30,7 +30,7 @@ export default {
   actions: {
 
     // 开始支付
-    async startPayment({ commit, state }, payload) {
+    async startPayment({ dispatch, commit, state }, payload) {
       const live_token = sessionStorage.getItem('LIVE_TOKEN');
       //微信支付授权
       getWxSettings().then(res => {
@@ -83,7 +83,7 @@ export default {
             }
           });
         }else if(paymentResultCode == 2){
-          sessionStorage.setItem('PAYMENT_CALLBACK', JSON.stringify(state));
+          localStorage.setItem('PAYMENT_CALLBACK', JSON.stringify(state));
           location.href = paymentData.mweb_url;
         }else{
           Toast({msg: paymentResult.info,timeout: 1200})
@@ -97,7 +97,7 @@ export default {
         });
         let paymentResultCode = paymentResult.data.code;
         if(paymentResultCode == 1){
-          sessionStorage.setItem('PAYMENT_CALLBACK', JSON.stringify(state));
+          localStorage.setItem('PAYMENT_CALLBACK', JSON.stringify(state));
           location.href = 'app://payorder/' + paymentResult.data.data.order_no;
         }else{
           Toast({
@@ -142,7 +142,8 @@ export default {
 
     //APP 与 Browser 中的支付回调
     async testingOrder({ dispatch, commit, state }, payload){
-      let paymentCallbackData = sessionStorage.getItem('PAYMENT_CALLBACK');
+      let paymentCallbackData = localStorage.getItem('PAYMENT_CALLBACK');
+      Toast({msg:paymentCallbackData,timeout: 20000});
       if(paymentCallbackData){
         paymentCallbackData = JSON.parse(paymentCallbackData);
         commit(SET_PAYMENT_OPTIONS,paymentCallbackData);
@@ -156,7 +157,7 @@ export default {
         if(res.data.code == 1){
           dispatch('paymetnSuccess', payload)
         }
-        sessionStorage.setItem('PAYMENT_CALLBACK','');
+        localStorage.setItem('PAYMENT_CALLBACK','');
       }
     }
   }
