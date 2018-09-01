@@ -2,6 +2,7 @@ import { SET_PAYMENT_OPTIONS } from '../mutation-type.js';
 import { liveAppPayment, wechatPayment, getWxSettings, paymentCallback } from '@/api/index.js';
 import Toast from '@/components/feedback/src/toast';
 import Loading from '@/components/feedback/src/loading';
+import Confirm from '@/components/feedback/src/confirm';
 const wx = require('weixin-js-sdk');
 
 export default {
@@ -89,15 +90,16 @@ export default {
           Toast({msg: paymentResult.info,timeout: 1200})
         }
       }else{ //星说直播中调起支付
-        let paymentResult = liveAppPayment({
+        let paymentResult = await liveAppPayment({
           order_no: state.orderNo,
           user_id: payload.userid,
           order_type: state.orderType,
           live_token: live_token
         });
+        console.log(paymentResult);
         let paymentResultCode = paymentResult.data.code;
         if(paymentResultCode == 1){
-          localStorage.setItem('PAYMENT_CALLBACK', JSON.stringify(state));
+          // localStorage.setItem('PAYMENT_CALLBACK', JSON.stringify(state));
           location.href = 'app://payorder/' + paymentResult.data.data.order_no;
         }else{
           Toast({
@@ -143,21 +145,39 @@ export default {
     //APP 与 Browser 中的支付回调
     async testingOrder({ dispatch, commit, state }, payload){
       let paymentCallbackData = localStorage.getItem('PAYMENT_CALLBACK');
-      Toast({msg:paymentCallbackData,timeout: 20000});
       if(paymentCallbackData){
         paymentCallbackData = JSON.parse(paymentCallbackData);
         commit(SET_PAYMENT_OPTIONS,paymentCallbackData);
-        Loading.open('支付中');
-        const res = await paymentCallback({
-          order_type: paymentCallbackData.orderType,
-          order_no: paymentCallbackData.orderNo,
+
+        const testing = async function() {
+          Loading.open('检测中');
+          const res = await paymentCallback({
+            order_type: paymentCallbackData.orderType,
+            order_no: paymentCallbackData.orderNo,
+          });
+          Loading.close();
+          Toast({ msg: res.data.info });
+          localStorage.setItem('PAYMENT_CALLBACK','');
+          if(res.data.code == 1){
+            dispatch('paymetnSuccess', payload)
+          }else{
+            payload.router.go(-1);
+          }
+        };
+
+        Confirm({
+          title: '温馨提示',
+          msg: '确认支付成功？',
+          options: [{
+            txt: '取消支付',
+            color: '#999',
+            callback: testing
+          }, {
+            txt: '确定支付',
+            color: '#0bb20c',
+            callback: testing
+          }]
         });
-        Loading.close();
-        Toast({ msg: res.data.info });
-        if(res.data.code == 1){
-          dispatch('paymetnSuccess', payload)
-        }
-        localStorage.setItem('PAYMENT_CALLBACK','');
       }
     }
   }

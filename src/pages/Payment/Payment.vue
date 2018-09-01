@@ -1,7 +1,7 @@
 <template>
   <section class="container">
     <header class="header">
-      <h1>支付金额:</h1>
+      <h1>支付金额</h1>
       <h2><span>￥</span>{{$store.state.payment.totalMoney}}</h2>
     </header>
     <main class="main">
@@ -71,9 +71,6 @@
         });
       },
     },
-    updated(){
-      console.log('up------')
-    },
     mounted() {
       if(!this.$store.state.payment.orderNo){
         let paymentCallbackData = localStorage.getItem('PAYMENT_CALLBACK');
@@ -87,7 +84,7 @@
             callback:()=>{
               this.$router.go(-1)
             }
-          })
+          });
           return;
         }
       }
