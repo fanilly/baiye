@@ -92,7 +92,9 @@
 </template>
 <script>
   import { LoadMore } from 'vux';
-  import { getAllowBuyCouponList, liveAppPayment, buyCoupon, buyCouponPayment, getWxSettings } from '@/api/index.js';
+  import { getAllowBuyCouponList, buyCoupon } from '@/api/index.js';
+  import { SET_PAYMENT_OPTIONS } from '@/store/mutation-type.js';
+  import { mapActions } from 'vuex';
 
   export default {
     name: 'CouponBuy',
@@ -115,10 +117,9 @@
       };
     },
     methods: {
-
+      ...mapActions(['startPayment', 'testingOrder']),
       buyCoupon() {
         this.feedback.Loading.open('提交中');
-        new Promise(resolve => {
           buyCoupon({
             id: this.lists[this.currentIndex].id,
             user_id: this.$store.state.user.userid,
@@ -126,96 +127,29 @@
             waiter_id: this.waitid,
             table_id: 0
           }).then(res => {
+            this.feedback.Loading.close();
             if (res.data.code == 1) {
-              const live_token = sessionStorage.getItem('LIVE_TOKEN');
-              if(!live_token){ //调起微信支付
-                buyCouponPayment({
-                  order_no: res.data.data.order_no,
-                  user_id: this.$store.state.user.userid,
-                  order_type: 'CO',
-                  platform: sessionStorage.getItem('PLATFORM') || '',
-                  type: 2
-                }).then(res => {
-                  if (res.data.code == 1) {
-                    resolve(res);
-                  }else if(res.data.code == 2){
-                    this.feedback.Loading.close();
-                    location.href = res.data.data.mweb_url;
-                  } else {
-                    this.feedback.Loading.close();
-                    this.feedback.Toast({
-                      msg: res.data.info,
-                      timeout: 1200
-                    })
-                  }
-                });
-              }else{ //星说直播中调起支付
-                liveAppPayment({
-                  order_no: res.data.data.order_no,
-                  user_id: this.$store.state.user.userid,
-                  order_type: 'CO',
-                  live_token: live_token
-                }).then(res=>{
-                  this.feedback.Loading.close();
-                  if(res.data.code == 1){
-                    location.href = 'app://payorder/' + res.data.data.order_no;
-                  }else{
-                    this.feedback.Toast({
-                      msg: res.data.info,
-                      timeout: 1200
-                    })
-                  }
-                });
-              }
-
+              this.$store.commit(SET_PAYMENT_OPTIONS, {
+                canUse: false,
+                orderNo: res.data.data.order_no,
+                orderType: 'CO',
+                kind: 4,
+                shopid: this.shopid
+              });
+              this.startPayment({router: this.$router, userid: this.$store.state.user.userid});
             } else {
-              this.feedback.Loading.close();
               this.feedback.Toast({
                 msg: res.data.info,
                 timeout: 1200
               })
             }
           })
-        }).then(res => {
-          this.feedback.Loading.close();
-          this.wx.chooseWXPay({
-            timestamp: res.data.data.timestamp.toString(),
-            nonceStr: res.data.data.nonceStr,
-            package: res.data.data.package,
-            signType: res.data.data.signType,
-            paySign: res.data.data.paySign,
-            success: res => {
-              this.$router.push({
-                name: 'CouponList',
-                params: {
-                  shopid: this.shopid
-                }
-              })
-            },
-            fail: err => {
-              this.feedback.Toast({
-                msg: JSON.stringify(err),
-                timeout: 1200
-              })
-            }
-          });
-        })
 
       }
     },
     mounted() {
-      getWxSettings().then(res => {
-        let data = res.data.data;
-        this.wx.config({
-          debug: global.isDev,
-          appId: data.appid,
-          timestamp: data.timestamp,
-          nonceStr: data.nonceStr,
-          signature: data.signature,
-          jsApiList: ['chooseWXPay']
-        });
-      });
       this.feedback.Loading.open('加载中');
+      this.testingOrder({router: this.$router, userid: this.$store.state.user.userid});
       getAllowBuyCouponList({
         user_id: this.$store.state.user.userid,
         store_id: this.shopid

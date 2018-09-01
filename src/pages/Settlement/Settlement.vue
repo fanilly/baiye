@@ -194,14 +194,6 @@
           })
         }
       },
-      handleGoPayment() {
-        this.$router.push({
-          name: 'Payment',
-          query: {
-            totalMoney: this.totalMoney
-          }
-        });
-      },
 
       //提交订单
       handleSubmit(){
@@ -212,6 +204,7 @@
           });
           return;
         }
+        if(!this.orderData) return;
         this.feedback.Loading.open('提交中');
         let goods = [];
         this.carlist.data.forEach(item=>{
@@ -377,8 +370,7 @@
   };
 
 </script>
-<style lang="less"
-  scoped>
+<style lang="less" scoped>
   @import './Settlement.less';
 
 </style>

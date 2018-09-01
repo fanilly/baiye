@@ -245,8 +245,7 @@
   };
 
 </script>
-<style lang="less"
-  scoped>
-  @import './ActivitySettlement.less';
+<style lang="less" scoped>
+  @import './Settlement.less';
 
 </style>

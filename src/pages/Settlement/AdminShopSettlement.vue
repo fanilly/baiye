@@ -37,44 +37,6 @@
         <div class='rhalf'></div>
       </div>
 
-      <!-- 优惠券 -->
-      <!-- <div class="select-box" @click.stop="showSelectCoupon = true">
-        <div class="lside">优惠券</div>
-        <div :class="{center:true,'red-color':coupons.length!=0&&!selectedCoupon[0]}">{{coupons.length == 0 ? '无优惠券可用' : selectedCoupon[0] ? selectedCoupon[0] : '有'+(coupons.length-1)+'张优惠券可用'}}</div>
-        <img :src="arrowIcon" alt="">
-      </div>
-
-      <transition name="fade">
-        <div class="picker-wapper" v-if="showSelectCoupon && coupons.length >= 1">
-          <div class="mask" @click="showSelectCoupon = false"></div>
-          <div class="picker-box">
-            <div class="picker-header">
-              <span @click="showSelectCoupon = false">确定</span>
-            </div>
-            <picker class="picker" :data="coupons" :columns="3" v-model="selectedCoupon" @on-change="selectCouponChange"></picker>
-          </div>
-        </div>
-      </transition> -->
-
-      <!-- 赠品券 -->
-      <!-- <div class="select-box" v-if="gifes.length > 1" @click.stop="showSelectGife = true">
-        <div class="lside">赠品券</div>
-        <div :class="{center:true,'red-color':gifes.length!=0&&!selectedGife[0]}">{{gifes.length == 0 ? '无赠品券可用' : selectedGife[0] ? selectedGife[0] : '有'+(gifes.length-1)+'张赠品券可用'}}</div>
-        <img :src="arrowIcon" alt="">
-      </div>
-
-      <transition name="fade">
-        <div class="picker-wapper" v-if="showSelectGife && gifes.length >= 1">
-          <div class="mask" @click="showSelectGife = false"></div>
-          <div class="picker-box">
-            <div class="picker-header">
-              <span @click="showSelectGife = false">确定</span>
-            </div>
-            <picker class="picker" :data="gifes" :columns="3" v-model="selectedGife" @on-change="selectGifeChange"></picker>
-          </div>
-        </div>
-      </transition> -->
-
       <div class="sum">
         <div class="sl">运费</div>
         <div class="sm"></div>
@@ -96,7 +58,7 @@
 </template>
 
 <script>
-  import { getCartLists, getAddress, getWxSettings, getShippingFee, getCoupons, changeAddress, getGife, submitOrder, makeVirtualOrder } from '@/api/index.js';
+  import { getAddress, getWxSettings, getShippingFee, changeAddress, makeVirtualOrder } from '@/api/index.js';
   import { Picker } from 'vux';
   import footerSubmit from '@/components/footerSubmit/footerSubmit.vue';
   import { SET_PAYMENT_OPTIONS } from '@/store/mutation-type.js';
@@ -112,25 +74,10 @@
         coordinateIcon: require('../../assets/takeout06.png'),
         arrowIcon: require('../../assets/return.png'),
         totalMoney: 0,
-        carlist: null,
         address:null,
 
         remark:'',
         orderData:null,
-
-        //优惠券
-        actuallyMoney:'',
-        selectedCouponType:'',
-        showSelectCoupon:false,
-        selectedCouponId:0,
-        selectedCoupon:[],
-        coupons: [],
-
-        //抵用券
-        showSelectGife:false,
-        selectedGifeId:0,
-        selectedGife:[],
-        gifes: [],
 
         orderTotalMoney:0,
         total_price:0,
@@ -147,16 +94,6 @@
 
     },
     methods: {
-      selectCouponChange(current){
-        let selectItem = this.coupons.filter(item=>item.name == current[0]);
-        this.selectedCouponId = selectItem[0].id;
-        this.selectedCouponType = selectItem[0].type;
-        this.actuallyMoney = selectItem[0].actually_money ? selectItem[0].actually_money : '';
-      },
-      selectGifeChange(current){
-        let selectItem = this.gifes.filter(item=>item.name == current[0]);
-        this.selectedGifeId = selectItem[0].id;
-      },
       handleChooseAddress(){
         if(global.browserIsWeChat){
           this.wx.openAddress({
@@ -193,15 +130,6 @@
           })
         }
       },
-      handleGoPayment() {
-        this.$router.push({
-          name: 'Payment',
-          query: {
-            totalMoney: this.totalMoney
-          }
-        });
-      },
-
       makeVirtualOrder(){
         if(!this.address){
           this.feedback.Toast({
@@ -244,72 +172,6 @@
         })
       },
 
-      //获取购物车数据
-      getCartLists() {
-        getCartLists({
-          is_waimai: 1,
-          shop_id: this.goodInfo.shopid,
-          user_id: this.$store.state.user.userid
-        }).then(res => {
-          if (res.data.code == 1) {
-            this.carlist = res.data.data;
-            if(this.address) this.getShippingFee();
-            //this.getCoupons();
-            this.getGife();
-            //console.log(this.carlist);
-          }
-        })
-      },
-
-      //获取优惠券
-      getCoupons(){
-        getCoupons({
-          shop_id:this.goodInfo.shopid,
-          user_id:this.$store.state.user.userid,
-          total_price: this.orderTotalMoney, //this.carlist.total_price,
-          discounts_price:this.orderTotalMoney //this.carlist.discounts_price
-        }).then(res=>{
-          console.log('获取优惠券',res)
-          if(res.data.code == 1 && res.data.data.length!=0){
-            this.coupons = res.data.data.map(item=>({
-              id:item.aid,
-              name:item.name,
-              value:item.name,
-              type: item.type,
-              actually_money:item.actually_money
-            }));
-            this.coupons.unshift({
-              id:0,
-              name:'不使用优惠券',
-              value:'不使用优惠券',
-              type:''
-            })
-          }
-        })
-      },
-
-      //获取赠品券
-      getGife(){
-        getGife({
-          shop_id:this.goodInfo.shopid,
-          user_id:this.$store.state.user.userid
-        }).then(res=>{
-          if(res.data.code == 1){
-            this.gifes = res.data.data.map(item=>({
-              id:item.aid,
-              name:item.name,
-              value:item.name,
-            }));
-            this.gifes.unshift({
-              id:0,
-              name:'不使用赠品券',
-              value:'不使用赠品券',
-            })
-          }
-          console.log('赠品券',res)
-        })
-      },
-
       //获取运费
       getShippingFee(){
         getShippingFee({
@@ -336,11 +198,6 @@
     },
 
     mounted() {
-      console.log(this.wx);
-      //从购物车获取数据 删除
-      //this.getCartLists();
-
-
       getAddress({ uid: this.$store.state.user.userid }).then(res=>{
         console.log('获取地址信息')
         if(res.data.code == 1){
@@ -355,10 +212,6 @@
 
         }
       });
-
-
-      //this.getGife();
-
 
       getWxSettings().then(res => {
         let data = res.data.data;
@@ -380,6 +233,6 @@
 
 </script>
 <style lang="less" scoped>
-  @import './AdminShopSettlement.less';
+  @import './Settlement.less';
 
 </style>

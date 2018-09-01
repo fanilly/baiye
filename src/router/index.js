@@ -10,7 +10,7 @@ const wx = require('weixin-js-sdk');
 
 const Shop = () => import ('@/pages/Shop/Shop');
 const Settlement = () => import ('@/pages/Settlement/Settlement');
-const ActivitySettlement = () => import ('@/pages/ActivitySettlement/ActivitySettlement');
+const ActivitySettlement = () => import ('@/pages/Settlement/ActivitySettlement');
 const Payment = () => import ('@/pages/Payment/Payment');
 const Trolley = () => import ('@/pages/Trolley/Trolley');
 const Evaluate = () => import ('@/pages/Evaluate/Evaluate');
@@ -60,7 +60,7 @@ const WealthDetail = () => import ('@/pages/WealthDetail/WealthDetail');
 const WealthWithdraw = () => import ('@/pages/WealthWithdraw/WealthWithdraw');
 const AdminShopPreview = () => import ('@/pages/AdminShopPreview/AdminShopPreview');
 const AdminShopDetail = () => import ('@/pages/AdminShopDetail/AdminShopDetail');
-const AdminShopSettlement = () => import ('@/pages/AdminShopSettlement/AdminShopSettlement');
+const AdminShopSettlement = () => import ('@/pages/Settlement/AdminShopSettlement');
 const MyWallet = () => import ('@/pages/MyWallet/MyWallet');
 const MyWalletStream = () => import ('@/pages/MyWalletStream/MyWalletStream');
 const BuyVipCard = () => import ('@/pages/BuyVipCard/BuyVipCard');

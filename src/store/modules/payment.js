@@ -20,18 +20,18 @@ export default {
   mutations: {
     [SET_PAYMENT_OPTIONS](state, payload) {
       if(payload.shopid) state.shopid = payload.shopid;
-      state.canUse = payload.canUse;
-      state.totalMoney = payload.totalMoney;
-      state.orderNo = payload.orderNo;
-      state.orderType = payload.orderType;
-      state.kind = payload.kind;
+      state.canUse = payload.canUse || null;
+      state.totalMoney = payload.totalMoney || null;
+      state.orderNo = payload.orderNo || null;
+      state.orderType = payload.orderType || null;
+      state.kind = payload.kind || null;
     }
   },
 
   actions: {
 
     // 开始支付
-    async startPayment({ dispatch, commit, state }, payload) {
+    async startPayment({ dispatch, state }, payload) {
       const live_token = sessionStorage.getItem('LIVE_TOKEN');
       //微信支付授权
       getWxSettings().then(res => {
@@ -66,15 +66,8 @@ export default {
             signType: paymentData.signType,
             paySign: paymentData.paySign,
             success: res=> {
-              let msg = state.kind == 1
-                ? '付款成功，现在为你跳转会员卡页面'
-                : state.kind == 3
-                ? '付款成功，现在为你跳转虚拟店页面'
-                : '付款成功，现在为你跳转订单页面';
-
-              Toast({ msg });
+              Toast({ msg: '支付成功' });
               dispatch('paymetnSuccess', payload)
-
             },
             fail:err=>{
               Toast({
@@ -113,7 +106,7 @@ export default {
     //支付成功
     paymetnSuccess({ state }, payload){
       switch(state.kind){
-        case 1:
+        case 1: //购买会员卡
           payload.router.replace({
             name:'buyVipCard',
             params: {
@@ -121,17 +114,17 @@ export default {
             }
           });
           break;
-        case 2:
+        case 2: //购买实体店商品
           payload.router.replace({
             name:'Order'
           });
           break;
-        case 3:
+        case 3: //购买虚拟店商品
           payload.router.replace({
             name:'FictitiousOrder'
           });
           break;
-        default:
+        default: //购买优惠券
           payload.router.push({
             name: 'CouponList',
             params: {
@@ -143,7 +136,7 @@ export default {
     },
 
     //APP 与 Browser 中的支付回调
-    async testingOrder({ dispatch, commit, state }, payload){
+    async testingOrder({ dispatch, commit }, payload){
       let paymentCallbackData = localStorage.getItem('PAYMENT_CALLBACK');
       if(paymentCallbackData){
         paymentCallbackData = JSON.parse(paymentCallbackData);

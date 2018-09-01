@@ -24,7 +24,7 @@
 <script>
 
   import footerSubmit from '@/components/footerSubmit/footerSubmit.vue';
-  import { balancePayment, paymentCallback } from '@/api/index.js';
+  import { balancePayment } from '@/api/index.js';
   import { mapActions } from 'vuex';
   export default {
     name: 'Payment',

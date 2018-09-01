@@ -48,8 +48,8 @@
 
 <script>
   import { SET_PAYMENT_OPTIONS } from '../../store/mutation-type.js';
-  import { getVipCardDetail, liveAppPayment, getPhysicalShopDetail, goBuyVipCard, getWxSettings, wechatPayment } from '@/api/index.js';
-  const wx = require('weixin-js-sdk');
+  import { getVipCardDetail, getPhysicalShopDetail, goBuyVipCard } from '@/api/index.js';
+  import { mapActions } from 'vuex';
 
   export default {
     name: 'BuyVipDetail',
@@ -60,7 +60,6 @@
         goodid: '',
         status: 0,
         waitid: '',
-        showpop: false,
         cardinfo: {},
         shopinfo: {},
         orderNo: '',
@@ -75,23 +74,13 @@
     },
 
     mounted() {
-      getWxSettings().then(res => {
-        let data = res.data.data;
-        this.wx.config({
-          debug: global.isDev,
-          appId: data.appid,
-          timestamp: data.timestamp,
-          nonceStr: data.nonceStr,
-          signature: data.signature,
-          jsApiList: ['chooseWXPay']
-        });
-      });
-      this.feedback.Loading.open('加载中');
+      this.testingOrder({router: this.$router, userid: this.$store.state.user.userid});
       this.getVipCardDetail()
       this.getPhysicalShopDetail()
     },
 
     methods: {
+      ...mapActions(['startPayment', 'testingOrder']),
       //获取实体店店铺信息
       getPhysicalShopDetail() {
         getPhysicalShopDetail({
@@ -109,6 +98,7 @@
 
       //获取会员卡详细信息
       getVipCardDetail() {
+        this.feedback.Loading.open('加载中');
         getVipCardDetail({
           aid: this.goodid
         }).then(res => {
@@ -124,82 +114,26 @@
 
       //购买会员卡
       goBuyVipCard() {
-        this.showpop = false
         this.feedback.Loading.open('提交中');
-        new Promise(resolve => {
-          //生成购买会员卡订单
-          goBuyVipCard({
-            uid: this.$store.state.user.userid,
-            aid: this.goodid,
-            store_id: this.storeid,
-            waiter_id: this.waitid,
-          }).then(res => {
-            if (res.data.code == 1) {
-              resolve(res.data.data);
-            }else{
-              this.feedback.Loading.close();
-              this.feedback.Toast({msg:res.data.info});
-            }
-          })
-        }).then(res=>{
-          const live_token = sessionStorage.getItem('LIVE_TOKEN');
-          if(!live_token){
-            //调起微信支付
-            wechatPayment({
-              order_no: res.order_no,
-              user_id: this.$store.state.user.userid,
-              order_type: 'CD',
-              platform: sessionStorage.getItem('PLATFORM') || '',
-              type: 2
-            }).then(res => {
-              this.feedback.Loading.close();
-              if(res.data.code == 1){
-                this.wx.chooseWXPay({
-                  timestamp: res.data.data.timestamp.toString(),
-                  nonceStr: res.data.data.nonceStr,
-                  package: res.data.data.package,
-                  signType: res.data.data.signType,
-                  paySign: res.data.data.paySign,
-                  success: res => {
-                    this.feedback.Toast({
-                      msg: '购买成功',
-                      timeout: 1200
-                    });
-                    this.$router.push({
-                      name: 'BuyVipCard',
-                      storeid: this.storeid
-                    })
-                  },
-                  fail: err => {
-                    this.feedback.Toast({
-                      msg: JSON.stringify(err),
-                      timeout: 1200
-                    })
-                  }
-                });
-              }else if(res.data.code == 2){
-                this.feedback.Loading.close();
-                location.href = res.data.data.mweb_url;
-              } else{
-                this.feedback.Toast({msg:res.data.info});
-              }
+        //生成购买会员卡订单
+        goBuyVipCard({
+          uid: this.$store.state.user.userid,
+          aid: this.goodid,
+          store_id: this.storeid,
+          waiter_id: this.waitid,
+        }).then(res => {
+          this.feedback.Loading.close();
+          if (res.data.code == 1) {
+            this.$store.commit(SET_PAYMENT_OPTIONS, {
+              canUse: false,
+              orderNo: res.data.data.order_no,
+              orderType: 'CD',
+              kind: 1,
+              shopid: this.storeid
             });
-          }else{ //星说直播中调起支付
-            liveAppPayment({
-              order_no: res.order_no,
-              user_id: this.$store.state.user.userid,
-              order_type: 'CD',
-              live_token: live_token
-            }).then(res=>{
-              if(res.data.code == 1){
-                location.href = 'app://payorder/' + res.data.data.order_no;
-              }else{
-                this.feedback.Toast({
-                  msg: res.data.info,
-                  timeout: 1200
-                })
-              }
-            });
+            this.startPayment({router: this.$router, userid: this.$store.state.user.userid});
+          }else{
+            this.feedback.Toast({msg:res.data.info});
           }
         })
       }
