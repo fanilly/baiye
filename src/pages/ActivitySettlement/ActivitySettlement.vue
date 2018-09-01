@@ -208,12 +208,14 @@
     },
 
     mounted() {
+      this.feedback.Loading.open('加载中');
       getActivityOrder({
         user_id:this.$store.state.user.userid,
         activity_id: this.activityid,
         goods_id: this.goodsid
       }).then(res=>{
         console.log(res)
+        this.feedback.Loading.close();
         if(res.data.code == 1){
           this.orderData = res.data.data;
           this.address = res.data.data.address && res.data.data.address != [] ? res.data.data.address : null;

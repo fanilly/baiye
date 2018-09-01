@@ -224,9 +224,13 @@ const REQUESTS = {
   getActivityOrder(data) {
     return HTTPS.fetchPost(HOST + '/api/5b889f8c238ea',data)
   },
-  //获取活动下单数据
+  //活动商品下单
   activityPlaceOrder(data) {
     return HTTPS.fetchPost(HOST + '/api/5b88dbcb0c873',data)
+  },
+  //支付回调
+  paymentCallback(data) {
+    return HTTPS.fetchPost(HOST + '/api/5b89f05837214',data)
   },
 
   //获取虚拟店店主信息
@@ -462,6 +466,7 @@ export const liveAppPayment = REQUESTS.liveAppPayment;
 export const getActivityDetail = REQUESTS.getActivityDetail;
 export const getActivityOrder = REQUESTS.getActivityOrder;
 export const activityPlaceOrder = REQUESTS.activityPlaceOrder;
+export const paymentCallback = REQUESTS.paymentCallback;
 
 
 export const getShopList = REQUESTS.getShopList

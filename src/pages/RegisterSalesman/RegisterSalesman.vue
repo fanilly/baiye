@@ -64,7 +64,6 @@
             msg: '请填写您的姓名',
             timeout: 1200,
             callback: () => {
-              this.$router.go(-1)
             }
           });
         } else if (!(/^1[3|4|5|7|8|9][0-9]\d{8}$/.test(this.userPhone))) {
@@ -72,7 +71,6 @@
             msg: '请正确输入手机号',
             timeout: 1200,
             callback: () => {
-              this.$router.go(-1)
             }
           });
         } else {

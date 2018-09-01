@@ -622,7 +622,8 @@ router.beforeEach((to, from, next) => {
 
 
 router.afterEach((to, from)=>{
-  if(!to.meta.locationAssign){
+  console.log('global.browserIsWeChat'+global.browserIsWeChat)
+  if(global.browserIsWeChat && !to.meta.locationAssign){
     getWxSettings(to.fullPath).then(res=>{
       let data = res.data.data;
       wx.config({

@@ -187,7 +187,9 @@
             success: res => {
               this.$router.push({
                 name: 'CouponList',
-                shopid: this.shopid
+                params: {
+                  shopid: this.shopid
+                }
               })
             },
             fail: err => {

@@ -24,7 +24,8 @@
 <script>
 
   import footerSubmit from '@/components/footerSubmit/footerSubmit.vue';
-  import { balancePayment, liveAppPayment, wechatPayment, getWxSettings } from '@/api/index.js';
+  import { balancePayment, paymentCallback } from '@/api/index.js';
+  import { mapActions } from 'vuex';
   export default {
     name: 'Payment',
     data() {
@@ -37,13 +38,11 @@
       };
     },
     methods: {
+      ...mapActions(['startPayment', 'testingOrder']),
       //确认支付
       handleSubmit() {
-        if (this.currentChoosedIndex == 1) {
-          this.balancePayment();
-        }else{
-          this.wechatPayment();
-        }
+        this.currentChoosedIndex == 1 &&  this.balancePayment();
+        this.currentChoosedIndex != 1 && this.startPayment({router: this.$router, userid: this.$store.state.user.userid});
       },
       //余额支付
       balancePayment() {
@@ -71,95 +70,23 @@
           }
         });
       },
-      //微信支付
-      wechatPayment() {
-        const live_token = sessionStorage.getItem('LIVE_TOKEN');
-        if(!live_token){
-          wechatPayment({
-            order_no: this.$store.state.payment.orderNo,
-            user_id: this.$store.state.user.userid,
-            order_type: this.$store.state.payment.orderType,
-            platform: sessionStorage.getItem('PLATFORM') || '',
-            type: 2
-          }).then(res=>{
-            // 微信浏览器直接调用支付
-            if(res.data.code == 1){
-              this.wx.chooseWXPay({
-                timestamp: res.data.data.timestamp.toString(),
-                nonceStr: res.data.data.nonceStr,
-                package: res.data.data.package,
-                signType: res.data.data.signType,
-                paySign: res.data.data.paySign,
-                success: res=> {
-                  let msg = this.$store.state.payment.kind == 1
-                    ? '付款成功，现在为你跳转会员卡页面'
-                    : this.$store.state.payment.kind == 3
-                    ? '付款成功，现在为你跳转虚拟店页面'
-                    : '付款成功，现在为你跳转订单页面';
-                  this.feedback.Alert({
-                    msg:'付款成功，现在为你跳转订单页面',
-                    callback:()=>{
-                      if (this.$store.state.payment.kind == 1) {
-                        this.$router.replace({
-                          name:'buyVipCard',
-                          params: {
-                            storeid: this.$store.state.payment.shopid
-                          }
-                        });
-                      } else if (this.$store.state.payment.kind == 3) {
-                        this.$router.replace({
-                          name:'FictitiousOrder'
-                        });
-                      } else {
-                        this.$router.replace({
-                          name:'Order'
-                        });
-                      }
-                    }
-                  })
-                },
-                fail:err=>{
-                  this.feedback.Toast({
-                    msg:JSON.stringify(err),
-                    timeout:1500
-                  })
-                }
-              });
-            }else if(res.data.code == 2){
-              location.href = res.data.data.mweb_url;
-            }else{
-              this.feedback.Toast({msg: res.data.info,timeout: 1200})
+    },
+    async mounted() {
+      if(!this.$store.state.payment.orderNo){
+        let paymentCallbackData = sessionStorage.getItem('PAYMENT_CALLBACK');
+        if(paymentCallbackData){
+          this.testingOrder({router: this.$router, userid: this.$store.state.user.userid});
+        }else{
+          // store
+          this.feedback.Notify({
+            msg:'订单信息有误,请重新选择支付',
+            timeout:1800,
+            callback:()=>{
+              this.$router.go(-1)
             }
           })
-        }else{ //星说直播中调起支付
-          liveAppPayment({
-            order_no: this.$store.state.payment.orderNo,
-            user_id: this.$store.state.user.userid,
-            order_type: this.$store.state.payment.orderType,
-            live_token: live_token
-          }).then(res=>{
-            if(res.data.code == 1){
-              location.href = 'app://payorder/' + res.data.data.order_no;
-            }else{
-              this.feedback.Toast({
-                msg: res.data.info,
-                timeout: 1200
-              })
-            }
-          });
+          return;
         }
-      }
-    },
-    mounted() {
-      if(!this.$store.state.payment.orderNo){
-        this.feedback.Notify({
-          msg:'订单信息有误,请重新选择支付',
-          timeout:1800,
-          callback:()=>{
-            this.$router.go(-1)
-          }
-        })
-        return;
       }
       if (this.$store.state.payment.canUse) {
         this.paymentMethods.push({
@@ -167,17 +94,6 @@
           icon: require('../../assets/ye.png'),
         })
       }
-      getWxSettings().then(res => {
-        let data = res.data.data;
-        this.wx.config({
-          debug: global.isDev,
-          appId: data.appid,
-          timestamp: data.timestamp,
-          nonceStr: data.nonceStr,
-          signature: data.signature,
-          jsApiList: ['chooseWXPay']
-        });
-      });
     },
     components: {
       footerSubmit
@@ -186,8 +102,7 @@
 
 </script>
 
-<style lang="less"
-  scoped>
+<style lang="less" scoped>
   @import './Payment.less';
 
 </style>
