@@ -1,6 +1,6 @@
 <template>
 <div class="container">
-    
+
 <form bindsubmit="submit">
 <div class="ziset">
     <div class="sg">
@@ -18,7 +18,7 @@
             <span class="tl">手机号</span>
             <img src='../../assets/return.png' class='imgr'  />
             <span class='rt'>{{uesrdata.mobile}}</span>
-        </router-link> 
+        </router-link>
         <div class='slin' @click='openSexyOk = true'>
             <span class="tl">性别</span>
             <img src='../../assets/return.png' class='imgr' />
@@ -30,7 +30,7 @@
             <input class="right" disabled type="text" v-model='ageValue' placeholder="选择">
         </div>
     </div>
-    
+
     <div class="popBg" v-cloak v-if='openSexyOk' @click='openSexyOk = false'></div>
     <div class="popPicker" v-cloak v-if='openSexyOk'>
         <h2>选择性别 <span  @click='openSexyOk = false'>确定</span></h2>
@@ -39,17 +39,17 @@
 
     <div class="popBg" v-cloak v-if='openAgeOk' @click='openAgeOk = false'></div>
     <div class="popPicker" v-cloak v-if='openAgeOk'>
-        <h2>选择性别 <span  @click='openAgeOk = false'>确定</span></h2>
+        <h2>选择年龄 <span  @click='openAgeOk = false'>确定</span></h2>
         <picker :data='ageData' v-model='ageValue' @on-change='changeAge'></picker>
     </div>
 
-    <div class='fbottom'> 
+    <div class='fbottom'>
         <div class='submit JB' formType="submit" @click='submitUserInfo'>提交</div>
     </div>
 
 </div>
 </form>
-   
+
 </div>
 </template>
 
@@ -82,7 +82,7 @@ export default {
 
     },
     created(){
-        
+
     },
     mounted() {
         console.log(this.userInfo)
@@ -110,7 +110,7 @@ export default {
             if(value=='男') this.sex = 1
             else if(value=='女') this.sex = 2
         },
-        
+
         //修改年龄
         changeAge(value){
             this.ageValue = value

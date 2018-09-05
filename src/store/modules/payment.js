@@ -108,7 +108,7 @@ export default {
       switch(state.kind){
         case 1: //购买会员卡
           payload.router.replace({
-            name:'buyVipCard',
+            name:'BuyVipCard',
             params: {
               storeid: state.shopid
             }
