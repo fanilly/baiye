@@ -17,7 +17,7 @@ export default function(userToken,goLogin) {
       resolve(userInfo)
     } else {
       sessionStorage.setItem('USER_TOKEN',userToken);
-      axios.post('https://food.zzebz.com/index/login/get_user_info',{
+      axios.post('https://shop.live.zzebz.com/index/login/get_user_info',{
         user_token:userToken
       }).then(res => {
         if (res.data.code == 0) {
