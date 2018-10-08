@@ -74,6 +74,10 @@
       };
     },
     methods: {
+      if(this.pageData.coupons[index].choosed){
+        this.pageData.coupons[index].choosed = !this.pageData.coupons[index].choosed;
+        return false;
+      }
       handleChooseCoupon(item,index){
         if(this.totalMoney + item.money * 1 > this.pageData.amount * 1){
           this.feedback.Toast({
