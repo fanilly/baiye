@@ -105,23 +105,66 @@ export default {
 
     //支付成功
     paymetnSuccess({ state }, payload){
+      // switch(state.kind){
+      //   case 1: //购买会员卡
+      //     payload.router.replace({
+      //       name:'BuyVipCard',
+      //       params: {
+      //         storeid: state.shopid
+      //       }
+      //     });
+      //     break;
+      //   case 2: //购买实体店商品
+      //     payload.router.replace({
+      //       name:'Order'
+      //     });
+      //     break;
+      //   case 3: //购买虚拟店商品
+      //     payload.router.replace({
+      //       name:'FictitiousOrder'
+      //     });
+      //     break;
+      //   default: //购买优惠券
+      //     payload.router.push({
+      //       name: 'CouponList',
+      //       params: {
+      //         shopid: state.shopid
+      //       }
+      //     });
+      //     break;
+      // }
       switch(state.kind){
         case 1: //购买会员卡
           payload.router.replace({
-            name:'BuyVipCard',
+            name:'PaymentSuccess',
             params: {
-              storeid: state.shopid
+              shopid: state.shopid,
+              kind: state.kind,
+              orderno: state.orderNo,
+              type: state.orderType
             }
           });
           break;
         case 2: //购买实体店商品
           payload.router.replace({
-            name:'Order'
+            name:'PaymentSuccess',
+            params: {
+              shopid: 0,
+              kind: state.kind,
+              orderno: state.orderNo,
+              type: state.orderType
+            }
           });
           break;
         case 3: //购买虚拟店商品
           payload.router.replace({
-            name:'FictitiousOrder'
+            name:'PaymentSuccess',
+            params: {
+              shopid: 0,
+              kind: state.kind,
+              orderno: state.orderNo,
+              type: state.orderType
+            }
           });
           break;
         default: //购买优惠券

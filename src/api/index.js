@@ -232,6 +232,14 @@ const REQUESTS = {
   paymentCallback(data) {
     return HTTPS.fetchPost(HOST + '/api/5b89f05837214',data)
   },
+  //支付之后获取可领取异业联盟优惠券
+  paymentAfter(data) {
+    return HTTPS.fetchPost(HOST + '/api/5bbab3472a61f',data)
+  },
+  //领取异业联盟优惠券
+  getUnionCoupons(data) {
+    return HTTPS.fetchPost(HOST + '/api/5bbabfabf302d',data)
+  },
 
   //获取虚拟店店主信息
   getAdminIndexInfo(data) {
@@ -467,6 +475,8 @@ export const getActivityDetail = REQUESTS.getActivityDetail;
 export const getActivityOrder = REQUESTS.getActivityOrder;
 export const activityPlaceOrder = REQUESTS.activityPlaceOrder;
 export const paymentCallback = REQUESTS.paymentCallback;
+export const paymentAfter = REQUESTS.paymentAfter;
+export const getUnionCoupons = REQUESTS.getUnionCoupons;
 
 
 export const getShopList = REQUESTS.getShopList

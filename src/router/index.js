@@ -28,6 +28,7 @@ const IssueIndex = () => import ('@/pages/Issue/Index');
 const IssueList = () => import ('@/pages/Issue/Issue');
 const IssueDetail = () => import ('@/pages/Issue/Detail');
 const Activity = () => import ('@/pages/Other/Activity');
+const PaymentSuccess = () => import ('@/pages/Other/PaymentSuccess');
 
 const AddressIndex = () => import ('@/pages/Address/Index');
 const AddressAdd = () => import ('@/pages/Address/Add');
@@ -162,6 +163,16 @@ const router = new Router({
       meta: {
         keepAlive: false,
         title: '会员中心'
+      }
+    },
+    {
+      path: '/PaymentSuccess/:orderno/:type/:kind/:shopid',
+      name: 'PaymentSuccess',
+      props: true,
+      component: PaymentSuccess,
+      meta: {
+        keepAlive: false,
+        title: '支付成功'
       }
     },
     {
