@@ -57,9 +57,18 @@
               timeout: 1000
             });
             setTimeout(() => {
-              var str = ''
+              // var str = ''
+              // this.$router.replace({
+              //   name:'Order'
+              // });
               this.$router.replace({
-                name:'Order'
+                name:'PaymentSuccess',
+                params: {
+                  shopid: 0,
+                  kind: 2,
+                  orderno: this.$store.state.payment.orderNo,
+                  type: this.$store.state.payment.orderType
+                }
               });
             }, 1000)
           } else {
