@@ -74,11 +74,11 @@
       };
     },
     methods: {
-      if(this.pageData.coupons[index].choosed){
-        this.pageData.coupons[index].choosed = !this.pageData.coupons[index].choosed;
-        return false;
-      }
       handleChooseCoupon(item,index){
+        if(this.pageData.coupons[index].choosed){
+          this.pageData.coupons[index].choosed = !this.pageData.coupons[index].choosed;
+          return false;
+        }
         if(this.totalMoney + item.money * 1 > this.pageData.amount * 1){
           this.feedback.Toast({
             msg: '选择金额不可超出最大限制',
