@@ -168,6 +168,10 @@ const REQUESTS = {
   getBuyCouponList(data){
     return HTTPS.fetchGet(HOST + '/api/5b0e691bc7c4a', data)
   },
+  //获取所有店铺优惠券
+  getAllCouponList(data){
+    return HTTPS.fetchGet(HOST + '/api/5bbda4316f97f', data)
+  },
   //购买优惠券
   buyCoupon(data){
     return HTTPS.fetchGet(HOST + '/api/5b0e4d582f2e2', data)
@@ -459,6 +463,7 @@ export const getAllowBuyCouponList = REQUESTS.getAllowBuyCouponList;
 export const buyCoupon = REQUESTS.buyCoupon;
 export const buyCouponPayment = REQUESTS.buyCouponPayment;
 export const getBuyCouponList = REQUESTS.getBuyCouponList;
+export const getAllCouponList = REQUESTS.getAllCouponList;
 export const getShopCenterData = REQUESTS.getShopCenterData;
 export const getMyEvaluateLists = REQUESTS.getMyEvaluateLists;
 export const registerSalesman = REQUESTS.registerSalesman;

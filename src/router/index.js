@@ -38,6 +38,7 @@ const CouponIndex = () => import ('@/pages/Coupon/Index');
 const AdminIndex = () => import ('@/pages/AdminIndex/AdminIndex');
 const CouponBuy = () => import ('@/pages/Coupon/Buy');
 const CouponList = () => import ('@/pages/Coupon/List');
+const MyCoupon = () => import ('@/pages/Coupon/MyCoupon');
 
 const MyEvaluate = () => import ('@/pages/MyEvaluate/MyEvaluate');
 const AdminShop = () => import ('@/pages/AdminShop/AdminShop');
@@ -342,6 +343,14 @@ const router = new Router({
         name: 'CouponList',
         props: true,
         component: CouponList,
+        meta:{
+          keepAlive: false,
+          title: '我的优惠券'
+        }
+      }, {
+        path: '/Coupon/MyCoupon',
+        name: 'MyCoupon',
+        component: MyCoupon,
         meta:{
           keepAlive: false,
           title: '我的优惠券'

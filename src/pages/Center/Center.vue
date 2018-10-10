@@ -58,6 +58,7 @@ export default {
                 { name: '我的关注', url: '/Collection', words: '', src: require('../../assets/sc.png') },
             ],
             nav2: [
+                { name: '我的优惠券', url: '/Coupon/MyCoupon', words: '', src: require('../../assets/icon01.png') },
                 // { name: '地址管理', url: '../address/index', src: require('../../assets/icon04.png') },
                 { name: '帮助中心', url: '/Issue/List', words: '', src: require('../../assets/icon05.png') },
             ],

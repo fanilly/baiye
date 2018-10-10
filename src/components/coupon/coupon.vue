@@ -8,9 +8,10 @@
           <div class="tit2" v-if="item.type == 4">赠品券</div>
         </div>
         <div class="fright">
-          <div class="tit1">{{item.name}}</div>
-          <div class="tit2" v-if="item.end_time==''">永久有效</div>
-          <div class="tit2" v-if="item.end_time !=''">有限期至：{{item.end_time}}</div>
+          <div class="tit1">{{item.name}} {{item.coupon_count ? '（' + item.coupon_count + '张）' : ''}}</div>
+          <div class="tit2" v-if="item.shop_name">仅{{item.shop_name}}可用</div>
+          <div class="tit2" v-if="item.end_time==''">永久有效 <span @click="handleGoUse(item.shop_id)" v-if="item.status == 0 && item.shop_id">去使用</span></div>
+          <div class="tit2" v-if="item.end_time !=''">有效期至：{{item.end_time}} <span @click="handleGoUse(item.shop_id)" v-if="item.status == 0 && item.shop_id">去使用</span></div>
         </div>
         <img v-if="item.status ==2" class="dimg" :src="icon02" />
         <img v-if="item.status ==1" class="dimg" :src="icon03" />
@@ -43,6 +44,14 @@
     methods: {
       handleReceiveCoupon() {
         this.$emit('handleReceiveCoupon');
+      },
+      handleGoUse(shopId){
+        this.$router.push({
+          name:'Shop',
+          params:{
+            shopid:shopId
+          }
+        })
       }
     }
   };
