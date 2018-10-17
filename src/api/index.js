@@ -7,7 +7,7 @@
 
 import HTTPS from './public.js';
 const isDev = process.env.NODE_ENV === 'development';
-const HOST = isDev ? '' : 'https://food.zzebz.com';
+const HOST = isDev ? '' : 'https://ylkl.kkbli.com';
 console.log(typeof HOST);
 
 const REQUESTS = {
