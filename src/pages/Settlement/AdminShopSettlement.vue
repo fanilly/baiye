@@ -190,7 +190,10 @@
             this.feedback.Toast({
               msg:res.data.info,
               timeout: 1200
-            })
+            });
+            setTimeout(()=>{
+              this.$router.go(-1);
+            }, 1000);
           }
           console.log('运费',res);
         })
