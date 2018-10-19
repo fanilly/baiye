@@ -83,7 +83,8 @@ export default {
 
   mounted(){
     getEvaluateTags({
-      user_id:this.$store.state.user.userid
+      user_id:this.$store.state.user.userid,
+      order_no: this.orderNo
     }).then(res=>{
       if(res.data.code == 1){
         this.tags = res.data.data;
