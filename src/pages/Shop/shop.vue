@@ -638,6 +638,7 @@ export default {
 
     //弹出选择属性窗口
     choose(options){
+      this.isAllowAddToTrolley = true;
       let currentGoods = this.goodsLists[options.parentIndex][options.currentIndex];
       this.chooseAttrPopData = {
         title: currentGoods.title,
