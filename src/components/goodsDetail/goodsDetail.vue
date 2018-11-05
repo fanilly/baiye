@@ -77,8 +77,12 @@ export default {
 };
 
 </script>
-<style lang="less">
-
+<style scoped>
+.content-box>>>img{
+  display: block;
+}
+</style>
+<style lang="less" scoped>
 
 @import './goodsDetail.less';
 
