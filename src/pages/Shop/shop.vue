@@ -302,6 +302,7 @@ export default {
         }
       },
 
+      isAllowAddToTrolley: true,
       commentPage:1,
       commentLoadedAll:false,
       noCommentLists:false,
@@ -626,6 +627,7 @@ export default {
 
     //有属性商品添加购物车
     handleAddCart(e){
+      if(!this.isAllowAddToTrolley) return false;
       this.plus({
         parentIndex:this.chooseAttrPopData.parentIndex,
         currentIndex:this.chooseAttrPopData.currentIndex,
@@ -652,10 +654,19 @@ export default {
 
     //点击属性 修改价格及焦点
     handleChooseAttr(index,val){
+      this.isAllowAddToTrolley = true;
       this.chooseAttrPopData.choosedAttr.splice(index, 1, val);
       let choosedAttr = this.chooseAttrPopData.choosedAttr,
        currentSkuId = this.chooseAttrPopData.attr.map((item,index)=>item.specs[choosedAttr[index]]['id']).join(',');
-      this.chooseAttrPopData.showPrice = this.chooseAttrPopData.sku.filter(item=>item.sku_id == currentSkuId)[0]['price'];
+      try {
+        this.chooseAttrPopData.showPrice = this.chooseAttrPopData.sku.filter(item=>item.sku_id == currentSkuId)[0]['price'];
+      } catch(e) {
+        this.feedback.Toast({
+          msg: '所选属性暂无库存',
+          timeout: 1000
+        })
+        this.isAllowAddToTrolley = false;
+      }
     },
 
     //关闭属性选择弹窗
