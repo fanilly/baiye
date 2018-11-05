@@ -14,7 +14,7 @@ module.exports = {
     //npm install http-proxy-middleware
     proxyTable: {
       '/api': {
-        target: 'https://gbfmall.zzebz.com',
+        target: 'http://gbf.zzebz.com',
         changeOrigin: true,
         pathRewrite:{
           '^/api': '/api'
