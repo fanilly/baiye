@@ -80,6 +80,7 @@ export default {
 <style scoped>
 .content-box>>>img{
   display: block;
+  max-width: 100%;
 }
 </style>
 <style lang="less" scoped>
