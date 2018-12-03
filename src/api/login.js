@@ -17,11 +17,11 @@ export default function(userToken,goLogin) {
       resolve(userInfo)
     } else {
       sessionStorage.setItem('USER_TOKEN',userToken);
-      axios.post('http://gbf.zzebz.com/index/login/get_user_info',{
+      axios.post('http://wgsg.zzebz.com/index/login/get_user_info',{
         user_token:userToken
       }).then(res => {
         if (res.data.code == 0) {
-          location.href = 'http://gbf.zzebz.com/index/login/login?jump_url=' + location.pathname.replace(/\//g, '^');
+          location.href = 'http://wgsg.zzebz.com/index/login/login?jump_url=' + location.pathname.replace(/\//g, '^');
         } else if (res.data.code == 1) {
           let resData = res.data.data;
           const userInfo = {
