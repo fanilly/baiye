@@ -214,8 +214,16 @@
             </div>
             <div class="btnbox">
               <div class="bleft">
-                <span class="small">¥</span>{{chooseAttrPopData.showPrice}}</div>
-              <div class="btna JB" @click.stop="handleAddCart">加入购物车</div>
+                <span class="small">¥</span>
+                {{chooseAttrPopData.showPrice}}
+              </div>
+              <div class="btna JB" @click.stop="handleAddCart" v-if="chooseAttrPopData.is_storage != 1">加入购物车</div>
+              <div class="btna JB" @click.stop="handleBuyNow" v-if="chooseAttrPopData.is_storage == 1">立即购买</div>
+              <div class="goods-item-rside-control-box" v-if="chooseAttrPopData.is_storage == 1">
+                <span class="icon-box reduce" @click.stop="handleChangeIsStorageGoodsBuy('reduce')"><i class="iconfont icon-iconjian"></i></span>
+                <span class="count-box">{{chooseAttrPopData.num}}</span>
+                <span class="icon-box plus" @click.stop="handleChangeIsStorageGoodsBuy('plus')"><i class="iconfont icon-iconjia"></i></span>
+              </div>
             </div>
           </div>
           <img class="close" :src="closeIcon" @click="handleCloseChooseAttrPop" />
@@ -253,7 +261,7 @@ import footerTrolley from '@/components/footerTrolley/footerTrolley.vue';
 import parabola from '@/utils/parabola.js';
 import ScrollTo from '@/utils/scrollTo.js';
 
-import { SET_SEARCH_RESULT } from '@/store/mutation-type.js';
+import { SET_SEARCH_RESULT, SET_ISWAIMAI } from '@/store/mutation-type.js';
 import {
   getGoodsCate,
   getGoodsLists,
@@ -421,6 +429,9 @@ export default {
 
     //点击选好了
     handleGoSettlement(allowSellement) {
+      this.$store.commit(SET_ISWAIMAI,{
+        is_waimai: 1
+      });
       this.testingNeedLogin();
       if(this.choosedTotalNum == 0){
         this.feedback.Toast({
@@ -648,6 +659,8 @@ export default {
         parentIndex: options.parentIndex,
         currentIndex: options.currentIndex,
         goodsId: currentGoods.id,
+        is_storage: currentGoods.is_storage,
+        num: 1,
         showPrice: currentGoods.check_price
       };
       this.showChooseAttrPop = true;
@@ -868,7 +881,49 @@ export default {
         scale: 28, // 地图缩放级别,整形值,范围从1~28。默认为最大
         infoUrl: '' // 在查看位置界面底部显示的超链接,可点击跳转
       });
-    }
+    },
+
+    //允许立即购买商品的数量改变
+    handleChangeIsStorageGoodsBuy(type){
+      if(type === 'plus') this.chooseAttrPopData.num ++;
+      else (this.chooseAttrPopData.num = this.chooseAttrPopData.num - 1 > 0 ? this.chooseAttrPopData.num - 1 : 1);
+    },
+
+    //立即购买
+    handleBuyNow(){
+      this.feedback.Loading.open('请稍等');
+      let attr = '';
+      if(this.chooseAttrPopData.attr != 0){
+        let choosedAttr = this.chooseAttrPopData.choosedAttr;
+        attr = this.chooseAttrPopData.attr.map((item,index)=>item.specs[choosedAttr[index]]['id']).join(',');
+      }
+      this.$store.commit(SET_ISWAIMAI,{
+        is_waimai: 2
+      });
+      addCart({
+        attr,
+        shop_id: this.shopid,
+        id: this.chooseAttrPopData.goodsId,
+        num: this.chooseAttrPopData.num,
+        user_id: this.$store.state.user.userid,
+        is_waimai: 2
+      }).then(res=>{
+        this.feedback.Loading.close();
+        if(res.data.code == 1){
+          this.$router.push({
+            name: 'Settlement',
+            params: {
+              shopid: this.shopid
+            }
+          });
+        }else {
+          this.feedback.Toast({
+            msg: res.data.info,
+            timeout: 800
+          });
+        }
+      });
+    },
   },
   mounted() {
 

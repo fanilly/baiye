@@ -127,59 +127,60 @@
           line-height: .6rem;
           .text-overflow-ellipsis;
         }
-        .goods-item-rside-control-box {
-          display: flex;
-          align-items: center;
-          justify-content: flex-end;
-          h4 {
-            font-size: .32rem;
-            text-align: left;
-            color: #ff6634;
-            flex: 1;
-            font-weight: normal;
-            font-family: Arial;
-            span {
-              font-size: .24rem;
-            }
-          }
-          .icon-box {
-            width: .5rem;
-            height: .5rem;
-            text-align: center;
-            border-radius: 50%;
-            background-color: @main-color;
-            line-height: .5rem;
-          }
-          .count-box {
-            padding: 0 .2rem;
-            font-size: .28rem;
-            color: #000;
-          }
-          .choose {
-            padding: 0 .2rem;
-            font-size: .28rem;
-            height: .5rem;
-            line-height: .5rem;
-            border-radius: .25rem;
-            color: #fff;
-            background-color: @main-color;
-          }
-          .reduce {
-            background-color: transparent;
-            border: 2px solid @main-color;
-            i {
-              color: @main-color;
-            }
-          }
-          i {
-            color: #fff;
-            font-size: .24rem;
-            position: relative;
-            top: -1px;
-          }
-        }
       }
     }
+  }
+}
+
+.goods-item-rside-control-box {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  h4 {
+    font-size: .32rem;
+    text-align: left;
+    color: #ff6634;
+    flex: 1;
+    font-weight: normal;
+    font-family: Arial;
+    span {
+      font-size: .24rem;
+    }
+  }
+  .icon-box {
+    width: .5rem;
+    height: .5rem;
+    text-align: center;
+    border-radius: 50%;
+    background-color: @main-color;
+    line-height: .5rem;
+  }
+  .count-box {
+    padding: 0 .2rem;
+    font-size: .28rem;
+    color: #000;
+  }
+  .choose {
+    padding: 0 .2rem;
+    font-size: .28rem;
+    height: .5rem;
+    line-height: .5rem;
+    border-radius: .25rem;
+    color: #fff;
+    background-color: @main-color;
+  }
+  .reduce {
+    background-color: transparent;
+    border: 2px solid @main-color;
+    i {
+      color: @main-color;
+    }
+  }
+  i {
+    color: #fff;
+    font-size: .24rem;
+    position: relative;
+    top: -1px;
   }
 }
 
@@ -630,6 +631,13 @@
   text-align: left;
 }
 
+.popbox-wapper .goods-item-rside-control-box {
+  width: 2rem;
+  height: .66rem;
+  float: right;
+  justify-content: flex-start;
+}
+
 .popbox-wapper {
   position: fixed;
   left: 0;
@@ -746,6 +754,10 @@
   font-size: .34rem;
   line-height: .64rem;
   color: @main-color;
+}
+
+.popbox .btnbox .bleft .small {
+  font-size: .2rem;
 }
 
 .popbox .btnbox .btna {

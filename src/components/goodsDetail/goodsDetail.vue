@@ -8,7 +8,7 @@
         <h1>{{goodsData.title}}</h1>
         <div class="title-box">
           <h2><span>￥</span>{{goodsData.shop_price}}</h2>
-          <template v-if="goodsData.attr.length == 0">
+          <template v-if="goodsData.attr.length == 0 && goodsData.is_storage != 1">
             <div class="control-box">
               <template v-if="goodsData.num>=1">
                 <span class="icon-box reduce" @click.stop="reduce"><i class="iconfont icon-iconjian"></i></span>
@@ -17,7 +17,9 @@
               <span class="icon-box plus" @click.stop="plus"><i class="iconfont icon-iconjia"></i></span>
             </div>
           </template>
-          <span class="choose" @click.stop="choose" v-if="goodsData.attr.length > 0">选规格</span>
+          <span class="choose" @click.stop="choose" v-if="goodsData.attr.length == 0 && goodsData.is_storage == 1">立即购买</span>
+          <span class="choose" @click.stop="choose" v-if="goodsData.attr.length > 0 && goodsData.is_storage != 1">选规格</span>
+          <span class="choose" @click.stop="choose" v-if="goodsData.attr.length > 0 && goodsData.is_storage == 1">立即购买</span>
         </div>
         <div class="content-box" v-html="goodsData.body"></div>
         <div class="desc"></div>

@@ -85,8 +85,12 @@ const REQUESTS = {
     return HTTPS.fetchGet(HOST + '/api/5b1e2516f0e01', data)
   },
   //获取运费
-  getShippingFee(data){
+  getShippingFee(data){ //已废弃
     return HTTPS.fetchPost(HOST + '/api/5b1bb5181e848', data)
+  },
+  //获取运费
+  getShippingFeeNew(data){
+    return HTTPS.fetchPost(HOST + '/api/5c0777f181b32', data)
   },
   //获取优惠券
   getCoupons(data){
@@ -443,6 +447,7 @@ export const getPhysicalGoodsDetail = REQUESTS.getPhysicalGoodsDetail;
 export const clearCartLists = REQUESTS.clearCartLists;
 export const getAddress = REQUESTS.getAddress;
 export const getShippingFee = REQUESTS.getShippingFee;
+export const getShippingFeeNew = REQUESTS.getShippingFeeNew;
 export const getCoupons = REQUESTS.getCoupons;
 export const getGife = REQUESTS.getGife;
 export const changeAddress = REQUESTS.changeAddress;

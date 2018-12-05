@@ -8,14 +8,16 @@
       <p class="goods-item-rside-info">月销：{{ item.sales }}份</p>
       <div class="goods-item-rside-control-box">
         <h4><span>￥</span>{{item.shop_price}}</h4>
-        <template v-if="item.attr.length == 0">
+        <template v-if="item.attr.length == 0 && item.is_storage != 1">
           <template v-if="item.num>=1">
             <span class="icon-box reduce" @click.stop="reduce"><i class="iconfont icon-iconjian"></i></span>
             <span class="count-box">{{item.num}}</span>
           </template>
           <span class="icon-box plus" @click.stop="plus"><i class="iconfont icon-iconjia"></i></span>
         </template>
-        <span class="choose" @click.stop="choose" v-if="item.attr.length > 0">选规格</span>
+        <span class="choose" @click.stop="choose" v-if="item.attr.length == 0 && item.is_storage == 1">立即购买</span>
+        <span class="choose" @click.stop="choose" v-if="item.attr.length > 0 && item.is_storage != 1">选规格</span>
+        <span class="choose" @click.stop="choose" v-if="item.attr.length > 0 && item.is_storage == 1">立即购买</span>
       </div>
     </section>
   </section>

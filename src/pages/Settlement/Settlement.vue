@@ -76,6 +76,25 @@
         </div>
       </transition>
 
+      <!-- 快递 -->
+      <div class="select-box" v-if="express.length >= 1" @click.stop="showSelectExpress = true">
+        <div class="lside">选择快递</div>
+        <div class="center">{{selectedExpress[0]}}</div>
+        <img :src="arrowIcon" alt="">
+      </div>
+
+      <transition name="fade">
+        <div class="picker-wapper" v-if="showSelectExpress && express.length >= 1">
+          <div class="mask" @click="showSelectExpress = false"></div>
+          <div class="picker-box">
+            <div class="picker-header">
+              <span @click="showSelectExpress = false">确定</span>
+            </div>
+            <picker class="picker" :data="express" :columns="3" v-model="selectedExpress" @on-change="selectExpressChange"></picker>
+          </div>
+        </div>
+      </transition>
+
       <div class="sum">
         <div class="sl">运费</div>
         <div class="sm"></div>
@@ -96,10 +115,10 @@
   </section>
 </template>
 <script>
-  import { getCartLists, getAddress, getWxSettings, getShippingFee, getCoupons, changeAddress, getGife, submitOrder } from '@/api/index.js';
+  import { getCartLists, getAddress, getWxSettings, getShippingFeeNew, getCoupons, changeAddress, getGife, submitOrder } from '@/api/index.js';
   import { Picker } from 'vux';
   import footerSubmit from '@/components/footerSubmit/footerSubmit.vue';
-  import { SET_PAYMENT_OPTIONS } from '@/store/mutation-type.js';
+  import { SET_PAYMENT_OPTIONS, SET_ISWAIMAI } from '@/store/mutation-type.js';
   export default {
     name: 'Settlement',
     props:{
@@ -117,6 +136,7 @@
 
         remark:'',
         orderData:null,
+        totalWeight: 0,
 
         //优惠券
         actuallyMoney:'',
@@ -131,6 +151,12 @@
         selectedGifeId:0,
         selectedGife:[],
         gifes: [],
+
+        //快递
+        showSelectExpress:false,
+        selectedExpressId:0,
+        selectedExpress:[],
+        express: [],
       };
     },
     computed:{
@@ -158,6 +184,11 @@
         let selectItem = this.gifes.filter(item=>item.name == current[0]);
         this.selectedGifeId = selectItem[0].id;
       },
+      selectExpressChange(current){
+        let selectItem = this.express.filter(item=>item.name == current[0]);
+        this.orderData.shipping_fee = selectItem[0].price * 1;
+        this.selectedExpressId = selectItem[0].id;
+      },
       handleChooseAddress(){
         if(global.browserIsWeChat){
           this.wx.openAddress({
@@ -178,7 +209,7 @@
                   this.address.user_name = res.userName || '';
                   this.address.user_address = res.detailInfo || '';
                   this.address.user_phone = res.telNumber || '';
-                  this.getShippingFee();
+                  this.getShippingFeeNew();
                 }else{
                   this.feedback.Toast({
                     msg:resData.data.info,
@@ -219,6 +250,7 @@
           coupon_id: this.selectedCouponId,
           coupon_type: this.selectedCouponType,
           is_waimai: 1,
+          express_id: this.selectedExpressId,
           shipping_fee:this.orderData.shipping_fee,
           order_no:this.orderData.order_no,
           gift_id:this.selectedGifeId
@@ -226,6 +258,9 @@
           console.log(res);
           this.feedback.Loading.close();
           if(res.data.code == 1){
+            this.$store.commit(SET_ISWAIMAI,{
+              is_waimai: 1
+            });
             this.$store.commit(SET_PAYMENT_OPTIONS, {
               canUse: res.data.data.can_use,
               orderNo: res.data.data.order_no,
@@ -248,13 +283,15 @@
       //获取购物车数据
       getCartLists() {
         getCartLists({
-          is_waimai: 1,
+          is_waimai: this.$store.state.user.is_waimai,
           shop_id: this.shopid,
           user_id: this.$store.state.user.userid
         }).then(res => {
           if (res.data.code == 1) {
             this.carlist = res.data.data;
-            if(this.address) this.getShippingFee();
+            console.log('购物车数据',res)
+            this.totalWeight = res.data.data.total_weight;
+            if(this.address) this.getShippingFeeNew();
             this.getCoupons();
             this.getGife();
             console.log(this.carlist);
@@ -312,24 +349,41 @@
       },
 
       //获取运费
-      getShippingFee(){
-        getShippingFee({
+      getShippingFeeNew(){
+        getShippingFeeNew({
+          is_waimai: this.$store.state.user.is_waimai,
+          user_id:this.$store.state.user.userid,
           shop_id:this.shopid,
           address_id:this.address.aid,
+          weight: this.totalWeight,
           order_no: '',
           order_price:this.carlist.total_price,
           remark:this.remark || '无'
         }).then(res=>{
           if(res.data.code == 1){
-            this.orderData = res.data.data;
+            this.orderData = {
+              shipping_fee: res.data.data.express[0].price * 1,
+              order_no: res.data.data.order_no
+            };
+            this.express = [];
+            this.express.push(...res.data.data.express.map(item=>({
+              id: item.express_id,
+              name: item.express,
+              price: item.price,
+              value: item.express,
+            })))
+            // this.express = ;
+            console.log('--------------===============',this.express)
+            this.selectedExpressId = res.data.data.express[0].express_id;
+            this.selectedExpress[0] = res.data.data.express[0].express;
           }else{
             this.feedback.Toast({
               msg:res.data.info,
               timeout: 1200
             });
-            setTimeout(()=>{
-              this.$router.go(-1);
-            }, 1000);
+            // setTimeout(()=>{
+            //   this.$router.go(-1);
+            // }, 1000);
           }
           console.log('运费',res);
         })
@@ -343,7 +397,7 @@
         if(res.data.code == 1){
           this.address = res.data.data[0];
           console.log(this.address);
-          if(this.carlist) this.getShippingFee();
+          if(this.carlist) this.getShippingFeeNew();
         }else{
           this.feedback.Toast({
             msg:res.data.info

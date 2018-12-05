@@ -1,4 +1,4 @@
-import { SET_USER_TYPE, SET_USER_INFO } from '../mutation-type.js';
+import { SET_USER_TYPE, SET_USER_INFO, SET_ISWAIMAI } from '../mutation-type.js';
 import Alert from '@/components/feedback/src/alert';
 
 export default {
@@ -9,12 +9,16 @@ export default {
     avatar: '',
     subscribe: true,
     waiter_id:0,
+    is_waimai:1,
     virtual_id:0
   },
 
   getters: {},
 
   mutations: {
+    [SET_ISWAIMAI](state, payload) {
+      state.is_waimai = payload.is_waimai
+    },
     [SET_USER_TYPE](state, payload) {
       state.userType = payload.userType
     },
