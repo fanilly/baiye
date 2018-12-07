@@ -114,6 +114,14 @@ export default {
                     { name: '我的收益', url: '/MoneyRest/'+this.$store.state.user.userid, words: '', src: require('../../assets/sc6.png') }]);
             this.nav = nav
         }
+
+        if(this.uerInfo.userType==3){
+            let nav = this.nav;
+            nav.push(...[
+              { name: '我的二维码', url: '/RegisterPlatformSalesmanCode', words: '', src: require('../../assets/sc5.png') },
+            ]);
+            this.nav = nav
+        }
     },
     components: {
         footerNav,

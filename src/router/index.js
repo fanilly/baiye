@@ -20,6 +20,8 @@ const Order = () => import ('@/pages/Order/Order');
 const FictitiousOrder = () => import ('@/pages/FictitiousOrder/FictitiousOrder');
 const RegisterSalesman = () => import ('@/pages/RegisterSalesman/RegisterSalesman');
 const Follow = () => import ('@/pages/Other/Follow');
+const RegisterPlatformSalesman = () => import ('@/pages/Other/RegisterPlatformSalesman');
+const RegisterPlatformSalesmanCode = () => import ('@/pages/Other/RegisterPlatformSalesmanCode');
 const RegisterFictitious = () => import ('@/pages/Other/RegisterFictitious');
 const OrderDetail = () => import ('@/pages/OrderDetail/OrderDetail');
 const Collection = () => import ('@/pages/Collection/Collection');
@@ -135,6 +137,25 @@ const router = new Router({
       meta: {
         keepAlive: false,
         title: '关注公众号'
+      }
+    },
+    {
+      path: '/RegisterPlatformSalesman/:salesmanid',
+      name: 'RegisterPlatformSalesman',
+      component: RegisterPlatformSalesman,
+      props: true,
+      meta: {
+        keepAlive: false,
+        title: '注册店铺'
+      }
+    },
+    {
+      path: '/RegisterPlatformSalesmanCode',
+      name: 'RegisterPlatformSalesmanCode',
+      component: RegisterPlatformSalesmanCode,
+      meta: {
+        keepAlive: false,
+        title: '我的二维码'
       }
     },
     {

@@ -5,9 +5,9 @@ export default function(userToken,goLogin) {
     const isDev = process.env.NODE_ENV === 'development';
     if (isDev) {
       let userInfo = {
-        userid: 107,
+        userid: 1,
         nickName: '发光的闪闪闪',
-        userType: 2,
+        userType: 3,
         subscribe: true,
         waiter_id:0,
         virtual_id:0,

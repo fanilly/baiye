@@ -196,6 +196,10 @@ const REQUESTS = {
   registerSalesman(data) {
     return HTTPS.fetchGet(HOST + '/api/5b4065c6487ab', data)
   },
+  //注册平台业务员
+  registerPlatformSalesman(data) {
+    return HTTPS.fetchPost(HOST + '/api/5c08bc941ab3f', data)
+  },
   //获取关注二维码页面数据
   getFollowData() {
     return HTTPS.fetchPost(HOST + '/api/5b738c5c8bfd8')
@@ -256,6 +260,10 @@ const REQUESTS = {
   //获取我的二维码
   getCodeMIne(data) {
     return HTTPS.fetchGet(HOST + '/api/5b4094006ea05', data)
+  },
+  //获取平台业务员二维码
+  getPlatformSalesmanCode(data) {
+    return HTTPS.fetchGet(HOST + '/api/5c08c32981b32', data)
   },
   //获取我的拓客码
   getCodeExtend(data){
@@ -472,6 +480,7 @@ export const getAllCouponList = REQUESTS.getAllCouponList;
 export const getShopCenterData = REQUESTS.getShopCenterData;
 export const getMyEvaluateLists = REQUESTS.getMyEvaluateLists;
 export const registerSalesman = REQUESTS.registerSalesman;
+export const registerPlatformSalesman = REQUESTS.registerPlatformSalesman;
 export const getFollowData = REQUESTS.getFollowData;
 export const getFictitiousOrderLists = REQUESTS.getFictitiousOrderLists;
 export const registerFictitious = REQUESTS.registerFictitious;
@@ -501,6 +510,7 @@ export const changeShopBanner = REQUESTS.changeShopBanner
 
 export const getAdminIndexInfo = REQUESTS.getAdminIndexInfo
 export const getCodeMIne = REQUESTS.getCodeMIne
+export const getPlatformSalesmanCode = REQUESTS.getPlatformSalesmanCode
 export const getCodeExtend = REQUESTS.getCodeExtend
 export const getMoneyRest = REQUESTS.getMoneyRest
 export const getMoneyRestAll = REQUESTS.getMoneyRestAll
