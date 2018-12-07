@@ -124,6 +124,9 @@
     props:{
       shopid:{
         require: true
+      },
+      is_waimai: {
+
       }
     },
     data() {
@@ -391,7 +394,11 @@
     },
 
     mounted() {
-      console.log(this.wx);
+      if(this.is_waimai){
+        this.$store.commit(SET_ISWAIMAI,{
+          is_waimai: this.is_waimai
+        });
+      }
       this.getCartLists();
       getAddress({ uid: this.$store.state.user.userid }).then(res=>{
         if(res.data.code == 1){

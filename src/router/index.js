@@ -209,7 +209,7 @@ const router = new Router({
       }
     },
     {
-      path: '/settlement/:shopid',
+      path: '/settlement/:shopid/:is_waimai',
       name: 'Settlement',
       props: true,
       component: Settlement,

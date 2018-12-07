@@ -913,7 +913,8 @@ export default {
           this.$router.push({
             name: 'Settlement',
             params: {
-              shopid: this.shopid
+              shopid: this.shopid,
+              is_waimai: 2
             }
           });
         }else {
