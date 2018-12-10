@@ -68,11 +68,12 @@
 .small { font-size: .22rem; }
 
 .stream{ padding:0.3rem; text-align: left; border-radius: .08rem; background-color: #fff; margin-top: .12rem;
-h2{ font-size: 0.28rem; color: #323558; font-weight: bold; margin-bottom: 0.2rem; }
-
-ul{ position: relative;
-  &:before{ position: absolute; left:.25rem; top: 0; bottom: 0.8rem; content: ''; width: 1px; background-color: #eee;  }
-  li{ padding-left: .6rem; position: relative; padding-bottom: 0.4rem;
+  h2{ font-size: 0.28rem; color: #323558; font-weight: bold; margin-bottom: 0.2rem; }
+  ul{
+    position: relative;
+    &:before{ position: absolute; left:.25rem; top: 0; bottom: 0.8rem; content: ''; width: 1px; background-color: #eee; }
+    li{
+      padding-left: .6rem; position: relative; padding-bottom: 0.4rem;
       span{
         display: block;
         width: 1.45rem;
@@ -86,11 +87,13 @@ ul{ position: relative;
         position: absolute;
         left:0; top: 0;
       }
-      p{ font-size: 0.3rem; color: #323558; line-height: 0.42rem; color: #999;
+      p{
+        font-size: 0.3rem; color: #323558; line-height: 0.42rem; color: #999;
         em{ display: block; font-size: 0.22rem; color: #888; margin-top: 0.12rem; }
       }
     }
-    &:first-child{
+
+    li:first-child{
       span{ background-image: url('../../assets/icon62.png'); color: #f75852;  }
       p{ color: #323558;}
       p em{ color: #999;}
