@@ -252,6 +252,18 @@ const REQUESTS = {
   getUnionCoupons(data) {
     return HTTPS.fetchPost(HOST + '/api/5bbabfabf302d',data)
   },
+  //确认收货
+  confirmReceipt(data) {
+    return HTTPS.fetchPost(HOST + '/api/5c0dd0eb6acfc',data)
+  },
+  //完成订单
+  doneOrder(data) {
+    return HTTPS.fetchPost(HOST + '/api/5c0dd12590f56',data)
+  },
+  //获取快递信息
+  getExpressInformation(data) {
+    return HTTPS.fetchPost(HOST + '/api/5c0dd538501bd',data)
+  },
 
   //获取虚拟店店主信息
   getAdminIndexInfo(data) {
@@ -496,6 +508,9 @@ export const activityPlaceOrder = REQUESTS.activityPlaceOrder;
 export const paymentCallback = REQUESTS.paymentCallback;
 export const paymentAfter = REQUESTS.paymentAfter;
 export const getUnionCoupons = REQUESTS.getUnionCoupons;
+export const confirmReceipt = REQUESTS.confirmReceipt;
+export const doneOrder = REQUESTS.doneOrder;
+export const getExpressInformation = REQUESTS.getExpressInformation;
 
 
 export const getShopList = REQUESTS.getShopList

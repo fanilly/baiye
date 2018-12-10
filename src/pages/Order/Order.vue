@@ -1,7 +1,6 @@
 <template>
   <div class="container">
-    <class-nav :navs="navs"
-      @toggleNavs="handleToggleNavs"></class-nav>
+    <class-nav :navs="navs" @toggleNavs="handleToggleNavs"></class-nav>
 
     <!-- 订单列表 -->
     <div class="scroller-container">
@@ -12,24 +11,22 @@
               <img :src="item.shop_avatar" />
               <span>{{item.shop_name}}</span>
               <div class="now" v-if="item.status==0">待支付</div>
-              <div class="now" v-if="item.status==1">待接单</div>
-              <div class="now" v-if="item.status==2">已接单</div>
-              <div class="now" v-if="item.status==3">配送中</div>
-              <div class="now" v-if="item.status==4">待评价</div>
+              <div class="now" v-if="item.status==1">待发货</div>
+              <div class="now" v-if="item.status==2">待收货</div>
+              <div class="now" v-if="item.status==3">待评价</div>
+              <div class="now" v-if="item.status==4">已评价</div>
               <div class="now" v-if="item.status==5">已完成</div>
-              <div class="now" v-if="item.status==6">已退款</div>
             </div>
             <div class="food zhuse" @click="goOrderDetail(item.order_no)">{{item.goods_detail}}</div>
             <div class="sum zhuse" @click="goOrderDetail(item.order_no)">
               <span class="small">共{{item.goods_count}}件，合计 ¥</span>{{item.total_money}}</div>
-            <div class="btn" v-if="item.status == 0 || item.status == 3 || item.status == 4">
-              <div class="zhuangtai" v-if="item.status==3">
-                <span>{{item.shipping_type}}</span>
-              </div>
-              <div class="paya" v-if="item.status==0" @click.stop="goPayment(item.order_no, item.total_money, item.can_use)">立即支付</div>
-              <div class="paya" v-if="item.status==4" @click.stop="goEvaluate(item.order_no)">去评价</div>
-              <div class="xqa ml" v-if="item.status==0" @click.stop="cancelOrDelOrder(item.order_no,false)">取消订单</div>
-              <div class="xqa ml" v-if="item.status>3" @click.stop="cancelOrDelOrder(item.order_no,true)">删除订单</div>
+            <div class="btn" v-if="item.status == 0 || item.status == 2 || item.status == 3 || item.status == 4 || item.status == 6">
+              <div class="paya" v-if="item.status == 0" @click.stop="goPayment(item.order_no, item.total_money, item.can_use)">立即支付</div>
+              <div class="paya" v-if="item.status == 3" @click.stop="goEvaluate(item.order_no)">去评价</div>
+              <div class="paya" v-if="item.status == 2" @click.stop="confirmReceipt(item.order_no)">确认收货</div>
+              <div class="paya" v-if="item.status == 4" @click.stop="doneOrder(item.order_no)">完成订单</div>
+              <div class="xqa ml" v-if="item.status == 0" @click.stop="cancelOrDelOrder(item.order_no,false)">取消订单</div>
+              <div class="xqa ml" v-if="item.status == 5" @click.stop="cancelOrDelOrder(item.order_no,true)">删除订单</div>
             </div>
           </div>
           <load-more v-if="!noLists" :show-loading="!listLoadedAll && !noLists" :tip="!listLoadedAll ? '加载中' : '已加载全部数据'" background-color="#fbf9fe"></load-more>
@@ -53,7 +50,7 @@
   import scroller from '@/components/scroller/scroller.vue';
   import { LoadMore } from 'vux';
   import { SET_PAYMENT_OPTIONS } from '../../store/mutation-type.js';
-  import { getPhysicalOrderLists, cancelOrDelOrder } from '@/api/index.js';
+  import { getPhysicalOrderLists, cancelOrDelOrder, confirmReceipt, doneOrder } from '@/api/index.js';
 
   export default {
     name: 'Order',
@@ -66,19 +63,27 @@
         noLists: false,
         emptyIcon:require('../../assets/baiye/empty001.png'),
 
-        status: -1,
+        // 0未付款 1已付 2已发货 3已收货 4已评价 5已完成 6已取消
+
+        status: 0,
         navs: [{
-          name: '全部',
-          status: -1,
-        }, {
           name: '待支付',
+          status: 0,
+        }, {
+          name: '待发货',
           status: 1,
         }, {
-          name: '交易中',
+          name: '待收货',
           status: 2,
         }, {
-          name: '已完成',
+          name: '待评价',
           status: 3,
+        }, {
+          name: '已评价',
+          status: 4,
+        }, {
+          name: '已完成',
+          status: 5,
         }]
       };
     },
@@ -130,6 +135,78 @@
             orderNo:orderNo
           }
         })
+      },
+
+      //确认收货
+      confirmReceipt(orderNo){
+        this.feedback.Confirm({
+          title: '',
+          msg: `确定收货?`,
+          options: [{
+            txt: '取消',
+            color: '#999'
+          }, {
+            txt: '确定',
+            color: '#0bb20c',
+            callback: () => {
+              this.feedback.Loading.open('请稍后');
+              confirmReceipt({
+                user_id:this.$store.state.user.userid,
+                order_no: orderNo
+              }).then(res=>{
+                this.feedback.Loading.close();
+                this.feedback.Toast({
+                  msg: res.data.info,
+                  timeout: 1500
+                });
+                if(res.data.code == 1){
+                  this.lists = [];
+                  this.page= 1;
+                  this.allowLoadMore= true;
+                  this.listLoadedAll= false;
+                  this.noLists= false;
+                  this.getLists();
+                }
+              })
+            }
+          }]
+        });
+      },
+
+      //完成订单
+      doneOrder(orderNo){
+        this.feedback.Confirm({
+          title: '',
+          msg: `完成订单?`,
+          options: [{
+            txt: '取消',
+            color: '#999'
+          }, {
+            txt: '确定',
+            color: '#0bb20c',
+            callback: () => {
+              this.feedback.Loading.open('请稍后');
+              doneOrder({
+                user_id:this.$store.state.user.userid,
+                order_no: orderNo
+              }).then(res=>{
+                this.feedback.Loading.close();
+                this.feedback.Toast({
+                  msg: res.data.info,
+                  timeout: 1500
+                });
+                if(res.data.code == 1){
+                  this.lists = [];
+                  this.page= 1;
+                  this.allowLoadMore= true;
+                  this.listLoadedAll= false;
+                  this.noLists= false;
+                  this.getLists();
+                }
+              })
+            }
+          }]
+        });
       },
 
       //立即支付
