@@ -4,8 +4,10 @@
       <div class="fone">
         <div class="fleft">
           <img :src="icon01" style="width: 1.04rem;" />
-          <div class="tit2" v-if="item.type != 4">优惠券</div>
-          <div class="tit2" v-if="item.type == 4">赠品券</div>
+          <div class="tit2" v-if="item.type == 0">折扣券</div>
+          <div class="tit2" v-if="item.type == 1">满减券</div>
+          <div class="tit2" v-if="item.type == 2">转赠券</div>
+          <div class="tit2" v-if="item.type == 3">分享券</div>
         </div>
         <div class="fright">
           <div class="tit1">{{item.name}} {{item.coupon_count ? '（' + item.coupon_count + '张）' : ''}}</div>

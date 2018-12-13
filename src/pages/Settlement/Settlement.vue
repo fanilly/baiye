@@ -331,24 +331,24 @@
 
       //获取赠品券
       getGife(){
-        getGife({
-          shop_id:this.shopid,
-          user_id:this.$store.state.user.userid
-        }).then(res=>{
-          if(res.data.code == 1 && res.data.data.length!=0){
-            this.gifes = res.data.data.map(item=>({
-              id:item.aid,
-              name:item.name,
-              value:item.name,
-            }));
-            this.gifes.unshift({
-              id:0,
-              name:'不使用赠品券',
-              value:'不使用赠品券',
-            })
-          }
-          console.log('赠品券',res)
-        })
+        // getGife({
+        //   shop_id:this.shopid,
+        //   user_id:this.$store.state.user.userid
+        // }).then(res=>{
+        //   if(res.data.code == 1 && res.data.data.length!=0){
+        //     this.gifes = res.data.data.map(item=>({
+        //       id:item.aid,
+        //       name:item.name,
+        //       value:item.name,
+        //     }));
+        //     this.gifes.unshift({
+        //       id:0,
+        //       name:'不使用赠品券',
+        //       value:'不使用赠品券',
+        //     })
+        //   }
+        //   console.log('赠品券',res)
+        // })
       },
 
       //获取运费
